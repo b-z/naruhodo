@@ -4,10 +4,6 @@ var scene, camera, renderer, clock, deltaTime, totalTime;
 
 var arToolkitSource, arToolkitContext;
 
-var markerRoot1, markerRoot2;
-
-var mesh1;
-
 initialize();
 animate();
 
@@ -66,10 +62,11 @@ function initialize() {
 
 	// create atToolkitContext
 	arToolkitContext = new THREEx.ArToolkitContext({
+		// debug: true,
 		cameraParametersUrl: '../data/camera_para.dat',
 		detectionMode: 'color_and_matrix',
 		matrixCodeType: '3x3',
-		maxDetectionRate: 30
+		// maxDetectionRate: 30
 	});
 
 	// copy projection matrix to camera when initialization complete
@@ -88,11 +85,13 @@ function initialize() {
 	let colorArray = [0xff0000, 0xff8800, 0xffff00, 0x00cc00, 0x0000ff, 0xcc00ff, 0xcccccc];
 	for (let i = 0; i <= 4; i++) {
 		let markerRoot = new THREE.Group();
+		markerRoot.name = 'group_' + i;
 		scene.add(markerRoot);
 		let markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
 			size: 1,
 			type: 'barcode',
-			barcodeValue: i
+			barcodeValue: i,
+			minConfidence: 0.1
 		});
 
 		let mesh = new THREE.Mesh(
@@ -112,8 +111,10 @@ function initialize() {
 
 function update() {
 	// update artoolkit on every frame
-	if (arToolkitSource.ready !== false)
+	if (arToolkitSource.ready !== false) {
 		arToolkitContext.update(arToolkitSource.domElement);
+	}
+	updateScene(scene);
 }
 
 
