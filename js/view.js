@@ -1,8 +1,8 @@
 'use strict';
 
 function saveScreenshot() {
-	var w = 640;
-	var h = 480;
+	var w = 1280;
+	var h = 960;
 	var $canvas = $('#canvas');
 	var $video = $('video');
 	var type = 'image/png';

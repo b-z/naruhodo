@@ -10,8 +10,8 @@ animate();
 function initialize() {
 	scene = new THREE.Scene();
 
-	let ambientLight = new THREE.AmbientLight(0xcccccc, 0.5);
-	scene.add(ambientLight);
+	// let ambientLight = new THREE.AmbientLight(0xcccccc, 0.5);
+	// scene.add(ambientLight);
 
 	camera = new THREE.Camera();
 	scene.add(camera);
@@ -21,12 +21,12 @@ function initialize() {
 		alpha: true,
 		preserveDrawingBuffer: true
 	});
-	renderer.setClearColor(0x72645b, 0);
-	// renderer.setClearColor(new THREE.Color('lightgrey'), 0);
+	renderer.setClearColor(new THREE.Color('lightgrey'), 0);
 	renderer.gammaInput = true;
 	renderer.gammaOutput = true;
-	renderer.shadowMap.enabled = true;
-	renderer.shadowMap.renderReverseSided = false;
+	// renderer.shadowMap.enabled = true;
+	// renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+	// renderer.shadowMap.renderReverseSided = false;
 	renderer.setSize(640, 480);
 	renderer.domElement.style.position = 'absolute';
 	renderer.domElement.style.top = '0px';
@@ -103,12 +103,14 @@ function initialize() {
 		let mesh = new THREE.Mesh(
 			new THREE.CubeGeometry(1, 1, 1),
 			// new THREE.MeshBasicMaterial({color:colorArray[i], map:texture, transparent:true, opacity:0.5})
-			new THREE.MeshBasicMaterial({
+			new THREE.MeshPhongMaterial({
 				color: colorArray[i],
 				transparent: true,
-				opacity: 0.5
+				// opacity: 0.5,
 			})
 		);
+		// mesh.castShadow = true;
+		// mesh.receiveShadow = true;
 		mesh.position.y = 1 / 2;
 		markerRoot.add(mesh);
 
