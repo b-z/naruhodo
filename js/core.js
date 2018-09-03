@@ -66,10 +66,10 @@ function initialize() {
 
 	// create atToolkitContext
 	arToolkitContext = new THREEx.ArToolkitContext({
-		cameraParametersUrl: 'data/camera_para.dat',
+		cameraParametersUrl: 'data/camera_para-iPhone.dat',
 		detectionMode: 'color_and_matrix',
 		matrixCodeType: '3x3',
-		maxDetectionRate: 30
+		// maxDetectionRate: 30
 	});
 
 	// copy projection matrix to camera when initialization complete
