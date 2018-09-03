@@ -18,13 +18,20 @@ function initialize() {
 
 	renderer = new THREE.WebGLRenderer({
 		antialias: true,
-		alpha: true
+		alpha: true,
+		preserveDrawingBuffer: true
 	});
-	renderer.setClearColor(new THREE.Color('lightgrey'), 0);
+	renderer.setClearColor(0x72645b, 0);
+	// renderer.setClearColor(new THREE.Color('lightgrey'), 0);
+	renderer.gammaInput = true;
+	renderer.gammaOutput = true;
+	renderer.shadowMap.enabled = true;
+	renderer.shadowMap.renderReverseSided = false;
 	renderer.setSize(640, 480);
 	renderer.domElement.style.position = 'absolute';
 	renderer.domElement.style.top = '0px';
 	renderer.domElement.style.left = '0px';
+	renderer.domElement.id = 'canvas';
 	document.body.appendChild(renderer.domElement);
 
 	clock = new THREE.Clock();
@@ -104,7 +111,13 @@ function initialize() {
 		);
 		mesh.position.y = 1 / 2;
 		markerRoot.add(mesh);
+
+		var axis = new THREE.AxisHelper();
+		axis.scale.set(1, 1, 1);
+		// axis.position.set(0, 0.5, 0);
+		markerRoot.add(axis);
 	}
+	initializeScene(scene);
 }
 
 
