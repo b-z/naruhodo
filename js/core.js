@@ -66,7 +66,7 @@ function initialize() {
 
 	// create atToolkitContext
 	arToolkitContext = new THREEx.ArToolkitContext({
-		cameraParametersUrl: '../data/camera_para.dat',
+		cameraParametersUrl: 'data/camera_para.dat',
 		detectionMode: 'color_and_matrix',
 		matrixCodeType: '3x3',
 		maxDetectionRate: 30
