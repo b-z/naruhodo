@@ -72,7 +72,7 @@ function initialize() {
 		cameraParametersUrl: 'data/camera_para-iPhone.dat',
 		detectionMode: 'color_and_matrix',
 		matrixCodeType: '3x3',
-		// maxDetectionRate: 30
+		maxDetectionRate: 30
 	});
 
 	// copy projection matrix to camera when initialization complete
@@ -101,7 +101,7 @@ function initialize() {
 		});
 
 		let mesh = new THREE.Mesh(
-			new THREE.CubeGeometry(1, 1, 1),
+			new THREE.CubeGeometry(0.2, 0.2, 0.2),
 			// new THREE.MeshBasicMaterial({color:colorArray[i], map:texture, transparent:true, opacity:0.5})
 			new THREE.MeshPhongMaterial({
 				color: colorArray[i],
@@ -113,6 +113,13 @@ function initialize() {
 		// mesh.receiveShadow = true;
 		mesh.position.y = 1 / 2;
 		markerRoot.add(mesh);
+
+		var helper = new THREE.GridHelper(1.5, 15);
+		// helper.position.y = -0.5999;
+		helper.position.y = 0;
+		// helper.material.opacity = 0.9;
+		// helper.material.transparent = true;
+		markerRoot.add(helper);
 
 		var axis = new THREE.AxisHelper();
 		axis.scale.set(1, 1, 1);
