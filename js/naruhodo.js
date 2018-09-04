@@ -51,9 +51,9 @@ function addShadowedLight(root, x, y, z, color, intensity) {
 function addLaser(s) {
 	var laserRoot = new THREE.Group();
 	laserRoot.name = 'group_laser';
-	for (var i = 0; i < 15 * 5; i++) {
-		laserRoot.add(generateLaser());
-	}
+	// for (var i = 0; i < 15 * 5; i++) {
+	// 	laserRoot.add(generateLaser());
+	// }
 	s.add(laserRoot);
 
 	initializeLaserOffset();
@@ -86,7 +86,7 @@ function updateOpticsScene(s) {
 
 function initializeLaserOffset() {
 	var laser_scale = 0.5;
-	var offset = new THREE.Vector3(0, 0.5, 0);
+	laser_offset = new THREE.Vector3(0, 0.5, 0);
 
 	// var laser_offset = [
 	// 	new THREE.Vector3(-1 * laser_scale, -3 * laser_scale + object_height, 0),
@@ -102,8 +102,8 @@ function initializeLaserOffset() {
 	// 	new THREE.Vector3(-1 * laser_scale, 3 * laser_scale + object_height, 0),
 	// 	new THREE.Vector3(1 * laser_scale, 3 * laser_scale + object_height, 0),
 	// ];
-	laser_offset = [];
-	for (var i  = 0; i < 15; i++) {
+	laser_offsets = [];
+	for (var i = 0; i < 15; i++) {
 		var x = random();
 		var y = random();
 		var z = random();
@@ -114,13 +114,14 @@ function initializeLaserOffset() {
 			z = random();
 		}
 		var v = new THREE.Vector3(x, y, z);
-		v.multiplyScalar(laser_scale).add(offset);
-		laser_offset.push(v);
+		v.multiplyScalar(laser_scale); //.add(laser_offset);
+		laser_offsets.push(v);
 	}
 }
 
 var laser_idx;
 var laser_offset;
+var laser_offsets;
 
 function updateLaser(s) {
 	var m1 = s.getObjectByName('group_0');
@@ -128,16 +129,20 @@ function updateLaser(s) {
 	let s_laser = s.getObjectByName('group_laser');
 	laser_idx = 0;
 	if (m1.visible && m2.visible) {
-		for (var l of laser_offset) {
-			var p1 = m1.position.clone();
-			var p2 = l.clone();
-			p2.applyMatrix4(m2.matrixWorld);
+		for (var l of laser_offsets) {
+			var p1 = laser_offset.clone();
+			var p2 = laser_offset.clone();
+			p1.applyMatrix4(m1.matrixWorld).add(l);
+			p2.applyMatrix4(m2.matrixWorld).add(l);
 			castLaser(s_laser, p1, p2);
 		}
 	}
 }
 
 function castLaser(s_laser, src, dst) {
+	if (s_laser.children.length <= laser_idx) {
+		s_laser.add(generateLaser());
+	}
 	setLaser(s_laser.children[laser_idx], src, dst);
 	laser_idx++;
 }
