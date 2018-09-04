@@ -51,8 +51,12 @@ function addShadowedLight(root, x, y, z, color, intensity) {
 function addLaser(s) {
 	var laserRoot = new THREE.Group();
 	laserRoot.name = 'group_laser';
-	laserRoot.add(generateLaser());
+	for (var i = 0; i < 15 * 5; i++) {
+		laserRoot.add(generateLaser());
+	}
 	s.add(laserRoot);
+
+	initializeLaserOffset();
 }
 
 function updateScene(s) {
@@ -60,20 +64,7 @@ function updateScene(s) {
 }
 
 function updateOpticsScene(s) {
-	var m1 = s.getObjectByName('group_0');
-	var m2 = s.getObjectByName('group_1');
-	let s_laser = s.getObjectByName('group_laser');
-
-	if (m1.visible && m2.visible) {
-		s_laser.children[0].position.copy(m1.position).lerp(m2.position, 0.5);
-
-		var sub = m1.position.clone().sub(m2.position);
-		var len = sub.length();
-		s_laser.children[0].scale.set(1, 1, len);
-		sub.normalize();
-		var axis = new THREE.Vector3(0, 0, 1);
-		s_laser.children[0].quaternion.setFromUnitVectors(axis, sub);
-	}
+	updateLaser(s);
 
 	// let m_plane1 = s.getObjectByName('group_0');
 	// let m_plane2 = s.getObjectByName('group_1');
@@ -93,6 +84,74 @@ function updateOpticsScene(s) {
 	// s_light.visible = m_light1.visible;
 }
 
+function initializeLaserOffset() {
+	var laser_scale = 0.5;
+	var offset = new THREE.Vector3(0, 0.5, 0);
+
+	// var laser_offset = [
+	// 	new THREE.Vector3(-1 * laser_scale, -3 * laser_scale + object_height, 0),
+	// 	new THREE.Vector3(1 * laser_scale, -3 * laser_scale + object_height, 0),
+	// 	new THREE.Vector3(-3 * laser_scale, -1 * laser_scale + object_height, 0),
+	// 	new THREE.Vector3(-1 * laser_scale, -1 * laser_scale + object_height, 0),
+	// 	new THREE.Vector3(1 * laser_scale, -1 * laser_scale + object_height, 0),
+	// 	new THREE.Vector3(3 * laser_scale, -1 * laser_scale + object_height, 0),
+	// 	new THREE.Vector3(-3 * laser_scale, 1 * laser_scale + object_height, 0),
+	// 	new THREE.Vector3(-1 * laser_scale, 1 * laser_scale + object_height, 0),
+	// 	new THREE.Vector3(1 * laser_scale, 1 * laser_scale + object_height, 0),
+	// 	new THREE.Vector3(3 * laser_scale, 1 * laser_scale + object_height, 0),
+	// 	new THREE.Vector3(-1 * laser_scale, 3 * laser_scale + object_height, 0),
+	// 	new THREE.Vector3(1 * laser_scale, 3 * laser_scale + object_height, 0),
+	// ];
+	laser_offset = [];
+	for (var i  = 0; i < 15; i++) {
+		var x = random();
+		var y = random();
+		var z = random();
+
+		while (x * x + y * y + z * z > 1) {
+			x = random();
+			y = random();
+			z = random();
+		}
+		var v = new THREE.Vector3(x, y, z);
+		v.multiplyScalar(laser_scale).add(offset);
+		laser_offset.push(v);
+	}
+}
+
+var laser_idx;
+var laser_offset;
+
+function updateLaser(s) {
+	var m1 = s.getObjectByName('group_0');
+	var m2 = s.getObjectByName('group_1');
+	let s_laser = s.getObjectByName('group_laser');
+	laser_idx = 0;
+	if (m1.visible && m2.visible) {
+		for (var l of laser_offset) {
+			var p1 = m1.position.clone();
+			var p2 = l.clone();
+			p2.applyMatrix4(m2.matrixWorld);
+			castLaser(s_laser, p1, p2);
+		}
+	}
+}
+
+function castLaser(s_laser, src, dst) {
+	setLaser(s_laser.children[laser_idx], src, dst);
+	laser_idx++;
+}
+
+function setLaser(laser, p1, p2) {
+	laser.position.copy(p1).lerp(p2, 0.5);
+	var sub = p1.clone().sub(p2);
+	var len = sub.length();
+	laser.scale.set(0.3, 0.3, len);
+	sub.normalize();
+	var axis = new THREE.Vector3(0, 0, 1);
+	laser.quaternion.setFromUnitVectors(axis, sub);
+}
+
 function generateLaser() {
 	var mesh = new THREE.Object3D();
 	var outer = new THREE.MeshPhongMaterial({
@@ -106,10 +165,10 @@ function generateLaser() {
 		color: 0x0,
 		emissive: 0xffffff
 	});
-	var outer_geometry = new THREE.BoxGeometry(0.2, 0.2, 3);
+	var outer_geometry = new THREE.BoxGeometry(0.1, 0.1, 1);
 	var outer_mesh = new THREE.Mesh(outer_geometry, outer);
 	// outer_mesh.rotation.y = Math.PI / 2;
-	var inner_geometry = new THREE.BoxGeometry(0.07, 0.07, 3);
+	var inner_geometry = new THREE.BoxGeometry(0.035, 0.035, 1);
 	var inner_mesh = new THREE.Mesh(inner_geometry, inner);
 	// inner_mesh.rotation.y = Math.PI / 2;
 	mesh.add(outer_mesh);

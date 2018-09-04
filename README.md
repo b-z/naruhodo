@@ -33,4 +33,5 @@ Mercari hackathon 2018 prototype
     *   增加截图功能
     *   增加grid的绘制
 *   9.4
+    *   绘制光线、同步光线坐标系与marker坐标系
     *   ​
