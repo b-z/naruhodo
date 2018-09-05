@@ -51,31 +51,7 @@ function initialize() {
 		displayHeight: 480,
 	});
 
-	function onResize() {
-		// arToolkitSource.onResize(); // will change the size in <video>'s style
-
-		var vw = $('video')[0].videoWidth;
-		var vh = $('video')[0].videoHeight;
-
-		var w = $('video').width();
-		var h = w / vw * vh;
-		$('#canvas').height(h);
-		$('#canvas').width(h / 3 * 4);
-		$('#canvas').css('left', (w - h / 3 * 4) / 2 + 'px');
-		$('video').height(h);
-
-		// arToolkitSource.copySizeTo(renderer.domElement); // copy the style from <video> to <canvas>
-		// if (arToolkitContext.arController !== null) {
-		// 	arToolkitSource.copySizeTo(arToolkitContext.arController.canvas);
-		// }
-	}
-
 	arToolkitSource.init(function onReady() {
-		onResize();
-	});
-
-	// handle resize event
-	window.addEventListener('resize', function() {
 		onResize();
 	});
 

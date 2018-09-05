@@ -42,11 +42,19 @@ main {
 	/* justify-content: center; */
 	margin-top: 1rem !important;
 	margin-bottom: 1rem !important;
-	overflow: hidden;
+	overflow-x: hidden;
 }
 
 #app-container {
 	position: relative;
+}
+
+#app-container, #settings-container {
+	margin-bottom: 1rem;
+}
+
+.no-margin-bottom {
+	margin-bottom: 0;
 }
 
 canvas {
@@ -147,7 +155,7 @@ shadow {
 }
 
 #canvas, video {
-	border: 1px solid black;
+	/* border: 1px solid black; */
 }
 
 video {
@@ -156,4 +164,8 @@ video {
 
 .wide-container {
 	width: 95%;
+}
+
+.page-footer {
+	padding-top: 0;
 }

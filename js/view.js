@@ -12,7 +12,8 @@ function saveScreenshot() {
 	var imgsrc = $('#screenshot')[0].toDataURL(type).replace(type, "image/octet-stream");
 	var img = new Image();
 	img.src = imgsrc;
-	window.location.href = imgsrc;
+
+	window.open(imgsrc);
 }
 
 window.addEventListener('keydown', function(e) {
@@ -22,4 +23,29 @@ window.addEventListener('keydown', function(e) {
 			saveScreenshot();
 			break;
 	}
+});
+
+function onResize() {
+	// arToolkitSource.onResize(); // will change the size in <video>'s style
+
+	var vw = $('video')[0].videoWidth;
+	var vh = $('video')[0].videoHeight;
+
+	var w = $('video').width();
+	var h = w / vw * vh;
+	$('#canvas').height(h);
+	$('#canvas').width(h / 3 * 4);
+	$('#canvas').css('left', (w - h / 3 * 4) / 2 + 'px');
+	$('video').height(h);
+	$('#app-container').height(h);
+
+	// arToolkitSource.copySizeTo(renderer.domElement); // copy the style from <video> to <canvas>
+	// if (arToolkitContext.arController !== null) {
+	// 	arToolkitSource.copySizeTo(arToolkitContext.arController.canvas);
+	// }
+}
+
+// handle resize event
+window.addEventListener('resize', function() {
+	onResize();
 });
