@@ -8,14 +8,17 @@
 </head>
 
 <body>
-	<nav class="teal">
+	<nav class="light-green">
 		<div class="nav-wrapper container wide-container row">
 			<!-- logo -->
-			<a class="brand-logo">
-				<!-- <h2> -->
-				Naruhodo!
-				<!-- </h2> -->
-			</a>
+			<div class="brand-logo">
+				<i>
+					<img id="logo" src="img/logo-white-bold.png" />
+				</i>
+				<a href="#">
+					Naruhodo!
+				</a>
+			</div>
 			<ul id="nav-mobile" class="right hide-on-med-and-down">
 				<li><a href="">Laboratory on your desk!</a></li>
 			</ul>
@@ -52,14 +55,19 @@
 			</svg>
 		</a>
 	</div>
-	<div class="tap-target teal lighten-2 white-text" data-activates="menu">
+	<div class="tap-target light-green lighten-2 white-text" data-activates="menu">
 		<div class="tap-target-content">
 			<h5>Mercari Hackathon 2018 project</h5>
-			<p>Author: 周伯威 Zhou Bowei</p>
+			<p>
+				<a class="white-text" href="http://bowei.me/">
+					周伯威 Zhou Bowei
+					<i class="material-icons" style="font-size:1rem;">link</i>
+				</a>
+			</p>
 			<p>
 				<a class="white-text" href="">
-				GitHub page
-				<i class="material-icons" style="font-size:1rem;">link</i>
+					GitHub page
+					<i class="material-icons" style="font-size:1rem;">link</i>
 				</a>
 			</p>
 			<p>
@@ -67,14 +75,14 @@
 			</p>
 		</div>
 	</div>
-	<footer class="page-footer grey lighten-2">
+	<footer class="page-footer">
 		<div class="footer-copyright">
 			<div class="container">
 				Copyright <b>&copy; 2018 Zhou Bowei.</b> All rights reserved.
 			</div>
 		</div>
 	</footer>
-	<canvas id="screenshot" width="1280" height="960" style="display: none;"></canvas>
+	<canvas id="screenshot" width="640" height="480" style="display: none;"></canvas>
 	<script type="text/javascript" src='js/lib/jquery-2.1.3.min.js'></script>
 	<script type="text/javascript" src='js/lib/materialize.min.js'></script>
 	<script type="text/javascript" src='js/lib/three.js'></script>

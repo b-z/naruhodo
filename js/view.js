@@ -1,8 +1,8 @@
 'use strict';
 
 function saveScreenshot() {
-	var w = 1280;
-	var h = 960;
+	var w = 640;
+	var h = 480;
 	var $canvas = $('#canvas');
 	var $video = $('video');
 	var type = 'image/png';
@@ -12,7 +12,6 @@ function saveScreenshot() {
 	var imgsrc = $('#screenshot')[0].toDataURL(type).replace(type, "image/octet-stream");
 	var img = new Image();
 	img.src = imgsrc;
-
 	window.open(imgsrc);
 }
 

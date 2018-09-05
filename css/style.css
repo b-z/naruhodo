@@ -33,6 +33,7 @@ body {
 	flex-direction: column;
 	background-color: #FAFAFA !important;
 	font-family: 'Abel';
+	background-image: url('../img/bg.gif');
 }
 
 main {
@@ -168,4 +169,14 @@ video {
 
 .page-footer {
 	padding-top: 0;
+	background-color: transparent;
+}
+
+#logo {
+	height: 80%;
+	margin: 12.5% 0;
+}
+
+nav .brand-logo i {
+	margin-right: 0;
 }
