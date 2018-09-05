@@ -1,5 +1,27 @@
 'use strict';
 
+var data = {
+	convex_lens: {
+		radius: 5,
+		r: 1,
+		d: 0.2,
+		n: 1.458,
+		height: 2
+	},
+	concave_lens: {
+		radius: 5,
+		r: 1,
+		d: 0.2,
+		n: 1.458,
+		height: 2
+	},
+	spherical_mirror: {
+		radius: 5,
+		r: 1,
+		height: 2
+	}
+};
+
 function initializeScene(s) {
 	initializeOptics(s);
 }
@@ -8,11 +30,13 @@ function initializeOptics(s) {
 	// s.fog = new THREE.Fog(0x72645b, 2, 15);
 	addPlane(s);
 	addLaser(s);
+	addElements(s);
 }
 
 function addPlane(s) {
 	var planeRoot = new THREE.Group();
 	planeRoot.name = 'group_plane';
+	/*
 	var planeGeometry = new THREE.PlaneBufferGeometry(5, 5);
 	var planeMaterial = new THREE.MeshPhongMaterial({
 		color: 0xbbbbbb,
@@ -32,7 +56,7 @@ function addPlane(s) {
 	helper.material.opacity = 0.9;
 	helper.material.transparent = true;
 	// planeRoot.add(helper);
-
+	*/
 	planeRoot.add(new THREE.HemisphereLight(0x443333, 0x111122));
 	addShadowedLight(planeRoot, 3, 10, 5, 0xffffff, 1);
 	addShadowedLight(planeRoot, 3, 8, -4, 0xffcc88, 0.8);
@@ -51,12 +75,23 @@ function addShadowedLight(root, x, y, z, color, intensity) {
 function addLaser(s) {
 	var laserRoot = new THREE.Group();
 	laserRoot.name = 'group_laser';
-	// for (var i = 0; i < 15 * 5; i++) {
-	// 	laserRoot.add(generateLaser());
-	// }
 	s.add(laserRoot);
-
 	initializeLaserOffset();
+}
+
+function addElements(s) {
+	var m2 = s.getObjectByName('group_2');
+	var m3 = s.getObjectByName('group_3');
+	var m4 = s.getObjectByName('group_4');
+	var lens1 = new THREE.Group();
+	lens1.name = 'convex_lens';
+	m2.add(lens1);
+	var lens2 = new THREE.Group();
+	lens2.name = 'concave_lens';
+	m3.add(lens2);
+	var mirror1 = new THREE.Group();
+	mirror1.name = 'spherical_mirror';
+	m4.add(mirror1);
 }
 
 function updateScene(s) {
@@ -87,21 +122,6 @@ function updateOpticsScene(s) {
 function initializeLaserOffset() {
 	var laser_scale = 0.5;
 	laser_offset = new THREE.Vector3(0, 0.5, 0);
-
-	// var laser_offset = [
-	// 	new THREE.Vector3(-1 * laser_scale, -3 * laser_scale + object_height, 0),
-	// 	new THREE.Vector3(1 * laser_scale, -3 * laser_scale + object_height, 0),
-	// 	new THREE.Vector3(-3 * laser_scale, -1 * laser_scale + object_height, 0),
-	// 	new THREE.Vector3(-1 * laser_scale, -1 * laser_scale + object_height, 0),
-	// 	new THREE.Vector3(1 * laser_scale, -1 * laser_scale + object_height, 0),
-	// 	new THREE.Vector3(3 * laser_scale, -1 * laser_scale + object_height, 0),
-	// 	new THREE.Vector3(-3 * laser_scale, 1 * laser_scale + object_height, 0),
-	// 	new THREE.Vector3(-1 * laser_scale, 1 * laser_scale + object_height, 0),
-	// 	new THREE.Vector3(1 * laser_scale, 1 * laser_scale + object_height, 0),
-	// 	new THREE.Vector3(3 * laser_scale, 1 * laser_scale + object_height, 0),
-	// 	new THREE.Vector3(-1 * laser_scale, 3 * laser_scale + object_height, 0),
-	// 	new THREE.Vector3(1 * laser_scale, 3 * laser_scale + object_height, 0),
-	// ];
 	laser_offsets = [];
 	for (var i = 0; i < 15; i++) {
 		var x = random();
@@ -124,27 +144,87 @@ var laser_offset;
 var laser_offsets;
 
 function updateLaser(s) {
-	var m1 = s.getObjectByName('group_0');
-	var m2 = s.getObjectByName('group_1');
-	let s_laser = s.getObjectByName('group_laser');
+	var m0 = s.getObjectByName('group_0');
+	var m1 = s.getObjectByName('group_1');
+	var convex_lens = s.getObjectByName('group_2').getObjectByName('convex_lens');
+	var concave_lens = s.getObjectByName('group_3').getObjectByName('concave_lens');
+	var spherical_mirror = s.getObjectByName('group_4').getObjectByName('spherical_mirror');
+	var elements = {
+		convex_lens: convex_lens,
+		concave_lens: concave_lens,
+		spherical_mirror: spherical_mirror
+	};
+
+	var s_laser = s.getObjectByName('group_laser');
 	laser_idx = 0;
-	if (m1.visible && m2.visible) {
+	if (m0.visible && m1.visible) {
 		for (var l of laser_offsets) {
 			var p1 = laser_offset.clone();
 			var p2 = laser_offset.clone();
-			p1.applyMatrix4(m1.matrixWorld); //.add(l);
-			p2.applyMatrix4(m2.matrixWorld).add(l);
-			castLaser(s_laser, p1, p2);
+			p1.applyMatrix4(m0.matrixWorld); //.add(l);
+			p2.applyMatrix4(m1.matrixWorld).add(l);
+			castLaser(s_laser, elements, p1, p2);
 		}
 	}
 }
 
-function castLaser(s_laser, src, dst) {
+function castLaser(s_laser, elements, src, dst) {
 	if (s_laser.children.length <= laser_idx) {
 		s_laser.add(generateLaser());
 	}
+	var intersections = [];
+	var dir = dst.clone().sub(src);
+	for (var i in elements) {
+		var p = testIntersection(src, dir, elements[i]);
+	}
 	setLaser(s_laser.children[laser_idx], src, dst);
 	laser_idx++;
+}
+
+function testIntersection(src, dir, element) {
+	switch (element.name) {
+		case 'convex_lens':
+
+			break;
+		case 'concave_lens':
+
+			break;
+		case 'spherical_mirror':
+			
+			break;
+	}
+}
+
+function testIntersectionToSpherePart(src, dir, center, R, r, e_center) {
+	// R: sphere
+	// r: element
+	// center: the center of the sphere
+	// e_center: the center of the sphere part
+	var p = testIntersectionToSphere(src, dir, center, R);
+	for (var q of p) {
+		var d = q.distanceTo(e_center);
+		var t = Math.sqrt(sqr(r) + sqr(R - Math.sqrt(sqr(R) - sqr(r))));
+		if (d <= t) return q;
+	}
+	return null;
+}
+
+function testIntersectionToSphere(src, dir, center, R) {
+	var a = dir.dot(dir);
+	var sub = src.clone().sub(center);
+	var b = 2 * dir.dot(sub);
+	var c = sub.dot(sub) - R * R;
+
+	var delta = b * b - 4 * a * c;
+	var result = [];
+	if (delta >= 0) {
+		delta = Math.sqrt(delta);
+		var t1 = (-b - delta) / a / 2;
+		var t2 = (-b + delta) / a / 2;
+		if (t1 > 0) result.push(src.clone().add(dir.clone().multiplyScalar(t1)));
+		if (t2 > 0) result.push(src.clone().add(dir.clone().multiplyScalar(t2)));
+	}
+	return result;
 }
 
 function setLaser(laser, p1, p2) {

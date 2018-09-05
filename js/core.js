@@ -51,7 +51,7 @@ function initialize() {
 
 	arToolkitSource.init(function onReady() {
 		onResize();
-		hideMask();
+		setTimeout(hideMask, 100);
 	});
 
 	////////////////////////////////////////////////////////////

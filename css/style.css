@@ -200,3 +200,29 @@ nav .brand-logo i {
 	margin: auto;
 	text-align: center;
 }
+
+[type="radio"]:checked+label:after {
+	border: 2px solid #86A8A8 !important;
+	background-color: #86A8A8 !important;
+}
+
+[type="checkbox"]:checked+label:before {
+	border-right: 2px solid #86A8A8 !important;
+	border-bottom: 2px solid #86A8A8 !important;
+}
+
+input[type=range]+.thumb {
+	background-color: #86A8A8 !important;
+	top: -10px !important;
+}
+
+[type="radio"]:not(:checked)+label:before, [type="radio"]:not(:checked)+label:after {
+	border: 2px solid #c2c0c2;
+}
+
+input[type=range]::-webkit-slider-thumb {
+	height: 16px;
+	width: 16px;
+	background-color: #86A8A8!important;
+	margin: -6px 0 0 0;
+}

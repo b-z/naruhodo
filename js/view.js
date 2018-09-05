@@ -26,18 +26,17 @@ window.addEventListener('keydown', function(e) {
 
 function onResize() {
 	// arToolkitSource.onResize(); // will change the size in <video>'s style
-
-	var vw = $('video')[0].videoWidth;
-	var vh = $('video')[0].videoHeight;
-
-	var w = $('video').width();
-	var h = w / vw * vh;
-	$('#canvas').height(h);
-	$('#canvas').width(h / 3 * 4);
-	$('#canvas').css('left', (w - h / 3 * 4) / 2 + 'px');
-	$('video').height(h);
-	$('#app-container').height(h);
-
+	if ($('video')[0] !== undefined) {
+		var vw = $('video')[0].videoWidth;
+		var vh = $('video')[0].videoHeight;
+		var w = $('video').width();
+		var h = w / vw * vh;
+		$('#canvas').height(h);
+		$('#canvas').width(h / 3 * 4);
+		$('#canvas').css('left', (w - h / 3 * 4) / 2 + 'px');
+		$('video').height(h);
+		$('#app-container').height(h);
+	}
 	// arToolkitSource.copySizeTo(renderer.domElement); // copy the style from <video> to <canvas>
 	// if (arToolkitContext.arController !== null) {
 	// 	arToolkitSource.copySizeTo(arToolkitContext.arController.canvas);
@@ -59,5 +58,17 @@ function loadApplication() {
 }
 
 function hideMask() {
-	$('#logo-mask').fadeOut(200);
+	$('#logo-mask').fadeOut(250);
 }
+
+$('#convex_lens_radius').change(function() {
+	data.convex_lens.radius = parseFloat($('#convex_lens_radius').val());
+});
+
+$('#concave_lens_radius').change(function() {
+	data.concave_lens.radius = parseFloat($('#concave_lens_radius').val());
+});
+
+$('#spherical_mirror_radius').change(function() {
+	data.spherical_mirror.radius = parseFloat($('#spherical_mirror_radius').val());
+});

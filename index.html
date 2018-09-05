@@ -39,18 +39,36 @@
 
 			</div>
 			<div id="settings-container" class="col s12 m4">
-				adjosaijdoia<br> adjosaijdoia
-				<br> adjosaijdoia
-				<br> adjosaijdoia
-				<br> adjosaijdoia
-				<br> adjosaijdoia
-				<br> adjosaijdoia
-				<br> adjosaijdoia
-				<br> adjosaijdoia
-				<br> adjosaijdoia
-				<br> adjosaijdoia
-				<br> adjosaijdoia
-				<br>
+				<form>
+					<label>Experiment</label><br>
+					<div class="row">
+						<div class="col s6">
+							<input id="experiment1" name="experiments" type="radio" checked />
+							<label for="experiment1">Mirror & Lens</label>
+						</div>
+						<div class="col s6">
+							<input id="experiment2" name="experiments" type="radio" />
+							<label for="experiment2">Young's slits</label>
+						</div>
+					</div>
+					<div class="divider"></div>
+					<div id="experiment1-container">
+						<p class="range-field">
+							<label for="convex_lens_radius">Convex lens radius</label>
+							<input type="range" id="convex_lens_radius" min="0" max="100" />
+						</p>
+						<p class="range-field">
+							<label for="concave_lens_radius">Concave lens radius</label>
+							<input type="range" id="concave_lens_radius" min="0" max="100" />
+						</p>
+						<p class="range-field">
+							<label for="spherical_mirror_radius">Spherical mirror radius</label>
+							<input type="range" id="spherical_mirror_radius" min="0" max="100" />
+						</p>
+					</div>
+					<div id="experiment2-container">
+					</div>
+				</form>
 			</div>
 		</div>
 	</main>
@@ -85,7 +103,7 @@
 	</div>
 	<footer class="page-footer">
 		<div class="footer-copyright">
-			<div class="container">
+			<div class="container wide-container">
 				Copyright <b>&copy; 2018 Zhou Bowei.</b> All rights reserved.
 			</div>
 		</div>
