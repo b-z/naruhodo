@@ -139,9 +139,9 @@ function render() {
 
 
 function animate() {
-	setTimeout(function() {
+	// setTimeout(function() {
 		requestAnimationFrame(animate);
-	}, 100);
+	// }, 100);
 	deltaTime = clock.getDelta();
 	totalTime += deltaTime;
 	update();

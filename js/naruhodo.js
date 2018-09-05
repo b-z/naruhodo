@@ -16,9 +16,9 @@ var data = {
 		height: 2
 	},
 	spherical_mirror: {
-		radius: 5,
-		r: 1,
-		height: 2
+		radius: 10,
+		r: 3,
+		height: 0.5
 	}
 };
 
@@ -156,32 +156,46 @@ function updateLaser(s) {
 	};
 
 	var s_laser = s.getObjectByName('group_laser');
+	for (var c of s_laser.children) {
+		c.visible = false;
+	}
 	laser_idx = 0;
 	if (m0.visible && m1.visible) {
 		for (var l of laser_offsets) {
 			var p1 = laser_offset.clone();
 			var p2 = laser_offset.clone();
-			p1.applyMatrix4(m0.matrixWorld); //.add(l);
+			p1.applyMatrix4(m0.matrixWorld).add(l);
 			p2.applyMatrix4(m1.matrixWorld).add(l);
-			castLaser(s_laser, elements, p1, p2);
+			var dir = p2.clone().sub(p1).normalize();
+			castLaser(s_laser, elements, p1, dir);
 		}
 	}
 }
 
-function castLaser(s_laser, elements, src, dst) {
+function castLaser(s_laser, elements, src, dir) {
 	if (s_laser.children.length <= laser_idx) {
 		s_laser.add(generateLaser());
 	}
 	var intersections = [];
-	var dir = dst.clone().sub(src);
 	for (var i in elements) {
 		var p = testIntersection(src, dir, elements[i]);
+		if (p !== null) intersections.push(p);
 	}
-	setLaser(s_laser.children[laser_idx], src, dst);
-	laser_idx++;
+	// sort
+	if (intersections.length && intersections[0] !== null) {
+		var p = intersections[0];
+		setLaser(s_laser.children[laser_idx], src, p.pos);
+		laser_idx++;
+		castLaser(s_laser, elements, p.pos, p.dir);
+	} else {
+		setLaser(s_laser.children[laser_idx], src, src.clone().add(dir.clone().multiplyScalar(1000)));
+		laser_idx++;
+	}
 }
 
 function testIntersection(src, dir, element) {
+	var q = null;
+	if (!element.parent.visible) return q;
 	switch (element.name) {
 		case 'convex_lens':
 
@@ -190,9 +204,19 @@ function testIntersection(src, dir, element) {
 
 			break;
 		case 'spherical_mirror':
-			
+			var c = new THREE.Vector3(0, data.spherical_mirror.height, 0);
+			var m = new THREE.Vector3(1, 0, 0);
+			var R = data.spherical_mirror.radius;
+			var r = data.spherical_mirror.r;
+			var d1 = Math.sqrt(sqr(R) - sqr(r));
+			var center = c.clone().add(m.clone().multiplyScalar(d1));
+			var e_center = c.clone().add(m.clone().multiplyScalar(d1 - R));
+			center.applyMatrix4(element.matrixWorld);
+			e_center.applyMatrix4(element.matrixWorld);
+			q = testIntersectionToSpherePart(src, dir, center, R, r, e_center);
 			break;
 	}
+	return q;
 }
 
 function testIntersectionToSpherePart(src, dir, center, R, r, e_center) {
@@ -204,7 +228,13 @@ function testIntersectionToSpherePart(src, dir, center, R, r, e_center) {
 	for (var q of p) {
 		var d = q.distanceTo(e_center);
 		var t = Math.sqrt(sqr(r) + sqr(R - Math.sqrt(sqr(R) - sqr(r))));
-		if (d <= t) return q;
+		if (d <= t) {
+			var norm = center.clone().sub(q).normalize();
+			return {
+				pos: q,
+				dir: dir.reflect(norm)
+			};
+		}
 	}
 	return null;
 }
@@ -228,6 +258,7 @@ function testIntersectionToSphere(src, dir, center, R) {
 }
 
 function setLaser(laser, p1, p2) {
+	laser.visible = true;
 	laser.position.copy(p1).lerp(p2, 0.5);
 	var sub = p1.clone().sub(p2);
 	var len = sub.length();
