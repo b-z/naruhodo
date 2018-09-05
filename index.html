@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<head>
+	<title>naruhodo!</title>
+	<link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+	<link type="text/css" rel="stylesheet" href="css/style.css" media="screen,projection" />
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+</head>
+
+<body>
+	<div class="navbar-fixed hide-on-small-only">
+		<nav class="teal">
+			<div class="nav-wrapper container wide-container row">
+				<!-- logo -->
+				<a class="brand-logo">
+					<!-- <h2> -->
+					Naruhodo!
+					<!-- </h2> -->
+				</a>
+				<ul id="nav-mobile" class="right hide-on-med-and-down">
+					<li><a href="">Laboratory on your desk!</a></li>
+				</ul>
+
+			</div>
+		</nav>
+	</div>
+	<main>
+		<div class="container wide-container row">
+			<div id="app-container" class="col s12 m8">
+
+			</div>
+			<div class="col s12 m4">
+
+			</div>
+		</div>
+	</main>
+
+	<div class="fixed-action-btn hide-on-small-only" style="bottom: 45px; right: 24px;">
+		<a id="menu" class="white waves-effect waves-light btn-large btn-floating " onclick="$('.tap-target').tapTarget('open');">
+			<!-- <i class="material-icons">menu</i> -->
+			<svg aria-hidden="true" class="octicon octicon-mark-github hvr-grow-rotate" height="56" version="1.1" viewBox="0 0 16 16" width="56">
+				<path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+			</svg>
+		</a>
+	</div>
+	<div class="tap-target teal lighten-2 white-text" data-activates="menu">
+		<div class="tap-target-content">
+			<h5>Mercari Hackathon 2018 project</h5>
+			<p>Author: 周伯威 Zhou Bowei</p>
+			<p>
+				<a class="white-text" href="">
+				GitHub page
+				<i class="material-icons" style="font-size:1rem;">link</i>
+				</a>
+			</p>
+			<p>
+				Copyright <b>&copy; 2018 Zhou Bowei.</b> All rights reserved.
+			</p>
+		</div>
+	</div>
+	<footer class="page-footer grey lighten-2">
+		<div class="footer-copyright">
+			<div class="container">
+				Copyright <b>&copy; 2018 Zhou Bowei.</b> All rights reserved.
+			</div>
+		</div>
+	</footer>
+	<canvas id="screenshot" width="1280" height="960" style="display: none;"></canvas>
+	<script type="text/javascript" src='js/lib/jquery-2.1.3.min.js'></script>
+	<script type="text/javascript" src='js/lib/materialize.min.js'></script>
+	<script type="text/javascript" src='js/lib/three.js'></script>
+	<!-- <script type="text/javascript" src='js/lib/threex.windowresize.js'></script> -->
+	<script type="text/javascript" src="js/lib/ar.js"></script>
+	<script type="text/javascript" src="js/naruhodo.js"></script>
+	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript" src="js/view.js"></script>
+	<script type="text/javascript" src="js/core.js"></script>
+</body>

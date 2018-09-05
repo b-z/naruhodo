@@ -1,6 +1,6 @@
 'use strict';
 
-var scene, camera, renderer, clock, deltaTime, totalTime;
+var scene, camera, renderer, clock, deltaTime, totalTime, winResize;
 
 var arToolkitSource, arToolkitContext;
 
@@ -32,7 +32,8 @@ function initialize() {
 	renderer.domElement.style.top = '0px';
 	renderer.domElement.style.left = '0px';
 	renderer.domElement.id = 'canvas';
-	document.body.appendChild(renderer.domElement);
+	// winResize = new THREEx.WindowResize(renderer, camera);
+	$('#app-container').append(renderer.domElement);
 
 	clock = new THREE.Clock();
 	deltaTime = 0;
@@ -44,14 +45,29 @@ function initialize() {
 
 	arToolkitSource = new THREEx.ArToolkitSource({
 		sourceType: 'webcam',
+		sourceWidth: 640,
+		sourceHeight: 480,
+		displayWidth: 640,
+		displayHeight: 480,
 	});
 
 	function onResize() {
-		arToolkitSource.onResize();
-		arToolkitSource.copySizeTo(renderer.domElement);
-		if (arToolkitContext.arController !== null) {
-			arToolkitSource.copySizeTo(arToolkitContext.arController.canvas);
-		}
+		// arToolkitSource.onResize(); // will change the size in <video>'s style
+
+		var vw = $('video')[0].videoWidth;
+		var vh = $('video')[0].videoHeight;
+
+		var w = $('video').width();
+		var h = w / vw * vh;
+		$('#canvas').height(h);
+		$('#canvas').width(h / 3 * 4);
+		$('#canvas').css('left', (w - h / 3 * 4) / 2 + 'px');
+		$('video').height(h);
+
+		// arToolkitSource.copySizeTo(renderer.domElement); // copy the style from <video> to <canvas>
+		// if (arToolkitContext.arController !== null) {
+		// 	arToolkitSource.copySizeTo(arToolkitContext.arController.canvas);
+		// }
 	}
 
 	arToolkitSource.init(function onReady() {
@@ -72,7 +88,10 @@ function initialize() {
 		cameraParametersUrl: 'data/camera_para-iPhone.dat',
 		detectionMode: 'color_and_matrix',
 		matrixCodeType: '3x3',
-		maxDetectionRate: 30
+		maxDetectionRate: 30,
+		canvasWidth: 640,
+		canvasHeight: 480,
+		imageSmoothingEnabled: true
 	});
 
 	// copy projection matrix to camera when initialization complete
@@ -114,7 +133,7 @@ function initialize() {
 		mesh.position.y = 1 / 2;
 		markerRoot.add(mesh);
 
-		var helper = new THREE.GridHelper(1.5, 15);
+		var helper = new THREE.GridHelper(1.25, 16);
 		// helper.position.y = -0.5999;
 		helper.position.y = 0;
 		// helper.material.opacity = 0.9;
@@ -145,7 +164,9 @@ function render() {
 
 
 function animate() {
-	requestAnimationFrame(animate);
+	setTimeout(function() {
+		requestAnimationFrame(animate);
+	}, 100);
 	deltaTime = clock.getDelta();
 	totalTime += deltaTime;
 	update();

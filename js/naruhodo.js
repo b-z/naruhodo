@@ -132,7 +132,7 @@ function updateLaser(s) {
 		for (var l of laser_offsets) {
 			var p1 = laser_offset.clone();
 			var p2 = laser_offset.clone();
-			p1.applyMatrix4(m1.matrixWorld).add(l);
+			p1.applyMatrix4(m1.matrixWorld)//.add(l);
 			p2.applyMatrix4(m2.matrixWorld).add(l);
 			castLaser(s_laser, p1, p2);
 		}

@@ -17,6 +17,8 @@ Mercari hackathon 2018 prototype
 * [ ] @bug: 有时候识别marker会上下颠倒。对于单一的marker，这个是无解的，两种方向在现实中都可以解释通。感觉只能强行靠其他marker规定方向。
 * [ ] 对每个光学元件，使用两个marker确保可靠?
 * [ ] 增加一个双缝干涉实验?
+* [ ] 做得尽量像教科书的
+* [ ] 在marker旁边标注一些图、文字
 
 ### Development log
 
