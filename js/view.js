@@ -48,3 +48,16 @@ function onResize() {
 window.addEventListener('resize', function() {
 	onResize();
 });
+
+$(document).ready(function() {
+	// loadApplication();
+});
+
+function loadApplication() {
+	initialize();
+	animate();
+}
+
+function hideMask() {
+	$('#logo-mask').fadeOut(200);
+}

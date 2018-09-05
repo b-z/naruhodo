@@ -4,8 +4,6 @@ var scene, camera, renderer, clock, deltaTime, totalTime, winResize;
 
 var arToolkitSource, arToolkitContext;
 
-initialize();
-animate();
 
 function initialize() {
 	scene = new THREE.Scene();
@@ -53,6 +51,7 @@ function initialize() {
 
 	arToolkitSource.init(function onReady() {
 		onResize();
+		hideMask();
 	});
 
 	////////////////////////////////////////////////////////////

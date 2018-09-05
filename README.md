@@ -1,4 +1,4 @@
-# naruhodo
+# Naruhodo!
 Mercari hackathon 2018 prototype
 
 ### Note
@@ -39,3 +39,5 @@ Mercari hackathon 2018 prototype
     *   加入UI
 *   9.5
     *   修复手机浏览器上UI不正常的问题(非常坑)
+    *   画了个icon
+    *   美化UI
