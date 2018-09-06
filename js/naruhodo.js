@@ -19,7 +19,8 @@ var data = {
 		radius: 10,
 		r: 3,
 		height: 0.5
-	}
+	},
+	number_of_rays: 20,
 };
 var epsilon = 0.0001
 
@@ -121,14 +122,14 @@ function updateOpticsScene(s) {
 }
 
 function initializeLaserOffset() {
+	// 初始化laser的offset
 	var laser_scale = 0.5;
 	laser_offset = new THREE.Vector3(0, 0.5, 0);
-	laser_offsets = [];
-	for (var i = 0; i < 15; i++) {
+	laser_offsets = [new THREE.Vector3()];
+	for (var i = 0; i < 30; i++) {
 		var x = random();
 		var y = random();
 		var z = random();
-
 		while (x * x + y * y + z * z > 1) {
 			x = random();
 			y = random();
@@ -140,13 +141,20 @@ function initializeLaserOffset() {
 	}
 }
 
+function updatePlane() {
+	// 根据m1, m2两个marker设置plane的位置
+}
+
 var laser_idx;
 var laser_offset;
 var laser_offsets;
 
 function updateLaser(s) {
+	// 更新所有的laser
 	var m0 = s.getObjectByName('group_0');
 	var m1 = s.getObjectByName('group_1');
+	var plane = s.getObjectByName('group_plane');
+	updatePlane(m0, m1, plane);
 	var convex_lens = s.getObjectByName('group_2').getObjectByName('convex_lens');
 	var concave_lens = s.getObjectByName('group_3').getObjectByName('concave_lens');
 	var spherical_mirror = s.getObjectByName('group_4').getObjectByName('spherical_mirror');
@@ -162,11 +170,11 @@ function updateLaser(s) {
 	}
 	laser_idx = 0;
 	if (m0.visible && m1.visible) {
-		for (var l of laser_offsets) {
+		for (var l = 0; l < Math.min(data.number_of_rays, laser_offsets.length); l++) {
 			var p1 = laser_offset.clone();
 			var p2 = laser_offset.clone();
-			p1.applyMatrix4(m0.matrixWorld).add(l);
-			p2.applyMatrix4(m1.matrixWorld).add(l);
+			p1.applyMatrix4(m0.matrixWorld).add(laser_offsets[l]);
+			p2.applyMatrix4(m1.matrixWorld).add(laser_offsets[l]);
 			var dir = p2.clone().sub(p1).normalize();
 			castLaser(s_laser, elements, p1, dir);
 		}
@@ -174,6 +182,7 @@ function updateLaser(s) {
 }
 
 function castLaser(s_laser, elements, src, dir) {
+	// 发射射线，遇到光学器件会做相应处理
 	if (s_laser.children.length <= laser_idx) {
 		s_laser.add(generateLaser());
 	}
@@ -182,7 +191,7 @@ function castLaser(s_laser, elements, src, dir) {
 		var p = testIntersection(src, dir, elements[i]);
 		if (p !== null) intersections.push(p);
 	}
-	// sort
+	// TODO: sort the intersections by distance
 	if (intersections.length && intersections[0] !== null) {
 		var p = intersections[0];
 		setLaser(s_laser.children[laser_idx], src, p.pos);
@@ -195,6 +204,7 @@ function castLaser(s_laser, elements, src, dir) {
 }
 
 function testIntersection(src, dir, element) {
+	// 射线到光学器件求交
 	var q = null;
 	if (!element.parent.visible) return q;
 	switch (element.name) {
@@ -221,6 +231,7 @@ function testIntersection(src, dir, element) {
 }
 
 function testIntersectionToSpherePart(src, dir, center, R, r, e_center) {
+	// 射线到曲面镜求交点、反射线方向、法线方向
 	// R: sphere
 	// r: element
 	// center: the center of the sphere
@@ -233,7 +244,8 @@ function testIntersectionToSpherePart(src, dir, center, R, r, e_center) {
 			var norm = center.clone().sub(q).normalize();
 			return {
 				pos: q,
-				dir: dir.reflect(norm)
+				dir: dir.reflect(norm),
+				norm: norm
 			};
 		}
 	}
@@ -241,6 +253,7 @@ function testIntersectionToSpherePart(src, dir, center, R, r, e_center) {
 }
 
 function testIntersectionToSphere(src, dir, center, R) {
+	// 射线到球求交点
 	var a = dir.dot(dir);
 	var sub = src.clone().sub(center);
 	var b = 2 * dir.dot(sub);
@@ -259,6 +272,7 @@ function testIntersectionToSphere(src, dir, center, R) {
 }
 
 function setLaser(laser, p1, p2) {
+	// 将laser对象绘制在p1到p2两点之间
 	laser.visible = true;
 	laser.position.copy(p1).lerp(p2, 0.5);
 	var sub = p1.clone().sub(p2);
@@ -270,6 +284,7 @@ function setLaser(laser, p1, p2) {
 }
 
 function generateLaser() {
+	// 生成一个laser的mesh
 	var mesh = new THREE.Object3D();
 	var outer = new THREE.MeshPhongMaterial({
 		color: 0x0,
@@ -294,6 +309,7 @@ function generateLaser() {
 }
 
 function mixObjectInfo(a, b) {
+	// 弃用
 	if (!a.visible && b.visible) return mixObjectInfo(b, a);
 	if (!a.visible && !b.visible) return [null, null, null, false];
 	var position = a.position.clone();

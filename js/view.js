@@ -49,6 +49,7 @@ window.addEventListener('resize', function() {
 });
 
 $(document).ready(function() {
+	initSettings();
 	// loadApplication();
 });
 
@@ -61,14 +62,34 @@ function hideMask() {
 	$('#logo-mask').fadeOut(250);
 }
 
-$('#convex_lens_radius').change(function() {
+function initSettings() {
+	onChangeNumberOfRays();
+	onChangeConvexLensRadius();
+	onChangeConcaveLensRadius();
+	onChangeSphericalMirrorRadius();
+	$('#number_of_rays').on('input change', onChangeNumberOfRays);
+	$('#convex_lens_radius').on('input change', onChangeConvexLensRadius);
+	$('#concave_lens_radius').on('input change', onChangeConcaveLensRadius);
+	$('#spherical_mirror_radius').on('input change', onChangeSphericalMirrorRadius);
+
+}
+
+function onChangeNumberOfRays() {
+	data.number_of_rays = parseInt($('#number_of_rays').val());
+	$('#number_of_rays_label').text($('#number_of_rays').val());
+}
+
+function onChangeConvexLensRadius() {
 	data.convex_lens.radius = parseFloat($('#convex_lens_radius').val());
-});
+	$('#convex_lens_radius_label').text($('#convex_lens_radius').val());
+}
 
-$('#concave_lens_radius').change(function() {
+function onChangeConcaveLensRadius() {
 	data.concave_lens.radius = parseFloat($('#concave_lens_radius').val());
-});
+	$('#concave_lens_radius_label').text($('#concave_lens_radius').val());
+}
 
-$('#spherical_mirror_radius').change(function() {
+function onChangeSphericalMirrorRadius() {
 	data.spherical_mirror.radius = parseFloat($('#spherical_mirror_radius').val());
-});
+	$('#spherical_mirror_radius_label').text($('#spherical_mirror_radius').val());
+}

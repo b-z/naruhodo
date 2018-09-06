@@ -54,16 +54,20 @@
 					<div class="divider"></div>
 					<div id="experiment1-container">
 						<p class="range-field">
-							<label for="convex_lens_radius">Convex lens radius</label>
-							<input type="range" id="convex_lens_radius" min="0" max="100" />
+							<label for="number_of_rays">Number of rays: <span id="number_of_rays_label"></span></label>
+							<input type="range" id="number_of_rays" min="1" max="30" value="15" />
 						</p>
 						<p class="range-field">
-							<label for="concave_lens_radius">Concave lens radius</label>
-							<input type="range" id="concave_lens_radius" min="0" max="100" />
+							<label for="convex_lens_radius">Convex lens radius: <span id="convex_lens_radius_label"></span></label>
+							<input type="range" id="convex_lens_radius" min="0" max="100" value="10" />
 						</p>
 						<p class="range-field">
-							<label for="spherical_mirror_radius">Spherical mirror radius</label>
-							<input type="range" id="spherical_mirror_radius" min="0" max="100" />
+							<label for="concave_lens_radius">Concave lens radius: <span id="concave_lens_radius_label"></span></label>
+							<input type="range" id="concave_lens_radius" min="0" max="100" value="10" />
+						</p>
+						<p class="range-field">
+							<label for="spherical_mirror_radius">Spherical mirror radius: <span id="spherical_mirror_radius_label"></span></label>
+							<input type="range" id="spherical_mirror_radius" min="0" max="100" value="10" />
 						</p>
 					</div>
 					<div id="experiment2-container">
