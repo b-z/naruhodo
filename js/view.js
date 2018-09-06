@@ -67,15 +67,18 @@ function initSettings() {
 	onChangeConvexLensRadius();
 	onChangeConcaveLensRadius();
 	onChangeSphericalMirrorRadius();
+	onChangeDivergenceAngle();
+	onChangeUsePointLight();
 	$('#number_of_rays').on('input change', onChangeNumberOfRays);
 	$('#convex_lens_radius').on('input change', onChangeConvexLensRadius);
 	$('#concave_lens_radius').on('input change', onChangeConcaveLensRadius);
 	$('#spherical_mirror_radius').on('input change', onChangeSphericalMirrorRadius);
-
+	$('#divergence_angle').on('input change', onChangeDivergenceAngle);
+	$('#use_point_light').change(onChangeUsePointLight);
 }
 
 function onChangeNumberOfRays() {
-	data.number_of_rays = parseInt($('#number_of_rays').val());
+	data.light.number_of_rays = parseInt($('#number_of_rays').val());
 	$('#number_of_rays_label').text($('#number_of_rays').val());
 }
 
@@ -92,4 +95,19 @@ function onChangeConcaveLensRadius() {
 function onChangeSphericalMirrorRadius() {
 	data.spherical_mirror.radius = parseFloat($('#spherical_mirror_radius').val());
 	$('#spherical_mirror_radius_label').text($('#spherical_mirror_radius').val());
+}
+
+function onChangeDivergenceAngle() {
+	data.light.divergence_angle = parseFloat($('#divergence_angle').val());
+	$('#divergence_angle_label').text($('#divergence_angle').val());
+	data.light.d = 0.5 / Math.sin(data.light.divergence_angle / 180 * Math.PI / 2);
+}
+
+function onChangeUsePointLight() {
+	data.light.use_point_light = $('#use_point_light')[0].checked;
+	if (data.light.use_point_light) {
+		$('#divergence_angle_container').show();
+	} else {
+		$('#divergence_angle_container').hide();
+	}
 }

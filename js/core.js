@@ -95,7 +95,7 @@ function initialize() {
 		});
 
 		let mesh = new THREE.Mesh(
-			new THREE.CubeGeometry(0.2, 0.2, 0.2),
+			new THREE.CubeGeometry(0.1, 0.1, 0.1),
 			// new THREE.MeshBasicMaterial({color:colorArray[i], map:texture, transparent:true, opacity:0.5})
 			new THREE.MeshPhongMaterial({
 				color: colorArray[i],
@@ -105,7 +105,7 @@ function initialize() {
 		);
 		// mesh.castShadow = true;
 		// mesh.receiveShadow = true;
-		mesh.position.y = 1 / 2;
+		mesh.position.y = 1; // 1 / 2;
 		markerRoot.add(mesh);
 
 		var helper = new THREE.GridHelper(1.25, 16);
@@ -139,9 +139,9 @@ function render() {
 
 
 function animate() {
-	// setTimeout(function() {
+	setTimeout(function() {
 		requestAnimationFrame(animate);
-	// }, 100);
+	}, 100);
 	deltaTime = clock.getDelta();
 	totalTime += deltaTime;
 	update();

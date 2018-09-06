@@ -40,7 +40,7 @@
 			</div>
 			<div id="settings-container" class="col s12 m4">
 				<form>
-					<label>Experiment</label><br>
+					<p>Experiment</p>
 					<div class="row">
 						<div class="col s6">
 							<input id="experiment1" name="experiments" type="radio" checked />
@@ -53,10 +53,22 @@
 					</div>
 					<div class="divider"></div>
 					<div id="experiment1-container">
+						<p>Light source</p>
 						<p class="range-field">
 							<label for="number_of_rays">Number of rays: <span id="number_of_rays_label"></span></label>
 							<input type="range" id="number_of_rays" min="1" max="30" value="15" />
 						</p>
+						<p>
+							<input type="checkbox" id="use_point_light" />
+							<label for="use_point_light">Use point light</label>
+						</p>
+						<p id="divergence_angle_container" class="range-field">
+							<label for="divergence_angle">Divergence angle: <span id="divergence_angle_label"></span></label>
+							<input type="range" id="divergence_angle" min="1" max="45" value="15" />
+						</p>
+						<div class="divider"></div>
+
+						<p>Optical instruments</p>
 						<p class="range-field">
 							<label for="convex_lens_radius">Convex lens radius: <span id="convex_lens_radius_label"></span></label>
 							<input type="range" id="convex_lens_radius" min="0" max="100" value="10" />

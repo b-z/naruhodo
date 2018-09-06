@@ -20,7 +20,15 @@ var data = {
 		r: 3,
 		height: 0.5
 	},
-	number_of_rays: 20,
+	light: {
+		scale: 0.5,
+		height: 1,
+		number_of_rays: 20,
+		use_point_light: false,
+		d: 1, // should set from divergence_angle
+		offset: 1.25,
+		divergence_angle: 15
+	}
 };
 var epsilon = 0.0001
 
@@ -123,8 +131,8 @@ function updateOpticsScene(s) {
 
 function initializeLaserOffset() {
 	// 初始化laser的offset
-	var laser_scale = 0.5;
-	laser_offset = new THREE.Vector3(0, 0.5, 0);
+	var laser_scale = data.light.scale;
+	laser_offset = new THREE.Vector3(0, data.light.height, 0);
 	laser_offsets = [new THREE.Vector3()];
 	for (var i = 0; i < 30; i++) {
 		var x = random();
@@ -141,8 +149,26 @@ function initializeLaserOffset() {
 	}
 }
 
-function updatePlane() {
+function updatePlane(m0, m1, plane) {
 	// 根据m1, m2两个marker设置plane的位置
+	if (m0.visible && m1.visible) {
+		var p = new THREE.Vector3(-data.light.offset, 0, 0);
+		p.applyMatrix4(m1.matrixWorld);
+		plane.position.copy(m0.position).lerp(p, 0.5);
+		plane.quaternion.copy(m0.quaternion).slerp(m1.quaternion, 0.5);
+	} else if (m0.visible) {
+		copyPosition(plane, m0);
+	} else if (m1.visible) {
+		copyPosition(plane, m1);
+		var p = new THREE.Vector3(-data.light.offset, 0, 0);
+		p.applyMatrix4(m1.matrixWorld);
+		plane.position.copy(p);
+	}
+}
+
+function copyPosition(a, b) {
+	a.position.copy(b.position);
+	a.quaternion.copy(b.quaternion);
 }
 
 var laser_idx;
@@ -169,12 +195,13 @@ function updateLaser(s) {
 		c.visible = false;
 	}
 	laser_idx = 0;
-	if (m0.visible && m1.visible) {
-		for (var l = 0; l < Math.min(data.number_of_rays, laser_offsets.length); l++) {
+	if (m0.visible || m1.visible) {
+		for (var l = 0; l < Math.min(data.light.number_of_rays, laser_offsets.length); l++) {
 			var p1 = laser_offset.clone();
-			var p2 = laser_offset.clone();
-			p1.applyMatrix4(m0.matrixWorld).add(laser_offsets[l]);
-			p2.applyMatrix4(m1.matrixWorld).add(laser_offsets[l]);
+			var p2 = laser_offset.clone().add(new THREE.Vector3(data.light.d, 0, 0));
+			p1.applyMatrix4(plane.matrixWorld);
+			if (!data.light.use_point_light) p1.add(laser_offsets[l]);
+			p2.applyMatrix4(plane.matrixWorld).add(laser_offsets[l]);
 			var dir = p2.clone().sub(p1).normalize();
 			castLaser(s_laser, elements, p1, dir);
 		}
@@ -225,6 +252,7 @@ function testIntersection(src, dir, element) {
 			center.applyMatrix4(element.matrixWorld);
 			e_center.applyMatrix4(element.matrixWorld);
 			q = testIntersectionToSpherePart(src, dir, center, R, r, e_center);
+			if (q !== null) q.dir = dir.clone().reflect(q.norm);
 			break;
 	}
 	return q;
@@ -244,7 +272,6 @@ function testIntersectionToSpherePart(src, dir, center, R, r, e_center) {
 			var norm = center.clone().sub(q).normalize();
 			return {
 				pos: q,
-				dir: dir.reflect(norm),
 				norm: norm
 			};
 		}

@@ -220,9 +220,21 @@ input[type=range]+.thumb {
 	border: 2px solid #c2c0c2;
 }
 
+[type="checkbox"]+label:before, [type="checkbox"]:not(.filled-in)+label:after {
+	border: 2px solid #c2c0c2;
+}
+
 input[type=range]::-webkit-slider-thumb {
 	height: 16px;
 	width: 16px;
 	background-color: #86A8A8!important;
 	margin: -6px 0 0 0;
+}
+
+#settings-container p {
+	color: #9e9e9e;
+}
+
+form p {
+	/* position: relative; */
 }
