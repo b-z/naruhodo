@@ -21,6 +21,7 @@ var data = {
 		height: 0.5
 	}
 };
+var epsilon = 0.0001
 
 function initializeScene(s) {
 	initializeOptics(s);
@@ -251,8 +252,8 @@ function testIntersectionToSphere(src, dir, center, R) {
 		delta = Math.sqrt(delta);
 		var t1 = (-b - delta) / a / 2;
 		var t2 = (-b + delta) / a / 2;
-		if (t1 > 0) result.push(src.clone().add(dir.clone().multiplyScalar(t1)));
-		if (t2 > 0) result.push(src.clone().add(dir.clone().multiplyScalar(t2)));
+		if (t1 > epsilon) result.push(src.clone().add(dir.clone().multiplyScalar(t1)));
+		if (t2 > epsilon) result.push(src.clone().add(dir.clone().multiplyScalar(t2)));
 	}
 	return result;
 }
