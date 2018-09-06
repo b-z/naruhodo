@@ -2,23 +2,23 @@
 
 var data = {
 	convex_lens: {
-		radius: 5,
+		radius: 10,
 		r: 1,
 		d: 0.2,
 		n: 1.458,
-		height: 2
+		height: 1
 	},
 	concave_lens: {
-		radius: 5,
-		r: 1,
+		radius: 10,
+		r: 3,
 		d: 0.2,
 		n: 1.458,
-		height: 2
+		height: 1
 	},
 	spherical_mirror: {
 		radius: 10,
 		r: 3,
-		height: 0.5
+		height: 1
 	},
 	light: {
 		scale: 0.5,
@@ -203,19 +203,19 @@ function updateLaser(s) {
 			if (!data.light.use_point_light) p1.add(laser_offsets[l]);
 			p2.applyMatrix4(plane.matrixWorld).add(laser_offsets[l]);
 			var dir = p2.clone().sub(p1).normalize();
-			castLaser(s_laser, elements, p1, dir);
+			castLaser(s_laser, elements, p1, dir, false);
 		}
 	}
 }
 
-function castLaser(s_laser, elements, src, dir) {
+function castLaser(s_laser, elements, src, dir, in_glass) {
 	// 发射射线，遇到光学器件会做相应处理
 	if (s_laser.children.length <= laser_idx) {
 		s_laser.add(generateLaser());
 	}
 	var intersections = [];
 	for (var i in elements) {
-		var p = testIntersection(src, dir, elements[i]);
+		var p = testIntersection(src, dir, elements[i], in_glass);
 		if (p !== null) intersections.push(p);
 	}
 	// TODO: sort the intersections by distance
@@ -223,20 +223,48 @@ function castLaser(s_laser, elements, src, dir) {
 		var p = intersections[0];
 		setLaser(s_laser.children[laser_idx], src, p.pos);
 		laser_idx++;
-		castLaser(s_laser, elements, p.pos, p.dir);
+		castLaser(s_laser, elements, p.pos, p.dir, p.in_glass);
 	} else {
 		setLaser(s_laser.children[laser_idx], src, src.clone().add(dir.clone().multiplyScalar(1000)));
 		laser_idx++;
 	}
 }
 
-function testIntersection(src, dir, element) {
-	// 射线到光学器件求交
+function testIntersection(src, dir, element, in_glass) {
+	// 射线到光学器件求交，返回第一个合法交点
 	var q = null;
 	if (!element.parent.visible) return q;
 	switch (element.name) {
 		case 'convex_lens':
-
+			var c = new THREE.Vector3(0, data.convex_lens.height, 0);
+			var m = new THREE.Vector3(1, 0, 0);
+			var R = data.convex_lens.radius;
+			var r = data.convex_lens.r;
+			var d = Math.sqrt(sqr(R) - sqr(r));
+			var center1 = c.clone().add(m.clone().multiplyScalar(d));
+			var e_center1 = c.clone().add(m.clone().multiplyScalar(d - R));
+			var center2 = c.clone().add(m.clone().multiplyScalar(-d));
+			var e_center2 = c.clone().add(m.clone().multiplyScalar(-d + R));
+			[center1, e_center1, center2, e_center2].forEach(function(e) {
+				e.applyMatrix4(element.matrixWorld);
+			});
+			var q1 = testIntersectionToSpherePart(src, dir, center1, R, r, e_center1);
+			var q2 = testIntersectionToSpherePart(src, dir, center2, R, r, e_center2);
+			if (q1 !== null) q = q1;
+			if (q === null || (q2 !== null && src.distanceTo(q2.pos) < src.distanceTo(q.pos))) q = q2;
+			if (q !== null) {
+				var angle_i = dir.angleTo(q.norm);
+				if (angle_i < epsilon || Math.PI - angle_i < epsilon) {
+					q.dir = dir;
+				} else {
+					var n = dir.clone().sub(q.norm.clone().multiplyScalar(dir.length() * Math.cos(angle_i))).normalize();
+					if (in_glass) n.multiplyScalar(-1);
+					var angle_r = Math.asin(Math.sin(angle_i) / (in_glass ? (1 / data.convex_lens.n) : data.convex_lens.n));
+					q.dir = n.multiplyScalar(Math.tan(angle_r)).add(q.norm);
+					if (in_glass) q.dir.multiplyScalar(-1);
+				}
+				q.in_glass = !in_glass;
+			}
 			break;
 		case 'concave_lens':
 
@@ -246,20 +274,24 @@ function testIntersection(src, dir, element) {
 			var m = new THREE.Vector3(1, 0, 0);
 			var R = data.spherical_mirror.radius;
 			var r = data.spherical_mirror.r;
-			var d1 = Math.sqrt(sqr(R) - sqr(r));
-			var center = c.clone().add(m.clone().multiplyScalar(d1));
-			var e_center = c.clone().add(m.clone().multiplyScalar(d1 - R));
+			var d = Math.sqrt(sqr(R) - sqr(r));
+			var center = c.clone().add(m.clone().multiplyScalar(d));
+			var e_center = c.clone().add(m.clone().multiplyScalar(d - R));
 			center.applyMatrix4(element.matrixWorld);
 			e_center.applyMatrix4(element.matrixWorld);
 			q = testIntersectionToSpherePart(src, dir, center, R, r, e_center);
-			if (q !== null) q.dir = dir.clone().reflect(q.norm);
+			if (q !== null) {
+				q.dir = dir.clone().reflect(q.norm);
+				q.in_glass = in_glass;
+			}
 			break;
 	}
 	return q;
 }
 
 function testIntersectionToSpherePart(src, dir, center, R, r, e_center) {
-	// 射线到曲面镜求交点、反射线方向、法线方向
+	// 射线射到曲面镜
+	// 求交点、法线方向，返回的是第一个合法的交点
 	// R: sphere
 	// r: element
 	// center: the center of the sphere
