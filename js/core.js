@@ -99,14 +99,14 @@ function initialize() {
 			// new THREE.MeshBasicMaterial({color:colorArray[i], map:texture, transparent:true, opacity:0.5})
 			new THREE.MeshPhongMaterial({
 				color: colorArray[i],
-				transparent: true,
+				// transparent: true,
 				// opacity: 0.5,
 			})
 		);
 		// mesh.castShadow = true;
 		// mesh.receiveShadow = true;
 		mesh.position.y = 1; // 1 / 2;
-		markerRoot.add(mesh);
+		// markerRoot.add(mesh);
 
 		var helper = new THREE.GridHelper(1.25, 16);
 		// helper.position.y = -0.5999;

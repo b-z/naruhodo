@@ -16,8 +16,8 @@ var data = {
 		height: 1
 	},
 	spherical_mirror: {
-		radius: 10,
-		r: 3,
+		radius: 4,
+		r: 1,
 		height: 1
 	},
 	light: {
@@ -67,6 +67,7 @@ function addPlane(s) {
 	helper.material.transparent = true;
 	// planeRoot.add(helper);
 	*/
+	// s.add(new THREE.HemisphereLight(0xffcc88, 0xffffff));
 	planeRoot.add(new THREE.HemisphereLight(0x443333, 0x111122));
 	addShadowedLight(planeRoot, 3, 10, 5, 0xffffff, 1);
 	addShadowedLight(planeRoot, 3, 8, -4, 0xffcc88, 0.8);
@@ -101,6 +102,7 @@ function addElements(s) {
 	m3.add(lens2);
 	var mirror1 = new THREE.Group();
 	mirror1.name = 'spherical_mirror';
+	mirror1.add(createSphericalMirror(data.spherical_mirror));
 	m4.add(mirror1);
 }
 

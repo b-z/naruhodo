@@ -95,6 +95,14 @@ function onChangeConcaveLensRadius() {
 function onChangeSphericalMirrorRadius() {
 	data.spherical_mirror.radius = parseFloat($('#spherical_mirror_radius').val());
 	$('#spherical_mirror_radius_label').text($('#spherical_mirror_radius').val());
+	if (scene) {
+		var group = scene.getObjectByName('spherical_mirror');
+		if (group && group.getObjectByName('element')) {
+			var mesh = createSphericalMirror(data.spherical_mirror)
+			group.getObjectByName('element').copy(mesh);
+		}
+	}
+
 }
 
 function onChangeDivergenceAngle() {
