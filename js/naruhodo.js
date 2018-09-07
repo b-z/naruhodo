@@ -27,7 +27,8 @@ var data = {
 		use_point_light: false,
 		d: 1, // should set from divergence_angle
 		offset: 1.25,
-		divergence_angle: 15
+		divergence_angle: 15,
+		circle_light: true
 	}
 };
 var epsilon = 0.0001
@@ -138,7 +139,7 @@ function initializeLaserOffset() {
 	var laser_scale = data.light.scale;
 	laser_offset = new THREE.Vector3(0, data.light.height, 0);
 	laser_offsets = [new THREE.Vector3()];
-	for (var i = 0; i < 30; i++) {
+	for (var i = 0; i < 40; i++) {
 		var x = random();
 		var y = random();
 		var z = random();
@@ -148,6 +149,10 @@ function initializeLaserOffset() {
 			z = random();
 		}
 		var v = new THREE.Vector3(x, y, z);
+		if (data.light.circle_light) {
+			v.x = 0;
+			v.normalize();
+		}
 		v.multiplyScalar(laser_scale); //.add(laser_offset);
 		laser_offsets.push(v);
 	}
@@ -217,9 +222,15 @@ function updateLaser(s) {
 		for (var l = 0; l < Math.min(data.light.number_of_rays, laser_offsets.length); l++) {
 			var p1 = laser_offset.clone();
 			var p2 = laser_offset.clone().add(new THREE.Vector3(data.light.d, 0, 0));
-			p1.applyMatrix4(plane.matrixWorld);
-			if (!data.light.use_point_light) p1.add(laser_offsets[l]);
-			p2.applyMatrix4(plane.matrixWorld).add(laser_offsets[l]);
+			if (data.light.circle_light) {
+				if (!data.light.use_point_light) p1.add(laser_offsets[l]);
+				p1.applyMatrix4(plane.matrixWorld);
+				p2.add(laser_offsets[l]).applyMatrix4(plane.matrixWorld);
+			} else {
+				p1.applyMatrix4(plane.matrixWorld);
+				if (!data.light.use_point_light) p1.add(laser_offsets[l]);
+				p2.applyMatrix4(plane.matrixWorld).add(laser_offsets[l]);
+			}
 			var dir = p2.clone().sub(p1).normalize();
 			castLaser(s_laser, elements, p1, dir, false);
 		}

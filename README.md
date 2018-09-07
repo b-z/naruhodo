@@ -118,4 +118,33 @@ $$(a^2+b^2+c^2)t^2+\\2(a(x_0-x_b)+b(y_0-y_b)+c(z_0-z_b))t+\\((x_0-x_b)^2+(y_0-y_
     *   修复全反射导致的bug
     *   显示凸透镜、球面镜的mesh
     *   支持动态调整mesh的参数
-    *   ​
+*   9.8
+
+### Gallery
+
+![1](img-doc/1.png)
+
+![2](img-doc/2.png)
+
+![3](img-doc/3.png)
+
+![4](img-doc/4.png)
+
+![5](img-doc/5.png)
+
+![6](img-doc/6.png)
+
+![7](img-doc/7.png)
+
+![8](img-doc/8.png)
+
+![9](img-doc/9.png)
+
+![10](img-doc/10.png)
+
+![11](img-doc/11.png)
+
+![12](img-doc/12.jpg)
+
+![13](img-doc/13.png)
+
