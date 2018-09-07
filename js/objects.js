@@ -2,7 +2,7 @@
 
 function createSphericalMirror(object) {
 	var theta = Math.asin(object.r / object.radius);
-	var geometry = new THREE.SphereGeometry(object.radius, 20, 4, 0, Math.PI * 2, 0, theta);
+	var geometry = new THREE.SphereGeometry(object.radius, 17, 4, 0, Math.PI * 2, 0, theta);
 	var material = new THREE.MeshPhongMaterial({
 		color: 0xffff00,
 		side: THREE.DoubleSide

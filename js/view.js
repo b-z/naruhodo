@@ -97,9 +97,13 @@ function onChangeSphericalMirrorRadius() {
 	$('#spherical_mirror_radius_label').text($('#spherical_mirror_radius').val());
 	if (scene) {
 		var group = scene.getObjectByName('spherical_mirror');
-		if (group && group.getObjectByName('element')) {
-			var mesh = createSphericalMirror(data.spherical_mirror)
-			group.getObjectByName('element').copy(mesh);
+		if (group) {
+			var old = group.getObjectByName('element');
+			old.geometry.dispose();
+			old.material.dispose();
+			group.remove(old);
+			var mesh = createSphericalMirror(data.spherical_mirror);
+			group.add(mesh);
 		}
 	}
 
