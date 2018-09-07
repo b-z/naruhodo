@@ -3,21 +3,21 @@
 var data = {
 	convex_lens: {
 		radius: 10,
-		r: 2,
+		r: 1.5,
 		d: 0.2,
 		n: 1.458,
 		height: 1
 	},
 	concave_lens: {
 		radius: 10,
-		r: 1,
+		r: 1.5,
 		d: 0.2,
 		n: 1.458,
 		height: 1
 	},
 	spherical_mirror: {
 		radius: 4,
-		r: 1,
+		r: 1.5,
 		height: 1
 	},
 	light: {
@@ -96,6 +96,7 @@ function addElements(s) {
 	var m4 = s.getObjectByName('group_4');
 	var lens1 = new THREE.Group();
 	lens1.name = 'convex_lens';
+	lens1.add(createConvexLens(data.convex_lens));
 	m2.add(lens1);
 	var lens2 = new THREE.Group();
 	lens2.name = 'concave_lens';
@@ -238,7 +239,7 @@ function castLaser(s_laser, elements, src, dir, in_glass) {
 	// TODO: sort the intersections by distance
 	if (intersections.length && intersections[0] !== null) {
 		var p = intersections[0];
-		setLaser(s_laser.children[laser_idx], src, p.pos);
+		if (!in_glass) setLaser(s_laser.children[laser_idx], src, p.pos);
 		laser_idx++;
 		castLaser(s_laser, elements, p.pos, p.dir, p.in_glass);
 	} else {

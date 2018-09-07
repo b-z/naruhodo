@@ -84,21 +84,37 @@ function onChangeNumberOfRays() {
 
 function onChangeConvexLensRadius() {
 	data.convex_lens.radius = parseFloat($('#convex_lens_radius').val());
+	data.convex_lens.radius = Math.max(data.convex_lens.radius, data.convex_lens.r);
 	$('#convex_lens_radius_label').text($('#convex_lens_radius').val());
+	if (scene) {
+		var group = scene.getObjectByName('convex_lens');
+		if (group) {
+			var old = group.getObjectByName('element_conv');
+			for (var c of old.children) {
+				c.geometry.dispose();
+				c.material.dispose();
+			}
+			group.remove(old);
+			var mesh = createConvexLens(data.convex_lens);
+			group.add(mesh);
+		}
+	}
 }
 
 function onChangeConcaveLensRadius() {
 	data.concave_lens.radius = parseFloat($('#concave_lens_radius').val());
+	data.concave_lens.radius = Math.max(data.concave_lens.radius, data.concave_lens.r);
 	$('#concave_lens_radius_label').text($('#concave_lens_radius').val());
 }
 
 function onChangeSphericalMirrorRadius() {
 	data.spherical_mirror.radius = parseFloat($('#spherical_mirror_radius').val());
+	data.spherical_mirror.radius = Math.max(data.spherical_mirror.radius, data.spherical_mirror.r);
 	$('#spherical_mirror_radius_label').text($('#spherical_mirror_radius').val());
 	if (scene) {
 		var group = scene.getObjectByName('spherical_mirror');
 		if (group) {
-			var old = group.getObjectByName('element');
+			var old = group.getObjectByName('element_sphe');
 			old.geometry.dispose();
 			old.material.dispose();
 			group.remove(old);
