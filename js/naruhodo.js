@@ -3,14 +3,14 @@
 var data = {
 	convex_lens: {
 		radius: 10,
-		r: 1,
+		r: 2,
 		d: 0.2,
 		n: 1.458,
 		height: 1
 	},
 	concave_lens: {
 		radius: 10,
-		r: 3,
+		r: 1,
 		d: 0.2,
 		n: 1.458,
 		height: 1
@@ -109,6 +109,7 @@ function updateScene(s) {
 }
 
 function updateOpticsScene(s) {
+	adjustMarkers(s);
 	updateLaser(s);
 
 	// let m_plane1 = s.getObjectByName('group_0');
@@ -147,6 +148,20 @@ function initializeLaserOffset() {
 		v.multiplyScalar(laser_scale); //.add(laser_offset);
 		laser_offsets.push(v);
 	}
+}
+
+function adjustMarkers(s) {
+	// for (var i = 0; i <= 4; i++) {
+	// 	var m = s.getObjectByName('group_' + i);
+	// 	// if (m.visible) console.log(m.rotation);
+	// 	// var v = new THREE.Vector3(0, 1, 0);
+	// 	// v.applyMatrix4(m.matrixWorld);
+	// 	// var u = new THREE.Vector3(0, 0, 0);
+	// 	// u.applyMatrix4(m.matrixWorld);
+	// 	// v.sub(u);
+	// 	var x = Math.min(m.rotation.x, Math.PI - m.rotation.x);
+	// 	m.rotation.set(x, m.rotation.y, m.rotation.z, 'XYZ');
+	// }
 }
 
 function updatePlane(m0, m1, plane) {
@@ -259,7 +274,12 @@ function testIntersection(src, dir, element, in_glass) {
 				} else {
 					var n = dir.clone().sub(q.norm.clone().multiplyScalar(dir.length() * Math.cos(angle_i))).normalize();
 					if (in_glass) n.multiplyScalar(-1);
-					var angle_r = Math.asin(Math.sin(angle_i) / (in_glass ? (1 / data.convex_lens.n) : data.convex_lens.n));
+					var sin_r = Math.sin(angle_i) / (in_glass ? (1 / data.convex_lens.n) : data.convex_lens.n);
+					if (sin_r > 1) {
+						q = null;
+						break;
+					}
+					var angle_r = Math.asin(sin_r);
 					q.dir = n.multiplyScalar(Math.tan(angle_r)).add(q.norm);
 					if (in_glass) q.dir.multiplyScalar(-1);
 				}

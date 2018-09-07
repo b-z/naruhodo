@@ -115,7 +115,7 @@ function initialize() {
 		// helper.material.transparent = true;
 		markerRoot.add(helper);
 
-		var axis = new THREE.AxisHelper();
+		var axis = new THREE.AxesHelper();
 		axis.scale.set(1, 1, 1);
 		// axis.position.set(0, 0.5, 0);
 		markerRoot.add(axis);
