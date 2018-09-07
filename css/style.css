@@ -238,3 +238,12 @@ input[type=range]::-webkit-slider-thumb {
 form p {
 	/* position: relative; */
 }
+
+#cover-text {
+	height: 200px;
+}
+
+#cover-text .center-content {
+	margin: auto;
+	padding-top: 50px;
+}
