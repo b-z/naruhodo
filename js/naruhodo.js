@@ -248,7 +248,9 @@ function castLaser(s_laser, elements, src, dir, in_glass) {
 		var p = testIntersection(src, dir, elements[i], in_glass);
 		if (p !== null) intersections.push(p);
 	}
-	// TODO: sort the intersections by distance
+	intersections.sort(function(a, b) {
+		return src.distanceTo(a.pos) - src.distanceTo(b.pos);
+	});
 	if (intersections.length && intersections[0] !== null) {
 		var p = intersections[0];
 		if (!in_glass) setLaser(s_laser.children[laser_idx], src, p.pos);

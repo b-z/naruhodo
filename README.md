@@ -8,7 +8,7 @@ https://b-z.github.io/naruhodo
 
 ### Deployment
 
-*   **Naruhodo!** should be visited through an `https` website, otherwise it is no permission to open the camera of your iOS device.
+*   **Naruhodo!** should be visited through an `https` website, otherwise it has no permission to open the camera of your iOS device.
 
 *   To set-up a simple https server, you can do this:
 
