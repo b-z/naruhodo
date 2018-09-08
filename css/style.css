@@ -247,3 +247,7 @@ form p {
 	margin: auto;
 	padding-top: 50px;
 }
+
+a {
+	cursor: pointer;
+}

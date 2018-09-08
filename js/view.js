@@ -49,12 +49,13 @@ window.addEventListener('resize', function() {
 });
 
 $(document).ready(function() {
-	initSettings();
 	// loadApplication();
 });
 
 function loadApplication() {
 	initialize();
+	createGlassTexture();
+	initSettings();
 	animate();
 }
 
@@ -105,6 +106,19 @@ function onChangeConcaveLensRadius() {
 	data.concave_lens.radius = parseFloat($('#concave_lens_radius').val());
 	data.concave_lens.radius = Math.max(data.concave_lens.radius, data.concave_lens.r);
 	$('#concave_lens_radius_label').text($('#concave_lens_radius').val());
+	if (scene) {
+		var group = scene.getObjectByName('concave_lens');
+		if (group) {
+			var old = group.getObjectByName('element_conv');
+			for (var c of old.children) {
+				c.geometry.dispose();
+				c.material.dispose();
+			}
+			group.remove(old);
+			var mesh = createConcaveLens(data.concave_lens);
+			group.add(mesh);
+		}
+	}
 }
 
 function onChangeSphericalMirrorRadius() {

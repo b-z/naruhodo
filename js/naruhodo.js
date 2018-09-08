@@ -4,25 +4,25 @@ var data = {
 	convex_lens: {
 		radius: 10,
 		r: 1.5,
-		d: 0.2,
+		d: 0.1,
 		n: 1.458,
-		height: 1
+		height: 1.5
 	},
 	concave_lens: {
 		radius: 10,
 		r: 1.5,
-		d: 0.2,
+		d: 0.1,
 		n: 1.458,
-		height: 1
+		height: 1.5
 	},
 	spherical_mirror: {
 		radius: 4,
 		r: 1.5,
-		height: 1
+		height: 1.5
 	},
 	light: {
 		scale: 0.5,
-		height: 1,
+		height: 1.5,
 		number_of_rays: 20,
 		use_point_light: false,
 		d: 1, // should set from divergence_angle
@@ -31,7 +31,7 @@ var data = {
 		circle_light: true
 	}
 };
-var epsilon = 0.0001
+var epsilon = 0.0001;
 
 function initializeScene(s) {
 	initializeOptics(s);
@@ -101,6 +101,7 @@ function addElements(s) {
 	m2.add(lens1);
 	var lens2 = new THREE.Group();
 	lens2.name = 'concave_lens';
+	lens2.add(createConcaveLens(data.concave_lens));
 	m3.add(lens2);
 	var mirror1 = new THREE.Group();
 	mirror1.name = 'spherical_mirror';

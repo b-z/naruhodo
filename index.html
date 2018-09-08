@@ -22,8 +22,7 @@
 				<div class="center-content">
 					<h3>Naruhodo!</h3>
 					<p>
-						Mercari Hackathon 2018 project<br>
-						Designed & developed by Bowei Zhou
+						Mercari Hackathon 2018 project<br> Designed & developed by Bowei Zhou
 					</p>
 				</div>
 			</div>
@@ -42,12 +41,12 @@
 				<i>
 					<img id="logo" src="img/logo-white-bold.png" />
 				</i>
-				<a href="#">
+				<a>
 					Naruhodo!
 				</a>
 			</div>
 			<ul id="nav-mobile" class="right hide-on-med-and-down">
-				<li><a href="">Laboratory on your desk!</a></li>
+				<li><a>Laboratory on your desk!</a></li>
 			</ul>
 
 		</div>
@@ -144,11 +143,20 @@
 		</div>
 	</footer>
 	<canvas id="screenshot" width="640" height="480" style="display: none;"></canvas>
+	<script id="vertexShader" type="x-shader/x-vertex">
+		uniform float refractionRatio; varying vec3 vRefract; void main() { vec4 mPosition = modelMatrix * vec4( position, 1.0 ); vec3 nWorld = normalize( mat3( modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz ) * normal ); vRefract = normalize( refract(
+		normalize( mPosition.xyz - cameraPosition ), nWorld, refractionRatio ) ); gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 ); }
+	</script>
+	<script id="fragmentShader" type="x-shader/x-vertex">
+		uniform sampler2D texture; varying vec3 vRefract; uniform float distance; uniform float opacity; uniform vec3 tint; void main() { vec2 p = vec2( vRefract.x * distance + 0.5, vRefract.y * distance + 0.5 ); p = vec2(1.0, 1.0) - p; vec3 color = texture2D(
+		texture, p ).rgb; gl_FragColor = vec4( color, opacity ) * vec4( tint, 1.0 ); }
+	</script>
 	<script type="text/javascript" src='js/lib/jquery-2.1.3.min.js'></script>
 	<script type="text/javascript" src='js/lib/materialize.min.js'></script>
 	<script type="text/javascript" src='js/lib/three.js'></script>
 	<script type="text/javascript" src="js/lib/ar.js"></script>
 	<script type="text/javascript" src="js/naruhodo.js"></script>
+	<script type="text/javascript" src="js/texture.js"></script>
 	<script type="text/javascript" src="js/objects.js"></script>
 	<script type="text/javascript" src="js/utils.js"></script>
 	<script type="text/javascript" src="js/view.js"></script>
