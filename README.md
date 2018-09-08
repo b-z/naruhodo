@@ -1,7 +1,26 @@
 # Naruhodo!
+
+<img src="img/logo-black-light.png" width="150px">
+
 Mercari hackathon 2018 prototype
 
+https://b-z.github.io/naruhodo
 
+### Deployment
+
+*   **Naruhodo!** should be visited through an `https` website, otherwise it is no permission to open the camera of your iOS device.
+
+*   To set-up a simple https server, you can do this:
+
+   ```bash
+   npm install -g http-server
+   openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem
+   http-server -S -C cert.pem -o -c-1
+   ```
+
+* Then, open https://localhost:8080.
+
+***
 
 ### 光线与光学器件求交
 
@@ -122,6 +141,7 @@ $$(a^2+b^2+c^2)t^2+\\2(a(x_0-x_b)+b(y_0-y_b)+c(z_0-z_b))t+\\((x_0-x_b)^2+(y_0-y_
     *   光源由"球体"修改成"圆周"的
     *   美化封面
 *   9.8
+    *   支持透明材质
 
 ### Gallery
 
