@@ -6,7 +6,45 @@ Mercari hackathon 2018 prototype
 
 https://b-z.github.io/naruhodo
 
-### Deployment
+***
+
+### What is this?
+
+**Naruhodo!** means "I see!" or "Aha moment" in Japanese.
+
+This application is designed for students, using AR technology to help them do some wonderful scientific experiments at home.
+
+Currently, it provides a simple optical experiment for demonstration. Users are free to use lenses, mirrors, etc. in it.
+
+### Why do you do this?
+
+Education is the foundation of a country. **Equal and quality education** is very important. The imbalance of educational resources is a common problem between China and Japan. In a top school, students receive the best education and can do research in the laboratory, which is not possible for students in other schools.
+
+I was born in a poor city. In my student days, I enjoyed to do interesting scientific experiments at home. For example, give me a copper wire (Cu), I will heat it on the fire to get copper oxide (CuO), then put the copper oxide into vinegar (CH~3~COOH), I will finally get a beautiful blue copper acetate (Cu(CH~3~COO)~2~) solution. But a serious problem is that my home cannot always provide the right experiment tools. And it is not safe to do some experiments at home.
+
+AR ([Augmented Reality](https://en.wikipedia.org/wiki/Augmented_reality)) is a new technology which can mix the real world and the virtual world. I hope to use this technology to help students who are interested in science, to do interesting experiments at home.
+
+### How can I play with it?
+
+First, you should print some markers:
+
+<img src="data/0_big.png" width="2cm"><img src="data/1_big.png" width="2cm"><img src="data/2_big.png" width="2cm"><img src="data/4_big.png" width="2cm"><img src="data/4_big.png" width="2cm"><img src="data/5_big.png" width="2cm">
+
+The first two together constitute a light source, and the latter four markers are convex lens, concave lens, spherical mirror and plane mirror, respectively.
+
+Place these markers on your desk and play!
+
+### How does it work?
+
+Currently, the core of **Naruhodo!** is designed as a three-level structure:
+
+*   Layer-3 is the basic layer. It captures video through the camera of the user's device. `AR.js` analyzes the position and orientation of the markers relative to the camera from the video stream.
+*   Layer-2 is the logical layer. In this layer, the light source and other optical instruments are generated from the markers, and the result of the interaction of the light with the optical instruments is calculated.
+*   And Layer-1 is the visualization layer. It uses `three.js` to render the calculated models on the web page.
+
+Here, Ar.js and three.js are two famous open-source libraries. They provide basic AR and model rendering capabilities, respectively. Since they only provide very basic APIs, I still have a lot of work to do.
+
+### How can I deploy?
 
 *   **Naruhodo!** should be visited through an `https` website, otherwise it has no permission to open the camera of your iOS device.
 
@@ -19,6 +57,30 @@ https://b-z.github.io/naruhodo
    ```
 
 * Then, open https://localhost:8080.
+
+### Advantages
+
+*   No special experiment tools are required. All you need to prepare is a phone (or tablet) and some markers.
+*   You can see the light path. Even in laboratory, it is hard to visualize the light path in an optical experiment.
+*   You can adjust the parameters of every experiment equipment. For example, the focal length of a lens.
+*   It combines the virtual and reality, so that you can feel the scale of each object in reality.
+
+### Disadvantages
+
+*   Simulating the glass material of the lens as realistically as possible will make the display look better, but on a web page, computing resources are not enough to achieve such a function.
+
+### Your inspiration?
+
+My inspiration comes from Nintendo LABO and teamLab:star: 's exhibitions. I think an educational application should not be limited to virtual, but should be combined with the reality.
+
+| ![labo](img-doc/labo.jpg) | ![teamlab](img-doc/teamlab.jpeg) |
+| :-----------------------: | :------------------------------: |
+|       Nintendo LABO       |          teamLab:star:           |
+
+#### What will you do next?
+
+*   Make it work better.
+*   Design a simple game about it.
 
 ***
 
@@ -99,9 +161,12 @@ $$(a^2+b^2+c^2)t^2+\\2(a(x_0-x_b)+b(y_0-y_b)+c(z_0-z_b))t+\\((x_0-x_b)^2+(y_0-y_
 * [ ] 支持多种颜色的光线
       * [ ] 是否要做渐变的光线? 比如opacity越来越高
 * [ ] 增加平面镜
-* [x] 不显示透镜内部的光线，以加速
-* [ ] 与光学元件求交之后，对所有潜在交点排序
+* [x] ~~不显示透镜内部的光线，以加速~~
+* [x] 与光学元件求交之后，对所有潜在交点排序
 * [ ] 去除双缝实验，改为自由模式与游戏模式
+* [ ] 增加音效
+* [ ] 做成积木块
+* [ ] 元件换个颜色，现在丑爆了
 
 ### Development log
 
@@ -171,3 +236,8 @@ $$(a^2+b^2+c^2)t^2+\\2(a(x_0-x_b)+b(y_0-y_b)+c(z_0-z_b))t+\\((x_0-x_b)^2+(y_0-y_
 
 ![13](img-doc/13.png)
 
+![14](img-doc/14.png)
+
+![15](img-doc/15.png)
+
+![16](img-doc/16.png)

@@ -253,7 +253,8 @@ function castLaser(s_laser, elements, src, dir, in_glass) {
 	});
 	if (intersections.length && intersections[0] !== null) {
 		var p = intersections[0];
-		if (!in_glass) setLaser(s_laser.children[laser_idx], src, p.pos);
+		// if (!in_glass) setLaser(s_laser.children[laser_idx], src, p.pos);
+		setLaser(s_laser.children[laser_idx], src, p.pos);
 		laser_idx++;
 		castLaser(s_laser, elements, p.pos, p.dir, p.in_glass);
 	} else {
@@ -304,7 +305,40 @@ function testIntersection(src, dir, element, in_glass) {
 			}
 			break;
 		case 'concave_lens':
-
+			var c = new THREE.Vector3(0, data.concave_lens.height, 0);
+			var m = new THREE.Vector3(1, 0, 0);
+			var R = data.concave_lens.radius;
+			var r = data.concave_lens.r;
+			var d = Math.sqrt(sqr(R) - sqr(r));
+			var center1 = c.clone().add(m.clone().multiplyScalar(d));
+			var e_center1 = c.clone().add(m.clone().multiplyScalar(d - R));
+			var center2 = c.clone().add(m.clone().multiplyScalar(-d));
+			var e_center2 = c.clone().add(m.clone().multiplyScalar(-d + R));
+			[center1, e_center1, center2, e_center2].forEach(function(e) {
+				e.applyMatrix4(element.matrixWorld);
+			});
+			var q1 = testIntersectionToSpherePart(src, dir, center1, R, r, e_center1);
+			var q2 = testIntersectionToSpherePart(src, dir, center2, R, r, e_center2);
+			if (q1 !== null) q = q1;
+			if (q === null || (q2 !== null && src.distanceTo(q2.pos) < src.distanceTo(q.pos))) q = q2;
+			if (q !== null) {
+				var angle_i = dir.angleTo(q.norm);
+				if (angle_i < epsilon || Math.PI - angle_i < epsilon) {
+					q.dir = dir;
+				} else {
+					var n = dir.clone().sub(q.norm.clone().multiplyScalar(dir.length() * Math.cos(angle_i))).normalize();
+					if (in_glass) n.multiplyScalar(-1);
+					var sin_r = Math.sin(angle_i) / (in_glass ? (1 / data.concave_lens.n) : data.concave_lens.n);
+					if (sin_r > 1) {
+						q = null;
+						break;
+					}
+					var angle_r = Math.asin(sin_r);
+					q.dir = n.multiplyScalar(Math.tan(angle_r)).add(q.norm);
+					if (in_glass) q.dir.multiplyScalar(-1);
+				}
+				q.in_glass = !in_glass;
+			}
 			break;
 		case 'spherical_mirror':
 			var c = new THREE.Vector3(0, data.spherical_mirror.height, 0);
