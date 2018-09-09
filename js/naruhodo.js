@@ -309,11 +309,11 @@ function testIntersection(src, dir, element, in_glass) {
 			var m = new THREE.Vector3(1, 0, 0);
 			var R = data.concave_lens.radius;
 			var r = data.concave_lens.r;
-			var d = Math.sqrt(sqr(R) - sqr(r));
-			var center1 = c.clone().add(m.clone().multiplyScalar(d));
-			var e_center1 = c.clone().add(m.clone().multiplyScalar(d - R));
-			var center2 = c.clone().add(m.clone().multiplyScalar(-d));
-			var e_center2 = c.clone().add(m.clone().multiplyScalar(-d + R));
+			// var d = Math.sqrt(sqr(R) - sqr(r));
+			var center1 = c.clone().add(m.clone().multiplyScalar(R + data.concave_lens.d / 2));
+			var e_center1 = c.clone().add(m.clone().multiplyScalar(data.concave_lens.d / 2));
+			var center2 = c.clone().add(m.clone().multiplyScalar(-R - data.concave_lens.d / 2));
+			var e_center2 = c.clone().add(m.clone().multiplyScalar(-data.concave_lens.d / 2));
 			[center1, e_center1, center2, e_center2].forEach(function(e) {
 				e.applyMatrix4(element.matrixWorld);
 			});
@@ -334,7 +334,7 @@ function testIntersection(src, dir, element, in_glass) {
 						break;
 					}
 					var angle_r = Math.asin(sin_r);
-					q.dir = n.multiplyScalar(Math.tan(angle_r)).add(q.norm);
+					q.dir = n.multiplyScalar(Math.tan(angle_r)).sub(q.norm);
 					if (in_glass) q.dir.multiplyScalar(-1);
 				}
 				q.in_glass = !in_glass;

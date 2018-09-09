@@ -36,13 +36,13 @@ Place these markers on your desk and play!
 
 ### How does it work?
 
-Currently, the core of **Naruhodo!** is designed as a three-level structure:
+Currently, the core of **Naruhodo!** is designed as a three-layer structure:
 
 *   Layer-3 is the basic layer. It captures video through the camera of the user's device. `AR.js` analyzes the position and orientation of the markers relative to the camera from the video stream.
 *   Layer-2 is the logical layer. In this layer, the light source and other optical instruments are generated from the markers, and the result of the interaction of the light with the optical instruments is calculated.
 *   And Layer-1 is the visualization layer. It uses `three.js` to render the calculated models on the web page.
 
-Here, Ar.js and three.js are two famous open-source libraries. They provide basic AR and model rendering capabilities, respectively. Since they only provide very basic APIs, I still have a lot of work to do.
+Here, Ar.js and three.js are two famous open-source libraries. They provide basic AR and model rendering capabilities, respectively. Since they only provide very basic APIs, I still have a lot of work to do. For example, to make the detection more robust in Layer-3, and to generate 3D models and light sources in Layer-1.
 
 ### How can I deploy?
 
@@ -77,7 +77,7 @@ My inspiration comes from Nintendo LABO and teamLab:star: 's exhibitions. I thin
 | :-----------------------: | :------------------------------: |
 |       Nintendo LABO       |          teamLab:star:           |
 
-#### What will you do next?
+### What will you do next?
 
 *   Make it work better.
 *   Design a simple game about it.
@@ -241,3 +241,5 @@ $$(a^2+b^2+c^2)t^2+\\2(a(x_0-x_b)+b(y_0-y_b)+c(z_0-z_b))t+\\((x_0-x_b)^2+(y_0-y_
 ![15](img-doc/15.png)
 
 ![16](img-doc/16.png)
+
+![17](img-doc/17.png)
