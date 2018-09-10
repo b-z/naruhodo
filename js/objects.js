@@ -14,9 +14,22 @@ function createSphericalMirror(object) {
 	return mesh;
 }
 
+function createMirror(object) {
+	var geometry = new THREE.PlaneGeometry(object.size, object.size);
+	var material = new THREE.MeshPhongMaterial({
+		color: 0xffff00,
+		side: THREE.DoubleSide
+	});
+	var mesh = new THREE.Mesh(geometry, material);
+	mesh.rotation.y = Math.PI / 2;
+	mesh.position.set(0, object.height, 0);
+	mesh.name = 'element_mirr';
+	return mesh;
+}
+
+
+
 function createConvexLens(object) {
-
-
 	var theta = Math.asin(object.r / object.radius);
 	var geometry = new THREE.SphereGeometry(object.radius, 16, 5, 0, Math.PI * 2, 0, theta);
 	// var material1 = new THREE.MeshPhongMaterial({

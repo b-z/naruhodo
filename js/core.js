@@ -83,7 +83,7 @@ function initialize() {
 
 	// let patternArray = ["letterA", "letterB", "letterC", "letterD", "letterF", "kanji", "hiro"];
 	let colorArray = [0xff0000, 0xff8800, 0xffff00, 0x00cc00, 0x0000ff, 0xcc00ff, 0xcccccc];
-	for (let i = 0; i <= 4; i++) {
+	for (let i = 0; i <= 5; i++) {
 		let markerRoot = new THREE.Group();
 		markerRoot.name = 'group_' + i;
 		scene.add(markerRoot);

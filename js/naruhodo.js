@@ -20,6 +20,10 @@ var data = {
 		r: 1.5,
 		height: 1.5
 	},
+	mirror: {
+		size: 3,
+		height: 1.5
+	},
 	light: {
 		scale: 0.5,
 		height: 1.5,
@@ -95,6 +99,7 @@ function addElements(s) {
 	var m2 = s.getObjectByName('group_2');
 	var m3 = s.getObjectByName('group_3');
 	var m4 = s.getObjectByName('group_4');
+	var m5 = s.getObjectByName('group_5');
 	var lens1 = new THREE.Group();
 	lens1.name = 'convex_lens';
 	lens1.add(createConvexLens(data.convex_lens));
@@ -107,6 +112,10 @@ function addElements(s) {
 	mirror1.name = 'spherical_mirror';
 	mirror1.add(createSphericalMirror(data.spherical_mirror));
 	m4.add(mirror1);
+	var mirror2 = new THREE.Group();
+	mirror2.name = 'mirror';
+	mirror2.add(createMirror(data.mirror));
+	m5.add(mirror2);
 }
 
 function updateScene(s) {
@@ -208,10 +217,12 @@ function updateLaser(s) {
 	var convex_lens = s.getObjectByName('group_2').getObjectByName('convex_lens');
 	var concave_lens = s.getObjectByName('group_3').getObjectByName('concave_lens');
 	var spherical_mirror = s.getObjectByName('group_4').getObjectByName('spherical_mirror');
+	var mirror = s.getObjectByName('group_5').getObjectByName('mirror');
 	var elements = {
 		convex_lens: convex_lens,
 		concave_lens: concave_lens,
-		spherical_mirror: spherical_mirror
+		spherical_mirror: spherical_mirror,
+		mirror: mirror
 	};
 
 	var s_laser = s.getObjectByName('group_laser');
@@ -356,8 +367,55 @@ function testIntersection(src, dir, element, in_glass) {
 				q.in_glass = in_glass;
 			}
 			break;
+		case 'mirror':
+			var c = new THREE.Vector3(0, data.mirror.height, 0);
+			var norm = c.clone().add(new THREE.Vector3(1, 0, 0));
+			var size = data.mirror.size;
+			var x = c.clone().add(new THREE.Vector3(0, size / 2, 0));
+			var y = c.clone().add(new THREE.Vector3(0, 0, size / 2));
+			[c, norm, x, y].forEach(function(e) {
+				e.applyMatrix4(element.matrixWorld);
+			});
+			norm.sub(c);
+			x.sub(c);
+			y.sub(c);
+			q = testIntersectionToPlanePart(src, dir, c, x, y, norm);
+			if (q !== null) {
+				q.dir = dir.clone().reflect(q.norm);
+				q.in_glass = in_glass;
+			}
+			break;
 	}
 	return q;
+}
+
+function testIntersectionToPlanePart(src, dir, c, x, y, norm) {
+	var a1 = x.x;
+	var a2 = x.y;
+	var a3 = x.z;
+	var b1 = y.x;
+	var b2 = y.y;
+	var b3 = y.z;
+	var c1 = -dir.x;
+	var c2 = -dir.y;
+	var c3 = -dir.z;
+	var det = a1 * (b2 * c3 - c2 * b3) - a2 * (b1 * c3 - c1 * b3) + a3 * (b1 * c2 - c1 * b2);
+	if (Math.abs(det) < epsilon) return null;
+	var pa = new THREE.Vector3(b2 * c3 - c2 * b3, c1 * b3 - b1 * c3, b1 * c2 - c1 * b2);
+	var pb = new THREE.Vector3(c2 * a3 - a2 * c3, a1 * c3 - c1 * a3, a1 * c2 - c1 * a2);
+	var pt = new THREE.Vector3(a2 * b3 - b2 * a3, b1 * a3 - a1 * b3, a1 * b2 - b1 * a2);
+	var s = src.clone().sub(c);
+	var a = pa.dot(s) / det;
+	var b = pb.dot(s) / det;
+	var t = pt.dot(s) / det;
+	if (t < epsilon) return null;
+	if (a > 1 || b > 1 || a < -1 || b < -1) return null;
+	// console.log(t);
+	var pos = c.clone().add(x.clone().multiplyScalar(a)).add(y.clone().multiplyScalar(b));
+	return {
+		pos: src.clone().add(dir.clone().multiplyScalar(t)),
+		norm: norm
+	}
 }
 
 function testIntersectionToSpherePart(src, dir, center, R, r, e_center) {
