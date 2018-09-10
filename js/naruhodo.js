@@ -406,7 +406,7 @@ function testIntersectionToPlanePart(src, dir, c, x, y, norm) {
 	var det = a1 * (b2 * c3 - c2 * b3) - a2 * (b1 * c3 - c1 * b3) + a3 * (b1 * c2 - c1 * b2);
 	if (Math.abs(det) < epsilon) return null;
 	var pa = new THREE.Vector3(b2 * c3 - c2 * b3, c1 * b3 - b1 * c3, b1 * c2 - c1 * b2);
-	var pb = new THREE.Vector3(c2 * a3 - a2 * c3, a1 * c3 - c1 * a3, a1 * c2 - c1 * a2);
+	var pb = new THREE.Vector3(c2 * a3 - a2 * c3, a1 * c3 - c1 * a3, c1 * a2 - a1 * c2);
 	var pt = new THREE.Vector3(a2 * b3 - b2 * a3, b1 * a3 - a1 * b3, a1 * b2 - b1 * a2);
 	var s = src.clone().sub(c);
 	var a = pa.dot(s) / det;
@@ -417,7 +417,7 @@ function testIntersectionToPlanePart(src, dir, c, x, y, norm) {
 	// console.log(t);
 	var pos = c.clone().add(x.clone().multiplyScalar(a)).add(y.clone().multiplyScalar(b));
 	return {
-		pos: src.clone().add(dir.clone().multiplyScalar(t)),
+		pos: pos,//src.clone().add(dir.clone().multiplyScalar(t)),
 		norm: norm
 	}
 }
