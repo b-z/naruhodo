@@ -244,12 +244,12 @@ function updateLaser(s) {
 				p2.applyMatrix4(plane.matrixWorld).add(laser_offsets[l]);
 			}
 			var dir = p2.clone().sub(p1).normalize();
-			castLaser(s_laser, elements, p1, dir, false);
+			castLaser(s_laser, elements, p1, dir, false, 'white');
 		}
 	}
 }
 
-function castLaser(s_laser, elements, src, dir, in_glass) {
+function castLaser(s_laser, elements, src, dir, in_glass, color) {
 	// 发射射线，遇到光学器件会做相应处理
 	if (s_laser.children.length <= laser_idx) {
 		s_laser.add(generateLaser());
@@ -265,11 +265,11 @@ function castLaser(s_laser, elements, src, dir, in_glass) {
 	if (intersections.length && intersections[0] !== null) {
 		var p = intersections[0];
 		// if (!in_glass) setLaser(s_laser.children[laser_idx], src, p.pos);
-		setLaser(s_laser.children[laser_idx], src, p.pos);
+		setLaser(s_laser.children[laser_idx], src, p.pos, color);
 		laser_idx++;
-		castLaser(s_laser, elements, p.pos, p.dir, p.in_glass);
+		castLaser(s_laser, elements, p.pos, p.dir, p.in_glass, p.color);
 	} else {
-		setLaser(s_laser.children[laser_idx], src, src.clone().add(dir.clone().multiplyScalar(1000)));
+		setLaser(s_laser.children[laser_idx], src, src.clone().add(dir.clone().multiplyScalar(1000)), color);
 		laser_idx++;
 	}
 }
@@ -313,6 +313,7 @@ function testIntersection(src, dir, element, in_glass) {
 					if (in_glass) q.dir.multiplyScalar(-1);
 				}
 				q.in_glass = !in_glass;
+				q.color = 'red';
 			}
 			break;
 		case 'concave_lens':
@@ -349,6 +350,7 @@ function testIntersection(src, dir, element, in_glass) {
 					if (in_glass) q.dir.multiplyScalar(-1);
 				}
 				q.in_glass = !in_glass;
+				q.color = 'blue';
 			}
 			break;
 		case 'spherical_mirror':
@@ -365,6 +367,7 @@ function testIntersection(src, dir, element, in_glass) {
 			if (q !== null) {
 				q.dir = dir.clone().reflect(q.norm);
 				q.in_glass = in_glass;
+				q.color = 'green';
 			}
 			break;
 		case 'mirror':
@@ -383,6 +386,7 @@ function testIntersection(src, dir, element, in_glass) {
 			if (q !== null) {
 				q.dir = dir.clone().reflect(q.norm);
 				q.in_glass = in_glass;
+				q.color = 'green';
 			}
 			break;
 	}
@@ -459,7 +463,7 @@ function testIntersectionToSphere(src, dir, center, R) {
 	return result;
 }
 
-function setLaser(laser, p1, p2) {
+function setLaser(laser, p1, p2, color) {
 	// 将laser对象绘制在p1到p2两点之间
 	laser.visible = true;
 	laser.position.copy(p1).lerp(p2, 0.5);
@@ -469,6 +473,20 @@ function setLaser(laser, p1, p2) {
 	sub.normalize();
 	var axis = new THREE.Vector3(0, 0, 1);
 	laser.quaternion.setFromUnitVectors(axis, sub);
+	switch (color) {
+		case 'red':
+			laser.children[0].material.emissive = new THREE.Color(1, 1 / 3, 1 / 3);
+			break;
+		case 'green':
+			laser.children[0].material.emissive = new THREE.Color(1 / 3, 1, 1 / 3);
+			break;
+		case 'blue':
+			laser.children[0].material.emissive = new THREE.Color(1 / 3, 1 / 3, 1);
+			break;
+		default:
+			laser.children[0].material.emissive = new THREE.Color(1, 1, 1);
+			break;
+	}
 }
 
 function generateLaser() {

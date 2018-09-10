@@ -16,10 +16,20 @@ function createSphericalMirror(object) {
 
 function createMirror(object) {
 	var geometry = new THREE.PlaneGeometry(object.size, object.size);
-	var material = new THREE.MeshPhongMaterial({
-		color: 0xffff00,
-		side: THREE.DoubleSide
-	});
+	var testTexture = new THREE.Texture(generateTexture());
+	testTexture.needsUpdate = true;
+	var material =
+		new THREE.MeshBasicMaterial({
+			map: testTexture,
+			side: THREE.DoubleSide,
+			// transparent: true
+			// color: 0xff0000,
+			// blending: THREE.SubtractiveBlending
+		});
+	// new THREE.MeshPhongMaterial({
+	// 	color: 0xffff00,
+	// 	side: THREE.DoubleSide
+	// });
 	var mesh = new THREE.Mesh(geometry, material);
 	mesh.rotation.y = Math.PI / 2;
 	mesh.position.set(0, object.height, 0);
