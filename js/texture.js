@@ -5,6 +5,47 @@ var videoTexture,
 	refractMaterial2, // concave
 	refractMaterial3; // mirror
 
+var waterMaterial1, waterMaterial2, waterMaterial3;
+
+function createWaterTexture() {
+    let loader = new THREE.TextureLoader();
+    let ntexture = loader.load('img/waternormals.jpg');
+    let texture = loader.load('img/water.jpg');
+
+    waterMaterial1 = new THREE.MeshPhongMaterial({
+        normalMap: ntexture,
+        emissive: 0xaa80e4,
+        // emissiveIntensity: 0.7,
+        color: 0xaa80e4,
+        map: texture,
+        transparent: true,
+        opacity: 0.85,
+        side: THREE.DoubleSide
+    });
+
+    waterMaterial2 = new THREE.MeshPhongMaterial({
+        normalMap: ntexture,
+        emissive: 0x80e4c3,
+        // emissiveIntensity: 0.7,
+        color: 0x80e4c3,
+        map: texture,
+        transparent: true,
+        opacity: 0.85,
+        side: THREE.DoubleSide
+    });
+
+    waterMaterial3 = new THREE.MeshPhongMaterial({
+        normalMap: ntexture,
+        emissive: 0x80d3e4,
+        // emissiveIntensity: 0.7,
+        color: 0x80d3e4,
+        map: texture,
+        transparent: true,
+        opacity: 0.85,
+        side: THREE.DoubleSide
+    });
+}
+
 function createGlassTexture() {
 	videoTexture = new THREE.VideoTexture(arToolkitSource.domElement);
 	videoTexture.minFilter = THREE.LinearFilter;
@@ -29,6 +70,7 @@ function createGlassTexture() {
 		},
 		vertexShader: document.getElementById('vertexShader').textContent,
 		fragmentShader: document.getElementById('fragmentShader').textContent,
+
 		transparent: true,
 		// side: THREE.DoubleSide
 	});

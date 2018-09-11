@@ -53,8 +53,9 @@ $(document).ready(function() {
 });
 
 function loadApplication() {
+    createWaterTexture();
 	initialize();
-	createGlassTexture();
+    // createGlassTexture();
 	initSettings();
 	animate();
 }

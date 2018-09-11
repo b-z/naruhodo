@@ -3,29 +3,29 @@
 var data = {
 	convex_lens: {
 		radius: 10,
-		r: 1.5,
+		r: 1.0,
 		d: 0.1,
 		n: 1.458,
 		height: 1.5
 	},
 	concave_lens: {
 		radius: 10,
-		r: 1.5,
+		r: 1.0,
 		d: 0.1,
 		n: 1.458,
 		height: 1.5
 	},
 	spherical_mirror: {
 		radius: 4,
-		r: 1.5,
+		r: 1.0,
 		height: 1.5
 	},
 	mirror: {
-		size: 3,
+		size: 2.0,
 		height: 1.5
 	},
 	light: {
-		scale: 0.5,
+		scale: 0.4,
 		height: 1.5,
 		number_of_rays: 20,
 		use_point_light: false,
@@ -313,7 +313,7 @@ function testIntersection(src, dir, element, in_glass) {
 					if (in_glass) q.dir.multiplyScalar(-1);
 				}
 				q.in_glass = !in_glass;
-				q.color = 'red';
+				q.color = 'blue';
 			}
 			break;
 		case 'concave_lens':
@@ -350,7 +350,7 @@ function testIntersection(src, dir, element, in_glass) {
 					if (in_glass) q.dir.multiplyScalar(-1);
 				}
 				q.in_glass = !in_glass;
-				q.color = 'blue';
+				q.color = 'red';
 			}
 			break;
 		case 'spherical_mirror':
