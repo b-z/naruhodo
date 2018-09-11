@@ -72,9 +72,9 @@ function initSettings() {
 	onChangeDivergenceAngle();
 	onChangeUsePointLight();
 	$('#number_of_rays').on('input change', onChangeNumberOfRays);
-	$('#convex_lens_radius').on('input change', onChangeConvexLensRadius);
-	$('#concave_lens_radius').on('input change', onChangeConcaveLensRadius);
-	$('#spherical_mirror_radius').on('input change', onChangeSphericalMirrorRadius);
+	$('#convex_lens_f').on('input change', onChangeConvexLensRadius);
+	$('#concave_lens_f').on('input change', onChangeConcaveLensRadius);
+	$('#spherical_mirror_f').on('input change', onChangeSphericalMirrorRadius);
 	$('#divergence_angle').on('input change', onChangeDivergenceAngle);
 	$('#use_point_light').change(onChangeUsePointLight);
 }
@@ -85,9 +85,12 @@ function onChangeNumberOfRays() {
 }
 
 function onChangeConvexLensRadius() {
-	data.convex_lens.radius = parseFloat($('#convex_lens_radius').val());
+	var f = parseFloat($('#convex_lens_f').val()) / 4;
+	var radius = 2 / (1 / f / (data.convex_lens.n - 1));
+	data.convex_lens.radius = radius;
 	data.convex_lens.radius = Math.max(data.convex_lens.radius, data.convex_lens.r);
-	$('#convex_lens_radius_label').text($('#convex_lens_radius').val());
+	$('#convex_lens_f_label').text($('#convex_lens_f').val());
+	$('#convex_lens_radius_label').text(Math.round(radius * 4 * 100) / 100);
 	if (scene) {
 		var group = scene.getObjectByName('convex_lens');
 		if (group) {
@@ -104,9 +107,12 @@ function onChangeConvexLensRadius() {
 }
 
 function onChangeConcaveLensRadius() {
-	data.concave_lens.radius = parseFloat($('#concave_lens_radius').val());
+	var f = parseFloat($('#concave_lens_f').val()) / 4;
+	var radius = 2 / (1 / f / (data.concave_lens.n - 1));
+	data.concave_lens.radius = radius;
 	data.concave_lens.radius = Math.max(data.concave_lens.radius, data.concave_lens.r);
-	$('#concave_lens_radius_label').text($('#concave_lens_radius').val());
+	$('#concave_lens_f_label').text($('#concave_lens_f').val());
+	$('#concave_lens_radius_label').text(Math.round(radius * 4 * 100) / 100);
 	if (scene) {
 		var group = scene.getObjectByName('concave_lens');
 		if (group) {
@@ -123,9 +129,12 @@ function onChangeConcaveLensRadius() {
 }
 
 function onChangeSphericalMirrorRadius() {
-	data.spherical_mirror.radius = parseFloat($('#spherical_mirror_radius').val());
+	var f = parseFloat($('#spherical_mirror_f').val()) / 4;
+	var radius = f * 2;
+	data.spherical_mirror.radius = radius;
 	data.spherical_mirror.radius = Math.max(data.spherical_mirror.radius, data.spherical_mirror.r);
-	$('#spherical_mirror_radius_label').text($('#spherical_mirror_radius').val());
+	$('#spherical_mirror_f_label').text($('#spherical_mirror_f').val());
+	$('#spherical_mirror_radius_label').text(Math.round(radius * 4 * 100) / 100);
 	if (scene) {
 		var group = scene.getObjectByName('spherical_mirror');
 		if (group) {

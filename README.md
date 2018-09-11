@@ -171,15 +171,17 @@ $$src+t\cdot dir=c+a\cdot x+b\cdot y$$
 * [ ] 加入游戏关卡设置
 * [x] 调整元件参数时，动态改变mesh的形状
 * [x] 支持多种颜色的光线
-      * [ ] 是否要做渐变的光线? 比如opacity越来越高
+      * [ ] ~~是否要做渐变的光线? 比如opacity越来越高~~
 * [x] 增加平面镜
 * [x] ~~不显示透镜内部的光线，以加速~~
 * [x] 与光学元件求交之后，对所有潜在交点排序
 * [ ] 去除双缝实验，改为自由模式与游戏模式
 * [ ] 增加音效
 * [x] 做成积木块
-* [ ] 元件换个颜色，现在丑爆了，弄一个这种材质? https://www.etsy.com/jp/listing/627682478/detroit-become-human-cyberlife-tote-bag?ref=shop_home_active_5
+* [x] 元件换个颜色，现在丑爆了，弄一个这种材质? https://www.etsy.com/jp/listing/627682478/detroit-become-human-cyberlife-tote-bag?ref=shop_home_active_5
 * [ ] 凹透镜外围封起来
+* [ ] 强制让所有marker共面!
+* [x] 调整元件参数，改为调整焦距，并在上面标出球半径，与长度单位
 
 ### Development log
 
@@ -225,6 +227,10 @@ $$src+t\cdot dir=c+a\cdot x+b\cdot y$$
 *   9.10
     *   支持平面镜
     *   支持不同颜色的光
+    *   更换了一种显示的材质
+*   9.11
+    *   调整半径改为调整焦距，球半径会自动根据焦距计算
+    *   平均各个marker坐标系的位置及朝向
 
 ### Gallery
 
@@ -261,3 +267,7 @@ $$src+t\cdot dir=c+a\cdot x+b\cdot y$$
 ![16](img-doc/16.png)
 
 ![17](img-doc/17.png)
+
+![18](img-doc/18.png)
+
+![19](img-doc/19.png)
