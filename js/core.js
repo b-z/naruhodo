@@ -85,8 +85,11 @@ function initialize() {
 	let colorArray = [0xff0000, 0xff8800, 0xffff00, 0x00cc00, 0x0000ff, 0xcc00ff, 0xcccccc];
 	for (let i = 0; i <= 5; i++) {
 		let markerRoot = new THREE.Group();
-		markerRoot.name = 'group_' + i;
+		let group = new THREE.Group();
+		markerRoot.name = 'marker_' + i;
+		group.name = 'group_' + i;
 		scene.add(markerRoot);
+		scene.add(group);
 		let markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
 			size: 1,
 			type: 'barcode',
@@ -113,12 +116,13 @@ function initialize() {
 		helper.position.y = 0;
 		// helper.material.opacity = 0.9;
 		// helper.material.transparent = true;
-		markerRoot.add(helper);
+		group.add(helper);
 
 		var axis = new THREE.AxesHelper();
 		axis.scale.set(1, 1, 1);
 		// axis.position.set(0, 0.5, 0);
-		markerRoot.add(axis);
+		group.add(axis);
+		group.matrixAutoUpdate = true;
 	}
 	initializeScene(scene);
 }
@@ -128,8 +132,8 @@ function update() {
 	// update artoolkit on every frame
 	if (arToolkitSource.ready !== false) {
 		arToolkitContext.update(arToolkitSource.domElement);
+		updateScene(scene);
 	}
-	updateScene(scene);
 }
 
 

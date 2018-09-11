@@ -11,7 +11,7 @@ var data = {
 	concave_lens: {
 		radius: 10,
 		r: 1.0,
-		d: 0.1,
+		d: 0.02,
 		n: 1.458,
 		height: 1.5
 	},
@@ -123,7 +123,7 @@ function updateScene(s) {
 }
 
 function updateOpticsScene(s) {
-	adjustMarkers(s);
+	// adjustMarkers(s);
 	updateLaser(s);
 
 	// let m_plane1 = s.getObjectByName('group_0');
@@ -168,7 +168,80 @@ function initializeLaserOffset() {
 	}
 }
 
-function adjustMarkers(s) {
+function adjustMarkers(markers, groups) {
+	// return;
+	var m = [];
+	var g = [];
+	for (var i = 0; i < markers.length; i++) {
+		if (markers[i].visible) {
+			m.push(markers[i]);
+			g.push(groups[i]);
+		}
+		groups[i].visible = markers[i].visible;
+	}
+	// first, rotate to a same rotation
+	if (!m.length) return;
+	// var dir = m.reduce(function(p, obj) {
+	// 	var v = new THREE.Vector3(0, 1, 0);
+	// 	v.applyMatrix4(obj.matrixWorld).sub(obj.position).add(p);
+	// 	return v;
+	// }, new THREE.Vector3(0, 0, 0));
+	// dir.normalize();
+	// m.forEach(function(obj) {
+	// 	var q = new THREE.Quaternion();
+	// 	var v = new THREE.Vector3(0, 0, 1);
+	// 	v.applyMatrix4(obj.matrixWorld).sub(obj.position).normalize();
+	// 	q.setFromUnitVectors(v, dir);
+	// });
+
+	// then move to a same level
+	var x = new THREE.Vector3(1, 0, 0);
+	var y = new THREE.Vector3(0, 1, 0);
+	var z = new THREE.Vector3(0, 0, 1);
+	x.applyMatrix4(m[0].matrixWorld).sub(m[0].position);
+	y.applyMatrix4(m[0].matrixWorld).sub(m[0].position);
+	z.applyMatrix4(m[0].matrixWorld).sub(m[0].position);
+	var a1 = x.x;
+	var a2 = x.y;
+	var a3 = x.z;
+	var b1 = y.x;
+	var b2 = y.y;
+	var b3 = y.z;
+	var c1 = z.x;
+	var c2 = z.y;
+	var c3 = z.z;
+	var det = a1 * (b2 * c3 - c2 * b3) - a2 * (b1 * c3 - c1 * b3) + a3 * (b1 * c2 - c1 * b2);
+	// if (Math.abs(det) < epsilon) return null;
+	var px = new THREE.Vector3(b2 * c3 - c2 * b3, c1 * b3 - b1 * c3, b1 * c2 - c1 * b2);
+	var py = new THREE.Vector3(c2 * a3 - a2 * c3, a1 * c3 - c1 * a3, c1 * a2 - a1 * c2);
+	var pz = new THREE.Vector3(a2 * b3 - b2 * a3, b1 * a3 - a1 * b3, a1 * b2 - b1 * a2);
+
+	var kys = [];
+	m.forEach(function(obj) {
+		var pos = obj.position;
+		var ky = py.dot(pos) / det;
+		// kx * x + ky * y + kz * z
+		// should average the ky;
+		kys.push(ky);
+	});
+	var avg = 0;
+	for (var k of kys) avg += k;
+	avg /= m.length;
+
+	for (var i = 0; i < m.length; i++) {
+		var obj = m[i];
+		var pos = obj.position;
+		var kx = px.dot(pos) / det;
+		var kz = pz.dot(pos) / det;
+		// kx * x + ky * y + avg * z
+		var npos = new THREE.Vector3(0, 0, 0);
+		npos.add(x.clone().multiplyScalar(kx));
+		npos.add(y.clone().multiplyScalar(avg));
+		npos.add(z.clone().multiplyScalar(kz));
+		g[i].position.copy(npos);
+		g[i].quaternion.copy(m[i].quaternion);
+	}
+
 	// for (var i = 0; i <= 4; i++) {
 	// 	var m = s.getObjectByName('group_' + i);
 	// 	// if (m.visible) console.log(m.rotation);
@@ -210,14 +283,25 @@ var laser_offsets;
 
 function updateLaser(s) {
 	// 更新所有的laser
-	var m0 = s.getObjectByName('group_0');
-	var m1 = s.getObjectByName('group_1');
+	var m0 = s.getObjectByName('marker_0');
+	var m1 = s.getObjectByName('marker_1');
+	var m2 = s.getObjectByName('marker_2');
+	var m3 = s.getObjectByName('marker_3');
+	var m4 = s.getObjectByName('marker_4');
+	var m5 = s.getObjectByName('marker_5');
+	var g0 = s.getObjectByName('group_0');
+	var g1 = s.getObjectByName('group_1');
+	var g2 = s.getObjectByName('group_2');
+	var g3 = s.getObjectByName('group_3');
+	var g4 = s.getObjectByName('group_4');
+	var g5 = s.getObjectByName('group_5');
 	var plane = s.getObjectByName('group_plane');
-	updatePlane(m0, m1, plane);
-	var convex_lens = s.getObjectByName('group_2').getObjectByName('convex_lens');
-	var concave_lens = s.getObjectByName('group_3').getObjectByName('concave_lens');
-	var spherical_mirror = s.getObjectByName('group_4').getObjectByName('spherical_mirror');
-	var mirror = s.getObjectByName('group_5').getObjectByName('mirror');
+	adjustMarkers([m0, m1, m2, m3, m4, m5], [g0, g1, g2, g3, g4, g5]);
+	updatePlane(g0, g1, plane);
+	var convex_lens = g2.getObjectByName('convex_lens');
+	var concave_lens = g3.getObjectByName('concave_lens');
+	var spherical_mirror = g4.getObjectByName('spherical_mirror');
+	var mirror = g5.getObjectByName('mirror');
 	var elements = {
 		convex_lens: convex_lens,
 		concave_lens: concave_lens,
@@ -230,7 +314,7 @@ function updateLaser(s) {
 		c.visible = false;
 	}
 	laser_idx = 0;
-	if (m0.visible || m1.visible) {
+	if (g0.visible || g1.visible) {
 		for (var l = 0; l < Math.min(data.light.number_of_rays, laser_offsets.length); l++) {
 			var p1 = laser_offset.clone();
 			var p2 = laser_offset.clone().add(new THREE.Vector3(data.light.d, 0, 0));
@@ -417,7 +501,7 @@ function testIntersectionToPlanePart(src, dir, c, x, y, norm) {
 	// console.log(t);
 	var pos = c.clone().add(x.clone().multiplyScalar(a)).add(y.clone().multiplyScalar(b));
 	return {
-		pos: pos,//src.clone().add(dir.clone().multiplyScalar(t)),
+		pos: pos, //src.clone().add(dir.clone().multiplyScalar(t)),
 		norm: norm
 	}
 }
