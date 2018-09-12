@@ -28,7 +28,7 @@ AR ([Augmented Reality](https://en.wikipedia.org/wiki/Augmented_reality)) is a n
 
 First, you should print some markers (`naruhodo/markers-print/print.pdf`):
 
-<img src="markers-print/print-preview.png" width="10cm">
+<img src="markers-print/print-preview.png" width="400px">
 
 The last two together constitute a light source, and the other four markers are convex lens, concave lens, spherical mirror and plane mirror, respectively.
 
@@ -82,7 +82,177 @@ My inspiration comes from Nintendo LABO and teamLab:star: 's exhibitions. I thin
 *   Make it work better.
 *   Design a simple game about it.
 
+### Gallery
+
+![1](img-doc/1.png)
+
+:arrow_up_small: Test the detection of the markers
+
+![2](img-doc/2.png)
+
+:arrow_up_small: Add a plane according to the average position & rotation of the markers (deprecated now)
+
+![3](img-doc/3.png)
+
+:arrow_up_small: Add a light to the scene
+
+![4](img-doc/4.png)
+
+![5](img-doc/5.png)
+
+:arrow_up_small: Draw a thick laser between two points
+
+![6](img-doc/6.png)
+
+:arrow_up_small: A point light :tada:
+
+![7](img-doc/7.png)
+
+:arrow_up_small: Add GUI to the prototype. (Mobile & Computer)
+
+![8](img-doc/8.png)
+
+:arrow_up_small: Emmmmm...An invisible concave mirror.
+
+![9](img-doc/9.png)
+
+:arrow_up_small: The concave mirror is shown both on mobile and computer
+
+![10](img-doc/10.png)
+
+:arrow_up_small: A invisible convex lens
+
+![11](img-doc/11.png)
+
+:arrow_up_small: The concave mirror is now visible :tada:
+
+![12](img-doc/12.jpg)
+
+:arrow_up_small: Some notes
+
+![13](img-doc/13.png)
+
+![14](img-doc/14.png)
+
+:arrow_up_small: Draw a lemon :lemon:
+
+![15](img-doc/15.png)
+
+:arrow_up_small: Test the refraction (deprecated now)
+
+![16](img-doc/16.png)
+
+:arrow_up_small: Test complex cases
+
+![17](img-doc/17.png)
+
+:arrow_up_small: Test complex cases
+
+![18](img-doc/18.png)
+
+:arrow_up_small: Add a texture to the mirror (deprecated now) and support colorful lasers
+
+![19](img-doc/19.png)
+
+:arrow_up_small: Add some textures to the elements
+
+![20](img-doc/20.png)
+
+:arrow_up_small: Use average rotation and height among the markers
+
+![21](img-doc/21.png)
+
+:arrow_up_small: Draw a base under each element
+
 ***
+
+### To-do list
+
+* [ ] ~~@bug: 有时候识别marker会上下颠倒。对于单一的marker，这个是无解的，两种方向在现实中都可以解释通。感觉只能强行靠其他marker规定方向。~~
+* [x] 对每个光学元件，使用两个marker确保可靠?
+      * [x] 插值光源位置
+      * [ ] ~~插值其他器件~~
+* [ ] ~~增加一个双缝干涉实验?~~
+* [ ] 做得尽量像教科书的
+* [ ] 在marker旁边标注一些图、文字
+* [x] @bug: 反射光线从反射点射出来的时候会和镜面本身有交点，需要将这个点排除(交点距离光源长度应大于$\varepsilon$)
+* [ ] 使用mathjax显示相关公式
+* [x] 允许设置光线数量
+* [x] 允许设置光线发散程度
+* [x] 注意一下控制台冒出来的警告⚠️?
+      *  是因为光线从玻璃射出的时候发生了全反射，导致折射公式求解失败
+* [ ] ~~对渲染使用后处理，看起来更酷炫点~~ 性能代价太大了 放弃
+* [ ] 在修改元件参数时，在AR场景中绘制相关辅助信息
+* [ ] 加入游戏关卡设置
+* [x] 调整元件参数时，动态改变mesh的形状
+* [x] 支持多种颜色的光线
+      * [ ] ~~是否要做渐变的光线? 比如opacity越来越高~~
+* [x] 增加平面镜
+* [x] ~~不显示透镜内部的光线，以加速~~
+* [x] 与光学元件求交之后，对所有潜在交点排序
+* [x] 去除双缝实验，改为自由模式与游戏模式
+* [ ] 增加音效
+* [x] 做成积木块
+* [x] 元件换个颜色，现在丑爆了，弄一个这种材质? https://www.etsy.com/jp/listing/627682478/detroit-become-human-cyberlife-tote-bag?ref=shop_home_active_5
+* [ ] ~~凹透镜外围封起来~~
+* [x] 强制让所有marker共面!
+* [x] 调整元件参数，改为调整焦距，并在上面标出球半径，与长度单位
+* [ ] 除了点光源可以调整角度之外，平行光源也可以调整
+* [x] 绘制元件的底座
+* [ ] 绘制光源
+* [ ] ~~绘制text，需要始终面向用户~~ 代价可能比较大
+* [ ] 光线的颜色与元件颜色统一
+
+### Development log
+
+*   9.1
+    *   确定使用AR做桌上实验模拟
+    *   调研AR的开源工具，确定可行性
+*   9.2
+    *   建立github仓库
+    *   打印各种marker
+    *   尝试marker识别的demo
+*   9.3
+    *   支持使用barcode
+    *   支持使用多个marker
+    *   增加截图功能
+    *   增加grid的绘制
+*   9.4
+    *   绘制光线、同步光线坐标系与marker坐标系
+    *   加入UI
+*   9.5
+    *   修复手机浏览器上UI不正常的问题(非常坑)
+    *   画了个icon
+    *   美化UI
+    *   添加球面镜元件，但有bug
+*   9.6
+    *   修复反射光线抖动的bug
+    *   支持自定义参数
+        *   球面镜的球半径
+        *   点光源/平行光源
+        *   光源光线数量
+        *   点光源发散度
+    *   光源使用双marker，插值增加稳定性，缺失一个也可以工作
+    *   实现凸透镜
+*   9.7
+    *   修复全反射导致的bug
+    *   显示凸透镜、球面镜的mesh
+    *   支持动态调整mesh的参数
+    *   光源由"球体"修改成"圆周"的
+    *   美化封面
+*   9.8
+    *   支持透明材质
+*   9.9
+    *   支持凹透镜
+*   9.10
+    *   支持平面镜
+    *   支持不同颜色的光
+    *   更换了一种显示的材质
+*   9.11
+    *   调整半径改为调整焦距，球半径会自动根据焦距计算
+    *   平均各个marker坐标系的位置及朝向
+*   9.12
+    *   绘制元件底座
 
 ### 光线与光学器件求交
 
@@ -184,127 +354,3 @@ z.applyMatrix4(m[0].matrixWorld).sub(m[0].position);
     *   可以自由调整各个器材的光学参数
     *   与现实结合，可体会到对象实际尺度
 
-### To-do list
-
-* [ ] ~~@bug: 有时候识别marker会上下颠倒。对于单一的marker，这个是无解的，两种方向在现实中都可以解释通。感觉只能强行靠其他marker规定方向。~~
-* [x] 对每个光学元件，使用两个marker确保可靠?
-      * [x] 插值光源位置
-      * [ ] ~~插值其他器件~~
-* [ ] ~~增加一个双缝干涉实验?~~
-* [ ] 做得尽量像教科书的
-* [ ] 在marker旁边标注一些图、文字
-* [x] @bug: 反射光线从反射点射出来的时候会和镜面本身有交点，需要将这个点排除(交点距离光源长度应大于$\varepsilon$)
-* [ ] 使用mathjax显示相关公式
-* [x] 允许设置光线数量
-* [x] 允许设置光线发散程度
-* [x] 注意一下控制台冒出来的警告⚠️?
-      *  是因为光线从玻璃射出的时候发生了全反射，导致折射公式求解失败
-* [ ] ~~对渲染使用后处理，看起来更酷炫点~~ 性能代价太大了 放弃
-* [ ] 在修改元件参数时，在AR场景中绘制相关辅助信息
-* [ ] 加入游戏关卡设置
-* [x] 调整元件参数时，动态改变mesh的形状
-* [x] 支持多种颜色的光线
-      * [ ] ~~是否要做渐变的光线? 比如opacity越来越高~~
-* [x] 增加平面镜
-* [x] ~~不显示透镜内部的光线，以加速~~
-* [x] 与光学元件求交之后，对所有潜在交点排序
-* [x] 去除双缝实验，改为自由模式与游戏模式
-* [ ] 增加音效
-* [x] 做成积木块
-* [x] 元件换个颜色，现在丑爆了，弄一个这种材质? https://www.etsy.com/jp/listing/627682478/detroit-become-human-cyberlife-tote-bag?ref=shop_home_active_5
-* [ ] 凹透镜外围封起来
-* [x] 强制让所有marker共面!
-* [x] 调整元件参数，改为调整焦距，并在上面标出球半径，与长度单位
-* [ ] 除了点光源可以调整角度之外，平行光源也可以调整
-* [ ] 绘制元件的底座
-* [ ] 绘制光源
-* [ ] 绘制text，需要始终面向用户
-
-### Development log
-
-*   9.1
-    *   确定使用AR做桌上实验模拟
-    *   调研AR的开源工具，确定可行性
-*   9.2
-    *   建立github仓库
-    *   打印各种marker
-    *   尝试marker识别的demo
-*   9.3
-    *   支持使用barcode
-    *   支持使用多个marker
-    *   增加截图功能
-    *   增加grid的绘制
-*   9.4
-    *   绘制光线、同步光线坐标系与marker坐标系
-    *   加入UI
-*   9.5
-    *   修复手机浏览器上UI不正常的问题(非常坑)
-    *   画了个icon
-    *   美化UI
-    *   添加球面镜元件，但有bug
-*   9.6
-    *   修复反射光线抖动的bug
-    *   支持自定义参数
-        *   球面镜的球半径
-        *   点光源/平行光源
-        *   光源光线数量
-        *   点光源发散度
-    *   光源使用双marker，插值增加稳定性，缺失一个也可以工作
-    *   实现凸透镜
-*   9.7
-    *   修复全反射导致的bug
-    *   显示凸透镜、球面镜的mesh
-    *   支持动态调整mesh的参数
-    *   光源由"球体"修改成"圆周"的
-    *   美化封面
-*   9.8
-    *   支持透明材质
-*   9.9
-    *   支持凹透镜
-*   9.10
-    *   支持平面镜
-    *   支持不同颜色的光
-    *   更换了一种显示的材质
-*   9.11
-    *   调整半径改为调整焦距，球半径会自动根据焦距计算
-    *   平均各个marker坐标系的位置及朝向
-
-### Gallery
-
-![1](img-doc/1.png)
-
-![2](img-doc/2.png)
-
-![3](img-doc/3.png)
-
-![4](img-doc/4.png)
-
-![5](img-doc/5.png)
-
-![6](img-doc/6.png)
-
-![7](img-doc/7.png)
-
-![8](img-doc/8.png)
-
-![9](img-doc/9.png)
-
-![10](img-doc/10.png)
-
-![11](img-doc/11.png)
-
-![12](img-doc/12.jpg)
-
-![13](img-doc/13.png)
-
-![14](img-doc/14.png)
-
-![15](img-doc/15.png)
-
-![16](img-doc/16.png)
-
-![17](img-doc/17.png)
-
-![18](img-doc/18.png)
-
-![19](img-doc/19.png)
