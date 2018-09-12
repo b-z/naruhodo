@@ -118,10 +118,20 @@ function initialize() {
 		// helper.material.transparent = true;
 		group.add(helper);
 
-		var axis = new THREE.AxesHelper();
-		axis.scale.set(1, 1, 1);
-		// axis.position.set(0, 0.5, 0);
-		group.add(axis);
+		// var plane = new THREE.Mesh(
+		// 	new THREE.PlaneGeometry(1.25, 1.25),
+		// 	new THREE.MeshPhongMaterial({
+		// 		color: 0xffffff,
+		// 		side: THREE.DoubleSide
+		// 	})
+		// );
+		// plane.rotation.x = Math.PI / 2;
+		// group.add(plane);
+
+		// var axis = new THREE.AxesHelper();
+		// axis.scale.set(1, 1, 1);
+		// // axis.position.set(0, 0.5, 0);
+		// group.add(axis);
 		group.matrixAutoUpdate = true;
 	}
 	initializeScene(scene);

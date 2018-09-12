@@ -218,6 +218,7 @@ z.applyMatrix4(m[0].matrixWorld).sub(m[0].position);
 * [ ] 除了点光源可以调整角度之外，平行光源也可以调整
 * [ ] 绘制元件的底座
 * [ ] 绘制光源
+* [ ] 绘制text，需要始终面向用户
 
 ### Development log
 

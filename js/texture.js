@@ -8,42 +8,42 @@ var videoTexture,
 var waterMaterial1, waterMaterial2, waterMaterial3;
 
 function createWaterTexture() {
-    let loader = new THREE.TextureLoader();
-    let ntexture = loader.load('img/waternormals.jpg');
-    let texture = loader.load('img/water.jpg');
+	let loader = new THREE.TextureLoader();
+	let ntexture = loader.load('img/waternormals.jpg');
+	let texture = loader.load('img/water.jpg');
 
-    waterMaterial1 = new THREE.MeshPhongMaterial({
-        normalMap: ntexture,
-        emissive: 0xaa80e4,
-        // emissiveIntensity: 0.7,
-        color: 0xaa80e4,
-        map: texture,
-        transparent: true,
-        opacity: 0.85,
-        side: THREE.DoubleSide
-    });
+	waterMaterial1 = new THREE.MeshPhongMaterial({
+		normalMap: ntexture,
+		emissive: 0xaa80e4,
+		// emissiveIntensity: 0.7,
+		color: 0xaa80e4,
+		map: texture,
+		transparent: true,
+		opacity: 0.85,
+		side: THREE.DoubleSide
+	});
 
-    waterMaterial2 = new THREE.MeshPhongMaterial({
-        normalMap: ntexture,
-        emissive: 0x80e4c3,
-        // emissiveIntensity: 0.7,
-        color: 0x80e4c3,
-        map: texture,
-        transparent: true,
-        opacity: 0.85,
-        side: THREE.DoubleSide
-    });
+	waterMaterial2 = new THREE.MeshPhongMaterial({
+		normalMap: ntexture,
+		emissive: 0x80e4c3,
+		// emissiveIntensity: 0.7,
+		color: 0x80e4c3,
+		map: texture,
+		transparent: true,
+		opacity: 0.85,
+		side: THREE.DoubleSide
+	});
 
-    waterMaterial3 = new THREE.MeshPhongMaterial({
-        normalMap: ntexture,
-        emissive: 0x80d3e4,
-        // emissiveIntensity: 0.7,
-        color: 0x80d3e4,
-        map: texture,
-        transparent: true,
-        opacity: 0.85,
-        side: THREE.DoubleSide
-    });
+	waterMaterial3 = new THREE.MeshPhongMaterial({
+		normalMap: ntexture,
+		emissive: 0x80d3e4,
+		// emissiveIntensity: 0.7,
+		color: 0x80d3e4,
+		map: texture,
+		transparent: true,
+		opacity: 0.85,
+		side: THREE.DoubleSide
+	});
 }
 
 function createGlassTexture() {
@@ -137,7 +137,7 @@ function generateTexture() {
 		y = x == 0 ? y + 1 : y;
 		image.data[i] = 128;
 		image.data[i + 1] = 128;
-		image.data[i + 2] = 128 + Math.floor(x ^ y) / 2;//255;
+		image.data[i + 2] = 128 + Math.floor(x ^ y) / 2; //255;
 		image.data[i + 3] = Math.floor(x ^ y);
 	}
 	context.putImageData(image, 0, 0);

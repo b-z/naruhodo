@@ -34,6 +34,11 @@ var data = {
 		divergence_angle: 15,
 		circle_light: true
 	},
+	base: {
+		height: 0.15,
+		radius_top: 0.4,
+		radius_bottom: 0.5,
+	},
 	coplanar: true
 };
 var epsilon = 0.0001;
@@ -104,18 +109,22 @@ function addElements(s) {
 	var lens1 = new THREE.Group();
 	lens1.name = 'convex_lens';
 	lens1.add(createConvexLens(data.convex_lens));
+	m2.add(createBase(data.base, 5));
 	m2.add(lens1);
 	var lens2 = new THREE.Group();
 	lens2.name = 'concave_lens';
 	lens2.add(createConcaveLens(data.concave_lens));
+	m3.add(createBase(data.base, 6));
 	m3.add(lens2);
 	var mirror1 = new THREE.Group();
 	mirror1.name = 'spherical_mirror';
 	mirror1.add(createSphericalMirror(data.spherical_mirror));
+	m4.add(createBase(data.base, 7));
 	m4.add(mirror1);
 	var mirror2 = new THREE.Group();
 	mirror2.name = 'mirror';
 	mirror2.add(createMirror(data.mirror));
+	m5.add(createBase(data.base, 8));
 	m5.add(mirror2);
 }
 
@@ -183,6 +192,13 @@ function adjustMarkers(markers, groups) {
 		}
 		groups[i].visible = markers[i].visible;
 	}
+	if (markers[0].visible && !markers[1].visible) {
+		g.push(g[0]);
+	}
+	if (markers[1].visible && !markers[0].visible) {
+		g.push(g[0]);
+	}
+
 	if (!data.coplanar) return;
 	// first, rotate to a same rotation
 	if (!m.length) return;
