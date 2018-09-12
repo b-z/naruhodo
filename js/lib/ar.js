@@ -5027,7 +5027,7 @@ THREEx.ArMarkerHelper = function(markerControls){
 var THREEx = THREEx || {}
 
 /**
- * - lerp position/quaternino/scale
+ * - lerp position/quaternion/scale
  * - minDelayDetected
  * - minDelayUndetected
  * @param {[type]} object3d   [description]

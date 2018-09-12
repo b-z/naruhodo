@@ -33,7 +33,8 @@ var data = {
 		offset: 1.25,
 		divergence_angle: 15,
 		circle_light: true
-	}
+	},
+	coplanar: true
 };
 var epsilon = 0.0001;
 
@@ -176,31 +177,44 @@ function adjustMarkers(markers, groups) {
 		if (markers[i].visible) {
 			m.push(markers[i]);
 			g.push(groups[i]);
+			groups[i].position.copy(markers[i].position);
+			groups[i].quaternion.copy(markers[i].quaternion);
+			groups[i].updateMatrixWorld(true);
 		}
 		groups[i].visible = markers[i].visible;
 	}
+	if (!data.coplanar) return;
 	// first, rotate to a same rotation
 	if (!m.length) return;
-	// var dir = m.reduce(function(p, obj) {
-	// 	var v = new THREE.Vector3(0, 1, 0);
-	// 	v.applyMatrix4(obj.matrixWorld).sub(obj.position).add(p);
-	// 	return v;
-	// }, new THREE.Vector3(0, 0, 0));
-	// dir.normalize();
-	// m.forEach(function(obj) {
-	// 	var q = new THREE.Quaternion();
-	// 	var v = new THREE.Vector3(0, 0, 1);
-	// 	v.applyMatrix4(obj.matrixWorld).sub(obj.position).normalize();
-	// 	q.setFromUnitVectors(v, dir);
-	// });
+	var dir = g.reduce(function(p, obj) {
+		var v = new THREE.Vector3(0, 1, 0);
+		v.applyMatrix4(obj.matrixWorld).sub(obj.position).normalize().add(p);
+		return v;
+	}, new THREE.Vector3(0, 0, 0));
+	dir.normalize();
+	g.forEach(function(obj) {
+		var q = new THREE.Quaternion();
+		var v = new THREE.Vector3(0, 1, 0);
+		v.applyMatrix4(obj.matrixWorld).sub(obj.position).normalize();
+		// q.setFromUnitVectors(v, dir).normalize();
+		// obj.quaternion.normalize().multiply(q).normalize();
+
+		// obj.quaternion.setFromUnitVectors(v, dir.clone().normalize());
+		var axis = new THREE.Vector3();
+		axis.crossVectors(v, dir).normalize();
+		var angle = v.angleTo(dir);
+		obj.rotateOnWorldAxis(axis, angle);
+		// console.log(axis, angle);
+		obj.updateMatrixWorld(true);
+	});
 
 	// then move to a same level
 	var x = new THREE.Vector3(1, 0, 0);
 	var y = new THREE.Vector3(0, 1, 0);
 	var z = new THREE.Vector3(0, 0, 1);
-	x.applyMatrix4(m[0].matrixWorld).sub(m[0].position);
-	y.applyMatrix4(m[0].matrixWorld).sub(m[0].position);
-	z.applyMatrix4(m[0].matrixWorld).sub(m[0].position);
+	x.applyMatrix4(g[0].matrixWorld).sub(g[0].position);
+	y.applyMatrix4(g[0].matrixWorld).sub(g[0].position);
+	z.applyMatrix4(g[0].matrixWorld).sub(g[0].position);
 	var a1 = x.x;
 	var a2 = x.y;
 	var a3 = x.z;
@@ -217,7 +231,7 @@ function adjustMarkers(markers, groups) {
 	var pz = new THREE.Vector3(a2 * b3 - b2 * a3, b1 * a3 - a1 * b3, a1 * b2 - b1 * a2);
 
 	var kys = [];
-	m.forEach(function(obj) {
+	g.forEach(function(obj) {
 		var pos = obj.position;
 		var ky = py.dot(pos) / det;
 		// kx * x + ky * y + kz * z
@@ -228,8 +242,8 @@ function adjustMarkers(markers, groups) {
 	for (var k of kys) avg += k;
 	avg /= m.length;
 
-	for (var i = 0; i < m.length; i++) {
-		var obj = m[i];
+	for (var i = 0; i < g.length; i++) {
+		var obj = g[i];
 		var pos = obj.position;
 		var kx = px.dot(pos) / det;
 		var kz = pz.dot(pos) / det;
@@ -239,7 +253,7 @@ function adjustMarkers(markers, groups) {
 		npos.add(y.clone().multiplyScalar(avg));
 		npos.add(z.clone().multiplyScalar(kz));
 		g[i].position.copy(npos);
-		g[i].quaternion.copy(m[i].quaternion);
+		g[i].updateMatrixWorld(true);
 	}
 
 	// for (var i = 0; i <= 4; i++) {

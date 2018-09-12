@@ -71,12 +71,18 @@ function initSettings() {
 	onChangeSphericalMirrorRadius();
 	onChangeDivergenceAngle();
 	onChangeUsePointLight();
+	onChangeCoplanar();
 	$('#number_of_rays').on('input change', onChangeNumberOfRays);
 	$('#convex_lens_f').on('input change', onChangeConvexLensRadius);
 	$('#concave_lens_f').on('input change', onChangeConcaveLensRadius);
 	$('#spherical_mirror_f').on('input change', onChangeSphericalMirrorRadius);
 	$('#divergence_angle').on('input change', onChangeDivergenceAngle);
 	$('#use_point_light').change(onChangeUsePointLight);
+	$('#coplanar').change(onChangeCoplanar);
+}
+
+function onChangeCoplanar() {
+	data.coplanar = !$('#coplanar')[0].checked;
 }
 
 function onChangeNumberOfRays() {
