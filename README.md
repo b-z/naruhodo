@@ -26,11 +26,11 @@ AR ([Augmented Reality](https://en.wikipedia.org/wiki/Augmented_reality)) is a n
 
 ### How can I play with it?
 
-First, you should print some markers:
+First, you should print some markers (`naruhodo/markers-print/print.pdf`):
 
-<img src="data/0_big.png" width="2cm"><img src="data/1_big.png" width="2cm"><img src="data/2_big.png" width="2cm"><img src="data/4_big.png" width="2cm"><img src="data/4_big.png" width="2cm"><img src="data/5_big.png" width="2cm">
+<img src="markers-print/print-preview.png" width="10cm">
 
-The first two together constitute a light source, and the latter four markers are convex lens, concave lens, spherical mirror and plane mirror, respectively.
+The last two together constitute a light source, and the other four markers are convex lens, concave lens, spherical mirror and plane mirror, respectively.
 
 Place these markers on your desk and play!
 
@@ -199,7 +199,7 @@ z.applyMatrix4(m[0].matrixWorld).sub(m[0].position);
 * [x] 允许设置光线发散程度
 * [x] 注意一下控制台冒出来的警告⚠️?
       *  是因为光线从玻璃射出的时候发生了全反射，导致折射公式求解失败
-* [ ] 对渲染使用后处理，看起来更酷炫点
+* [ ] ~~对渲染使用后处理，看起来更酷炫点~~ 性能代价太大了 放弃
 * [ ] 在修改元件参数时，在AR场景中绘制相关辅助信息
 * [ ] 加入游戏关卡设置
 * [x] 调整元件参数时，动态改变mesh的形状
@@ -213,9 +213,11 @@ z.applyMatrix4(m[0].matrixWorld).sub(m[0].position);
 * [x] 做成积木块
 * [x] 元件换个颜色，现在丑爆了，弄一个这种材质? https://www.etsy.com/jp/listing/627682478/detroit-become-human-cyberlife-tote-bag?ref=shop_home_active_5
 * [ ] 凹透镜外围封起来
-* [ ] 强制让所有marker共面!
+* [x] 强制让所有marker共面!
 * [x] 调整元件参数，改为调整焦距，并在上面标出球半径，与长度单位
 * [ ] 除了点光源可以调整角度之外，平行光源也可以调整
+* [ ] 绘制元件的底座
+* [ ] 绘制光源
 
 ### Development log
 

@@ -201,7 +201,9 @@ function adjustMarkers(markers, groups) {
 
 		// obj.quaternion.setFromUnitVectors(v, dir.clone().normalize());
 		var axis = new THREE.Vector3();
-		axis.crossVectors(v, dir).normalize();
+		axis.crossVectors(v, dir);
+		if (axis.length() < epsilon) return;
+		axis.normalize();
 		var angle = v.angleTo(dir);
 		obj.rotateOnWorldAxis(axis, angle);
 		// console.log(axis, angle);
