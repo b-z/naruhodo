@@ -8,6 +8,7 @@ function createSphericalMirror(object) {
 	mesh.rotation.z = Math.PI / 2;
 	mesh.position.set(Math.sqrt(sqr(object.radius) - sqr(object.r)), object.height, 0);
 	mesh.name = 'element_sphe';
+	mesh.castShadow = true;
 	return mesh;
 }
 
@@ -17,6 +18,7 @@ function createMirror(object) {
 	mesh.rotation.y = Math.PI / 2;
 	mesh.position.set(0, object.height, 0);
 	mesh.name = 'element_mirr';
+	mesh.castShadow = true;
 	return mesh;
 }
 
@@ -31,6 +33,8 @@ function createConvexLens(object) {
 	mesh2.rotation.z = -Math.PI / 2;
 	mesh1.position.set(Math.sqrt(sqr(object.radius) - sqr(object.r)), object.height, 0);
 	mesh2.position.set(-Math.sqrt(sqr(object.radius) - sqr(object.r)), object.height, 0);
+	mesh1.castShadow = true;
+	mesh2.castShadow = true;
 	var group = new THREE.Group();
 	group.name = 'element_conv';
 	group.add(mesh1);
@@ -47,6 +51,8 @@ function createConcaveLens(object) {
 	mesh2.rotation.z = -Math.PI / 2;
 	mesh1.position.set(object.radius + object.d / 2, object.height, 0);
 	mesh2.position.set(-object.d / 2 - object.radius, object.height, 0);
+	mesh1.castShadow = true;
+	mesh2.castShadow = true;
 	var group = new THREE.Group();
 	group.name = 'element_conv';
 	group.add(mesh1);
@@ -62,6 +68,64 @@ function createBase(object, n) {
 		flatShading: true
 	});
 	var mesh = new THREE.Mesh(geometry, material);
+	mesh.castShadow = true;
+	mesh.receiveShadow = true;
 	mesh.position.y = object.height / 2;
 	return mesh;
+}
+
+function createLightSource(object) {
+	var group = new THREE.Group();
+	var length = 2.25,
+		width = 1;
+
+	var shape = new THREE.Shape();
+	shape.moveTo(0, 0);
+	shape.lineTo(0, width);
+	shape.lineTo(length, width);
+	shape.lineTo(length, 0);
+	shape.lineTo(0, 0);
+
+	var extrudeSettings = {
+		steps: 2,
+		depth: 0.1,
+		bevelEnabled: true,
+		bevelThickness: 0.025,
+		bevelSize: 0.025,
+		bevelSegments: 1
+	};
+	var base_geometry = new THREE.ExtrudeBufferGeometry(shape, extrudeSettings);
+	var base_material = new THREE.MeshPhongMaterial({
+		color: 0x666666,
+		emissive: 0x072534,
+		flatShading: true
+	});
+	var base_mesh = new THREE.Mesh(base_geometry, base_material);
+	base_mesh.rotation.x = Math.PI / 2;
+	base_mesh.position.x = -0.5;
+	base_mesh.position.y = 0.2;
+	base_mesh.position.z = -0.5;
+	base_mesh.castShadow = true;
+	base_mesh.receiveShadow = true;
+	group.add(base_mesh);
+
+	var planeGeometry = new THREE.PlaneBufferGeometry(100, 100);
+	var planeMaterial = new THREE.ShadowMaterial({
+		opacity: 0.2
+	});
+	var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+	plane.rotation.x = -Math.PI / 2;
+	plane.position.y = -0.05;
+	plane.receiveShadow = true;
+	group.add(plane);
+
+	// var helper = new THREE.GridHelper(5, 20);
+	// // helper.position.y = -0.5999;
+	// helper.position.y = 0;
+	// helper.material.opacity = 0.9;
+	// helper.material.transparent = true;
+	// group.add(helper);
+
+	group.name = 'light_source';
+	return group;
 }

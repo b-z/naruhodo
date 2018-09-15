@@ -34,6 +34,9 @@ var data = {
 		divergence_angle: 15,
 		circle_light: true
 	},
+	light_source: {
+
+	},
 	base: {
 		height: 0.15,
 		radius_top: 0.4,
@@ -57,41 +60,52 @@ function initializeOptics(s) {
 function addPlane(s) {
 	var planeRoot = new THREE.Group();
 	planeRoot.name = 'group_plane';
-	/*
-	var planeGeometry = new THREE.PlaneBufferGeometry(5, 5);
-	var planeMaterial = new THREE.MeshPhongMaterial({
-		color: 0xbbbbbb,
-		specular: 0x101010,
-		transparent: true,
-		opacity: 0.15
-	});
-	var plane = new THREE.Mesh(planeGeometry, planeMaterial);
-	plane.rotation.x = -Math.PI / 2;
-	plane.position.y = -0.005;
-	// plane.receiveShadow = true;
-	// planeRoot.add(plane);
 
-	var helper = new THREE.GridHelper(5, 20);
-	// helper.position.y = -0.5999;
-	helper.position.y = 0;
-	helper.material.opacity = 0.9;
-	helper.material.transparent = true;
-	// planeRoot.add(helper);
-	*/
+	var ls = createLightSource(data.light_source);
+	planeRoot.add(ls);
+
 	// s.add(new THREE.HemisphereLight(0xffcc88, 0xffffff));
 	planeRoot.add(new THREE.HemisphereLight(0x443333, 0x111122));
-	addShadowedLight(planeRoot, 3, 10, 5, 0xffffff, 1);
-	addShadowedLight(planeRoot, 3, 8, -4, 0xffcc88, 0.8);
+	// addShadowedLight(planeRoot, -1, 3, 1, 0xffffff, 1);
+	addShadowedLight(planeRoot, -4, 6, 2, 0xffffff, 1, 0, 0, -8, true);
+	addShadowedLight(planeRoot, 0, 4, -8, 0xffcc88, 0.8, 1, -3, -1, false);
+	// addShadowedLight(planeRoot, 3, 10, 5, 0xffffff, 1);
+	// addShadowedLight(planeRoot, 3, 8, -4, 0xffcc88, 0.8);
+
+
 	s.add(planeRoot);
 }
 
-function addShadowedLight(root, x, y, z, color, intensity) {
-	var light = new THREE.PointLight(color, intensity, 100);
-	light.position.set(x, y, z);
+function addShadowedLight(root, x, y, z, color, intensity, dx, dy, dz, cast) {
+	// var light = new THREE.PointLight(color, intensity, 0, 2);
+	// light.position.set(x, y, z);
 	// light.castShadow = true;
-	root.add(light);
+	// light.shadow.mapSize.width = 1024; // default
+	// light.shadow.mapSize.height = 1024; // default
+	// light.shadow.camera.near = 0.5; // default
+	// light.shadow.camera.far = 10 // default
+	// root.add(light);
+	//
 	// var helper = new THREE.PointLightHelper(light, 0.5);
 	// root.add(helper);
+
+	var directionalLight = new THREE.DirectionalLight(color, intensity);
+	directionalLight.position.set(x, y, z);
+	directionalLight.castShadow = cast;
+	var d = 5;
+	directionalLight.shadow.camera.left = -d;
+	directionalLight.shadow.camera.right = d;
+	directionalLight.shadow.camera.top = d;
+	directionalLight.shadow.camera.bottom = -d;
+	directionalLight.shadow.camera.near = 0.5;
+	directionalLight.shadow.camera.far = 300;
+	directionalLight.shadow.mapSize.width = 512;
+	directionalLight.shadow.mapSize.height = 512;
+	var tg = new THREE.Object3D();
+	tg.position.set(dx, dy, dz);
+	directionalLight.target = tg;
+	scene.add(tg);
+	scene.add(directionalLight);
 }
 
 function addLaser(s) {
@@ -287,8 +301,9 @@ function adjustMarkers(markers, groups) {
 	// }
 }
 
-function updatePlane(m0, m1, plane) {
+function updatePlane(m0, m1, plane, ls) {
 	// 根据m1, m2两个marker设置plane的位置
+	ls.visible = true;
 	if (m0.visible && m1.visible) {
 		var p = new THREE.Vector3(-data.light.offset, 0, 0);
 		p.applyMatrix4(m1.matrixWorld);
@@ -301,6 +316,8 @@ function updatePlane(m0, m1, plane) {
 		var p = new THREE.Vector3(-data.light.offset, 0, 0);
 		p.applyMatrix4(m1.matrixWorld);
 		plane.position.copy(p);
+	} else {
+		ls.visible = false;
 	}
 }
 
@@ -328,8 +345,9 @@ function updateLaser(s) {
 	var g4 = s.getObjectByName('group_4');
 	var g5 = s.getObjectByName('group_5');
 	var plane = s.getObjectByName('group_plane');
+	var ls = s.getObjectByName('light_source');
 	adjustMarkers([m0, m1, m2, m3, m4, m5], [g0, g1, g2, g3, g4, g5]);
-	updatePlane(g0, g1, plane);
+	updatePlane(g0, g1, plane, ls);
 	var convex_lens = g2.getObjectByName('convex_lens');
 	var concave_lens = g3.getObjectByName('concave_lens');
 	var spherical_mirror = g4.getObjectByName('spherical_mirror');

@@ -24,8 +24,8 @@ function initialize() {
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0);
 	renderer.gammaInput = true;
 	renderer.gammaOutput = true;
-	// renderer.shadowMap.enabled = true;
-	// renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+	renderer.shadowMap.enabled = true;
+	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 	// renderer.shadowMap.renderReverseSided = false;
 	renderer.setSize(W, H);
 	renderer.domElement.style.position = 'absolute';
@@ -99,26 +99,26 @@ function initialize() {
 			minConfidence: 0.1
 		});
 
-		let mesh = new THREE.Mesh(
-			new THREE.CubeGeometry(0.1, 0.1, 0.1),
-			// new THREE.MeshBasicMaterial({color:colorArray[i], map:texture, transparent:true, opacity:0.5})
-			new THREE.MeshPhongMaterial({
-				color: colorArray[i],
-				// transparent: true,
-				// opacity: 0.5,
-			})
-		);
-		// mesh.castShadow = true;
-		// mesh.receiveShadow = true;
-		mesh.position.y = 1; // 1 / 2;
-		// markerRoot.add(mesh);
+		// let mesh = new THREE.Mesh(
+		// 	new THREE.CubeGeometry(0.1, 0.1, 0.1),
+		// 	// new THREE.MeshBasicMaterial({color:colorArray[i], map:texture, transparent:true, opacity:0.5})
+		// 	new THREE.MeshPhongMaterial({
+		// 		color: colorArray[i],
+		// 		// transparent: true,
+		// 		// opacity: 0.5,
+		// 	})
+		// );
+		// // mesh.castShadow = true;
+		// // mesh.receiveShadow = true;
+		// mesh.position.y = 1; // 1 / 2;
+		// // markerRoot.add(mesh);
 
-		var helper = new THREE.GridHelper(1.25, 16);
-		// helper.position.y = -0.5999;
-		helper.position.y = 0;
-		// helper.material.opacity = 0.9;
-		// helper.material.transparent = true;
-		group.add(helper);
+		// var helper = new THREE.GridHelper(1.25, 16);
+		// // helper.position.y = -0.5999;
+		// helper.position.y = 0;
+		// // helper.material.opacity = 0.9;
+		// // helper.material.transparent = true;
+		// group.add(helper);
 
 		// var plane = new THREE.Mesh(
 		// 	new THREE.PlaneGeometry(1.25, 1.25),
