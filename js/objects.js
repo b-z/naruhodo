@@ -76,6 +76,8 @@ function createBase(object, n) {
 
 function createLightSource(object) {
 	var group = new THREE.Group();
+
+	// base
 	var length = 2.25,
 		width = 1;
 
@@ -109,6 +111,24 @@ function createLightSource(object) {
 	base_mesh.receiveShadow = true;
 	group.add(base_mesh);
 
+	// light source
+	var cone_geometry = new THREE.ConeGeometry(0.25, 0.8, 7);
+	var cone = new THREE.Mesh(cone_geometry, waterMaterial0);
+	cone.position.y = object.height;
+	cone.rotation.z = -Math.PI / 2;
+	cone.position.x = 0.625 - 0.25;
+	cone.castShadow = true;
+	group.add(cone);
+
+	var cylinder_geometry = new THREE.CylinderGeometry(object.scale * 1.5, object.scale * 1.5, 0.2, 7);
+	var cylinder = new THREE.Mesh(cylinder_geometry, waterMaterial0);
+	cylinder.position.y = object.height;
+	cylinder.rotation.z = -Math.PI / 2;
+	cylinder.position.x = 0.625;
+	cylinder.castShadow = true;
+	group.add(cylinder);
+
+	// shadow receiver
 	var planeGeometry = new THREE.PlaneBufferGeometry(100, 100);
 	var planeMaterial = new THREE.ShadowMaterial({
 		opacity: 0.2

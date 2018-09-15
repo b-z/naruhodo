@@ -155,11 +155,11 @@ function render() {
 
 
 function animate() {
-	setTimeout(function() {
-		requestAnimationFrame(animate);
-	}, 100);
 	deltaTime = clock.getDelta();
 	totalTime += deltaTime;
 	update();
 	render();
+	setTimeout(function() {
+		requestAnimationFrame(animate);
+	}, 100);
 }

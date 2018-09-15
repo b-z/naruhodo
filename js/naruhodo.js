@@ -34,9 +34,6 @@ var data = {
 		divergence_angle: 15,
 		circle_light: true
 	},
-	light_source: {
-
-	},
 	base: {
 		height: 0.15,
 		radius_top: 0.4,
@@ -61,7 +58,7 @@ function addPlane(s) {
 	var planeRoot = new THREE.Group();
 	planeRoot.name = 'group_plane';
 
-	var ls = createLightSource(data.light_source);
+	var ls = createLightSource(data.light);
 	planeRoot.add(ls);
 
 	// s.add(new THREE.HemisphereLight(0xffcc88, 0xffffff));
@@ -171,7 +168,7 @@ function updateOpticsScene(s) {
 function initializeLaserOffset() {
 	// 初始化laser的offset
 	var laser_scale = data.light.scale;
-	laser_offset = new THREE.Vector3(0, data.light.height, 0);
+	laser_offset = new THREE.Vector3(0.625, data.light.height, 0);
 	laser_offsets = [new THREE.Vector3()];
 	for (var i = 0; i < 40; i++) {
 		var x = random();
@@ -632,7 +629,7 @@ function generateLaser() {
 	});
 	outer.blending = THREE.AdditiveBlending;
 	outer.transparent = true;
-	outer.opacity = 0.7;
+	// outer.opacity = 0.7;
 	var inner = new THREE.MeshPhongMaterial({
 		color: 0x0,
 		emissive: 0xffffff

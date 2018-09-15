@@ -5,12 +5,23 @@ var videoTexture,
 	refractMaterial2, // concave
 	refractMaterial3; // mirror
 
-var waterMaterial1, waterMaterial2, waterMaterial3;
+var waterMaterial1, waterMaterial2, waterMaterial3, waterMaterial0;
 
 function createWaterTexture() {
 	let loader = new THREE.TextureLoader();
 	let ntexture = loader.load('img/waternormals.jpg');
 	let texture = loader.load('img/water.jpg');
+
+	waterMaterial0 = new THREE.MeshPhongMaterial({
+		normalMap: ntexture,
+		emissive: 0xaaaaaa,
+		// emissiveIntensity: 0.7,
+		color: 0xaaaaaa,
+		map: texture,
+		transparent: true,
+		opacity: 0.85,
+		side: THREE.DoubleSide
+	});
 
 	waterMaterial1 = new THREE.MeshPhongMaterial({
 		normalMap: ntexture,

@@ -144,8 +144,6 @@ My inspiration comes from Nintendo LABO and teamLab:star: 's exhibitions. I thin
 
 ![16](img-doc/16.png)
 
-:arrow_up_small: Test complex cases
-
 ![17](img-doc/17.png)
 
 :arrow_up_small: Test complex cases
@@ -175,6 +173,10 @@ My inspiration comes from Nintendo LABO and teamLab:star: 's exhibitions. I thin
 ![24](img-doc/24.png)
 
 :arrow_up_small: Turn markers into bricks
+
+![26](img-doc/26.png)
+
+:arrow_up_small: Draw shadows:tada:
 
 ***
 
@@ -268,6 +270,7 @@ My inspiration comes from Nintendo LABO and teamLab:star: 's exhibitions. I thin
 *   9.15
     *   做成积木块
     *   添加阴影
+    *   绘制手电筒:flashlight:
 
 ### 光线与光学器件求交
 
@@ -350,7 +353,7 @@ z.applyMatrix4(m[0].matrixWorld).sub(m[0].position);
 
 需要加一个能cast出阴影的光源，可以是点光源或者平行光源。对性能要求较高。
 
-每个阴影光源相当于一个相机，需要设置各种相机参数，以及shadowmap的分辨率。
+每个阴影光源相当于一个相机，需要设置各种相机参数，以及shadowmap的分辨率。分辨率、相机可视范围、软件性能需要做一个权衡。
 
 这里使用的设计是阴影光源固定在场景中，使用平行光源，投射方向也是固定的。根据marker所在平面位置，生成一个接收影子的透明材质，可以比较真实地模拟桌面。
 
