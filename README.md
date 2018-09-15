@@ -16,6 +16,8 @@ This application is designed for students, using AR technology to help them do s
 
 Currently, it provides a simple optical experiment for demonstration. Users are free to use lenses, mirrors, etc. in it.
 
+![25](img-doc/25.png)
+
 ### Why do you do this?
 
 Education is the foundation of a country. **Equal and quality education** is very important. The imbalance of educational resources is a common problem between China and Japan. In a top school, students receive the best education and can do research in the laboratory, which is not possible for students in other schools.
@@ -82,7 +84,7 @@ My inspiration comes from Nintendo LABO and teamLab:star: 's exhibitions. I thin
 *   Make it work better.
 *   Design a simple game about it.
 
-### Gallery
+### Images
 
 ![1](img-doc/1.png)
 
@@ -163,6 +165,16 @@ My inspiration comes from Nintendo LABO and teamLab:star: 's exhibitions. I thin
 ![21](img-doc/21.png)
 
 :arrow_up_small: Draw a base under each element
+
+![26](img-doc/26.jpg)
+
+![27](img-doc/27.jpg)
+
+![23](img-doc/23.jpg)
+
+![24](img-doc/24.png)
+
+:arrow_up_small: Turn markers into bricks
 
 ***
 
@@ -253,6 +265,8 @@ My inspiration comes from Nintendo LABO and teamLab:star: 's exhibitions. I thin
     *   平均各个marker坐标系的位置及朝向
 *   9.12
     *   绘制元件底座
+*   9.15
+    *   做成积木块
 
 ### 光线与光学器件求交
 

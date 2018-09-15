@@ -4,6 +4,8 @@ var scene, camera, renderer, clock, deltaTime, totalTime, winResize;
 
 var arToolkitSource, arToolkitContext;
 
+var W = 1280;
+var H = 960;
 
 function initialize() {
 	scene = new THREE.Scene();
@@ -25,7 +27,7 @@ function initialize() {
 	// renderer.shadowMap.enabled = true;
 	// renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 	// renderer.shadowMap.renderReverseSided = false;
-	renderer.setSize(640, 480);
+	renderer.setSize(W, H);
 	renderer.domElement.style.position = 'absolute';
 	renderer.domElement.style.top = '0px';
 	renderer.domElement.style.left = '0px';
@@ -64,8 +66,8 @@ function initialize() {
 		detectionMode: 'color_and_matrix',
 		matrixCodeType: '3x3',
 		maxDetectionRate: 30,
-		canvasWidth: 640,
-		canvasHeight: 480,
+		canvasWidth: W,
+		canvasHeight: H,
 		imageSmoothingEnabled: true
 	});
 

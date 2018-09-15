@@ -148,7 +148,7 @@
 			</div>
 		</div>
 	</footer>
-	<canvas id="screenshot" width="640" height="480" style="display: none;"></canvas>
+	<canvas id="screenshot" width="1280" height="960" style="display: none;"></canvas>
 	<script id="vertexShader" type="x-shader/x-vertex">
 		uniform float refractionRatio; varying vec3 vRefract; void main() { vec4 mPosition = modelMatrix * vec4( position, 1.0 ); vec3 nWorld = normalize( mat3( modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz ) * normal ); vRefract = normalize( refract(
 		normalize( mPosition.xyz - cameraPosition ), nWorld, refractionRatio ) ); gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 ); }

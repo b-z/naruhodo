@@ -192,12 +192,12 @@ function adjustMarkers(markers, groups) {
 		}
 		groups[i].visible = markers[i].visible;
 	}
-	if (markers[0].visible && !markers[1].visible) {
-		g.push(g[0]);
-	}
-	if (markers[1].visible && !markers[0].visible) {
-		g.push(g[0]);
-	}
+	// if (markers[0].visible && !markers[1].visible) {
+	// 	g.push(g[0]);
+	// }
+	// if (markers[1].visible && !markers[0].visible) {
+	// 	g.push(g[0]);
+	// }
 
 	if (!data.coplanar) return;
 	// first, rotate to a same rotation
