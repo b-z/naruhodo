@@ -25,7 +25,7 @@ var data = {
 		height: 1.5
 	},
 	light: {
-		scale: 0.4,
+		scale: 0.2,
 		height: 1.5,
 		number_of_rays: 20,
 		use_point_light: false,
@@ -594,56 +594,6 @@ function testIntersectionToSphere(src, dir, center, R) {
 	return result;
 }
 
-function setLaser(laser, p1, p2, color) {
-	// 将laser对象绘制在p1到p2两点之间
-	laser.visible = true;
-	laser.position.copy(p1).lerp(p2, 0.5);
-	var sub = p1.clone().sub(p2);
-	var len = sub.length();
-	laser.scale.set(0.3, 0.3, len);
-	sub.normalize();
-	var axis = new THREE.Vector3(0, 0, 1);
-	laser.quaternion.setFromUnitVectors(axis, sub);
-	switch (color) {
-		case 'red':
-			laser.children[0].material.emissive = new THREE.Color(1, 1 / 3, 1 / 3);
-			break;
-		case 'green':
-			laser.children[0].material.emissive = new THREE.Color(1 / 3, 1, 1 / 3);
-			break;
-		case 'blue':
-			laser.children[0].material.emissive = new THREE.Color(1 / 3, 1 / 3, 1);
-			break;
-		default:
-			laser.children[0].material.emissive = new THREE.Color(1, 1, 1);
-			break;
-	}
-}
-
-function generateLaser() {
-	// 生成一个laser的mesh
-	var mesh = new THREE.Object3D();
-	var outer = new THREE.MeshPhongMaterial({
-		color: 0x0,
-		emissive: 0xff5555
-	});
-	outer.blending = THREE.AdditiveBlending;
-	outer.transparent = true;
-	// outer.opacity = 0.7;
-	var inner = new THREE.MeshPhongMaterial({
-		color: 0x0,
-		emissive: 0xffffff
-	});
-	var outer_geometry = new THREE.BoxGeometry(0.1, 0.1, 1);
-	var outer_mesh = new THREE.Mesh(outer_geometry, outer);
-	// outer_mesh.rotation.y = Math.PI / 2;
-	var inner_geometry = new THREE.BoxGeometry(0.035, 0.035, 1);
-	var inner_mesh = new THREE.Mesh(inner_geometry, inner);
-	// inner_mesh.rotation.y = Math.PI / 2;
-	mesh.add(outer_mesh);
-	mesh.add(inner_mesh);
-	return mesh;
-}
 
 function mixObjectInfo(a, b) {
 	// 弃用

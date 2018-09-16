@@ -158,7 +158,7 @@ function onChangeSphericalMirrorRadius() {
 function onChangeDivergenceAngle() {
 	data.light.divergence_angle = parseFloat($('#divergence_angle').val());
 	$('#divergence_angle_label').text($('#divergence_angle').val());
-	data.light.d = 0.5 / Math.sin(data.light.divergence_angle / 180 * Math.PI / 2);
+	data.light.d = data.light.scale / Math.sin(data.light.divergence_angle / 180 * Math.PI / 2);
 }
 
 function onChangeUsePointLight() {

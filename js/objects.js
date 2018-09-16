@@ -137,7 +137,7 @@ function createLightSource(object) {
 	cone.castShadow = true;
 	group.add(cone);
 
-	var cylinder_geometry = new THREE.CylinderGeometry(object.scale * 1.5, object.scale * 1.5, 0.2, 7);
+	var cylinder_geometry = new THREE.CylinderGeometry(object.scale * 3, object.scale * 3, 0.2, 7);
 	var cylinder = new THREE.Mesh(cylinder_geometry, waterMaterial0);
 	cylinder.position.y = object.height;
 	cylinder.rotation.z = -Math.PI / 2;
@@ -165,4 +165,55 @@ function createLightSource(object) {
 
 	group.name = 'light_source';
 	return group;
+}
+
+function setLaser(laser, p1, p2, color) {
+	// 将laser对象绘制在p1到p2两点之间
+	laser.visible = true;
+	laser.position.copy(p1).lerp(p2, 0.5);
+	var sub = p1.clone().sub(p2);
+	var len = sub.length();
+	laser.scale.set(0.3, 0.3, len);
+	sub.normalize();
+	var axis = new THREE.Vector3(0, 0, 1);
+	laser.quaternion.setFromUnitVectors(axis, sub);
+	switch (color) {
+		case 'red':
+			laser.children[0].material.emissive = new THREE.Color(0.67, 0.5, 0.89);
+			break;
+		case 'green':
+			laser.children[0].material.emissive = new THREE.Color(0.5, 0.89, 0.76);
+			break;
+		case 'blue':
+			laser.children[0].material.emissive = new THREE.Color(0.5, 0.83, 0.89);
+			break;
+		default:
+			laser.children[0].material.emissive = new THREE.Color(1, 1, 1);
+			break;
+	}
+}
+
+function generateLaser() {
+	// 生成一个laser的mesh
+	var mesh = new THREE.Object3D();
+	var outer = new THREE.MeshPhongMaterial({
+		color: 0x0,
+		emissive: 0xff5555
+	});
+	outer.blending = THREE.AdditiveBlending;
+	outer.transparent = true;
+	// outer.opacity = 0.7;
+	var inner = new THREE.MeshPhongMaterial({
+		color: 0x0,
+		emissive: 0xffffff
+	});
+	var outer_geometry = new THREE.BoxGeometry(0.1, 0.1, 1);
+	var outer_mesh = new THREE.Mesh(outer_geometry, outer);
+	// outer_mesh.rotation.y = Math.PI / 2;
+	var inner_geometry = new THREE.BoxGeometry(0.025, 0.025, 1);
+	var inner_mesh = new THREE.Mesh(inner_geometry, inner);
+	// inner_mesh.rotation.y = Math.PI / 2;
+	mesh.add(outer_mesh);
+	mesh.add(inner_mesh);
+	return mesh;
 }
