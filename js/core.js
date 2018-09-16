@@ -65,7 +65,7 @@ function initialize() {
 		cameraParametersUrl: 'data/camera_para-iPhone.dat',
 		detectionMode: 'color_and_matrix',
 		matrixCodeType: '3x3',
-		maxDetectionRate: 30,
+		maxDetectionRate: 10,
 		canvasWidth: W,
 		canvasHeight: H,
 		imageSmoothingEnabled: true
@@ -159,7 +159,7 @@ function animate() {
 	totalTime += deltaTime;
 	update();
 	render();
-	setTimeout(function() {
+	// setTimeout(function() {
 		requestAnimationFrame(animate);
-	}, 100);
+	// }, 1000);
 }

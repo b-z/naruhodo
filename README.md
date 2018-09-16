@@ -192,7 +192,7 @@ My inspiration comes from Nintendo LABO and teamLab:star: 's exhibitions. I thin
       * [ ] ~~插值其他器件~~
 * [ ] ~~增加一个双缝干涉实验?~~
 * [ ] 做得尽量像教科书的
-* [ ] 在marker旁边标注一些图、文字
+* [x] 在marker旁边标注一些图、文字
 * [x] @bug: 反射光线从反射点射出来的时候会和镜面本身有交点，需要将这个点排除(交点距离光源长度应大于$\varepsilon$)
 * [ ] 使用mathjax显示相关公式
 * [x] 允许设置光线数量
@@ -209,18 +209,19 @@ My inspiration comes from Nintendo LABO and teamLab:star: 's exhibitions. I thin
 * [x] ~~不显示透镜内部的光线，以加速~~
 * [x] 与光学元件求交之后，对所有潜在交点排序
 * [x] 去除双缝实验，改为自由模式与游戏模式
-* [ ] 增加音效
+* [ ] ~~增加音效~~
 * [x] 做成积木块
 * [x] 元件换个颜色，现在丑爆了，弄一个这种材质? https://www.etsy.com/jp/listing/627682478/detroit-become-human-cyberlife-tote-bag?ref=shop_home_active_5
 * [ ] ~~凹透镜外围封起来~~
 * [x] 强制让所有marker共面!
 * [x] 调整元件参数，改为调整焦距，并在上面标出球半径，与长度单位
-* [ ] 除了点光源可以调整角度之外，平行光源也可以调整
+* [ ] ~~除了点光源可以调整角度之外，平行光源也可以调整~~ 显得比较冗杂
 * [x] 绘制元件的底座
 * [x] 绘制光源
 * [ ] ~~绘制text，需要始终面向用户~~ 代价可能比较大
-* [ ] 光线的颜色与元件颜色统一
+* [x] 光线的颜色与元件颜色统一
 * [x] 在光源底座上绘制logo
+* [ ] 调整页面布局，视频窗口放大点
 
 ### Development log
 
@@ -302,6 +303,42 @@ $$(a^2+b^2+c^2)t^2+\\2(a(x_0-x_b)+b(y_0-y_b)+c(z_0-z_b))t+\\((x_0-x_b)^2+(y_0-y_
 
 可由此解出$t$，并进一步得到交点。判断交点合法性可以求交点到镜面中心的距离是否在合法范围。
 
+```javascript
+function testIntersectionToSpherePart(src, dir, center, R, r, e_center) {
+	var p = testIntersectionToSphere(src, dir, center, R);
+	for (var q of p) {
+		var d = q.distanceTo(e_center);
+		var t = Math.sqrt(sqr(r) + sqr(R - Math.sqrt(sqr(R) - sqr(r))));
+		if (d <= t) {
+			var norm = center.clone().sub(q).normalize();
+			return {
+				pos: q,
+				norm: norm
+			};
+		}
+	}
+	return null;
+}
+
+function testIntersectionToSphere(src, dir, center, R) {
+	var a = dir.dot(dir);
+	var sub = src.clone().sub(center);
+	var b = 2 * dir.dot(sub);
+	var c = sub.dot(sub) - R * R;
+
+	var delta = b * b - 4 * a * c;
+	var result = [];
+	if (delta >= 0) {
+		delta = Math.sqrt(delta);
+		var t1 = (-b - delta) / a / 2;
+		var t2 = (-b + delta) / a / 2;
+		if (t1 > epsilon) result.push(src.clone().add(dir.clone().multiplyScalar(t1)));
+		if (t2 > epsilon) result.push(src.clone().add(dir.clone().multiplyScalar(t2)));
+	}
+	return result;
+}
+```
+
 **和平面镜求交**
 
 平面镜的空间表示是一个中心点c加上x、y方向两个正交向量的线性组合，也就是说，
@@ -311,6 +348,36 @@ $$src+t\cdot dir=c+a\cdot x+b\cdot y$$
 满足$-1\le a\le 1$，$-1\le b\le 1$，$t>\varepsilon$。
 
 其中$a$、$b$、$t$是标量的未知数，其他向量可以挪到等号一边，变成三元一次方程，对三阶矩阵求逆即可。
+
+```javascript
+function testIntersectionToPlanePart(src, dir, c, x, y, norm) {
+	var a1 = x.x;
+	var a2 = x.y;
+	var a3 = x.z;
+	var b1 = y.x;
+	var b2 = y.y;
+	var b3 = y.z;
+	var c1 = -dir.x;
+	var c2 = -dir.y;
+	var c3 = -dir.z;
+	var det = a1 * (b2 * c3 - c2 * b3) - a2 * (b1 * c3 - c1 * b3) + a3 * (b1 * c2 - c1 * b2);
+	if (Math.abs(det) < epsilon) return null;
+	var pa = new THREE.Vector3(b2 * c3 - c2 * b3, c1 * b3 - b1 * c3, b1 * c2 - c1 * b2);
+	var pb = new THREE.Vector3(c2 * a3 - a2 * c3, a1 * c3 - c1 * a3, c1 * a2 - a1 * c2);
+	var pt = new THREE.Vector3(a2 * b3 - b2 * a3, b1 * a3 - a1 * b3, a1 * b2 - b1 * a2);
+	var s = src.clone().sub(c);
+	var a = pa.dot(s) / det;
+	var b = pb.dot(s) / det;
+	var t = pt.dot(s) / det;
+	if (t < epsilon) return null;
+	if (a > 1 || b > 1 || a < -1 || b < -1) return null;
+	var pos = c.clone().add(x.clone().multiplyScalar(a)).add(y.clone().multiplyScalar(b));
+	return {
+		pos: pos, 
+		norm: norm
+	}
+}
+```
 
 ### 光线投射
 
