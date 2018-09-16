@@ -113,12 +113,12 @@ function initialize() {
 		// mesh.position.y = 1; // 1 / 2;
 		// // markerRoot.add(mesh);
 
-		// var helper = new THREE.GridHelper(1.25, 16);
-		// // helper.position.y = -0.5999;
-		// helper.position.y = 0;
-		// // helper.material.opacity = 0.9;
-		// // helper.material.transparent = true;
-		// group.add(helper);
+		var helper = new THREE.GridHelper(1.25, 16);
+		// helper.position.y = -0.5999;
+		helper.position.y = 0;
+		// helper.material.opacity = 0.9;
+		// helper.material.transparent = true;
+		group.add(helper);
 
 		// var plane = new THREE.Mesh(
 		// 	new THREE.PlaneGeometry(1.25, 1.25),

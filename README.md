@@ -178,6 +178,10 @@ My inspiration comes from Nintendo LABO and teamLab:star: 's exhibitions. I thin
 
 :arrow_up_small: Draw shadows:tada:
 
+![27](img-doc/27.png)
+
+:arrow_up_small: Draw a logo under the light source
+
 ***
 
 ### To-do list
@@ -213,9 +217,10 @@ My inspiration comes from Nintendo LABO and teamLab:star: 's exhibitions. I thin
 * [x] 调整元件参数，改为调整焦距，并在上面标出球半径，与长度单位
 * [ ] 除了点光源可以调整角度之外，平行光源也可以调整
 * [x] 绘制元件的底座
-* [ ] 绘制光源
+* [x] 绘制光源
 * [ ] ~~绘制text，需要始终面向用户~~ 代价可能比较大
 * [ ] 光线的颜色与元件颜色统一
+* [x] 在光源底座上绘制logo
 
 ### Development log
 
@@ -271,6 +276,8 @@ My inspiration comes from Nintendo LABO and teamLab:star: 's exhibitions. I thin
     *   做成积木块
     *   添加阴影
     *   绘制手电筒:flashlight:
+*   9.16
+    *   在光源底座上绘制logo
 
 ### 光线与光学器件求交
 

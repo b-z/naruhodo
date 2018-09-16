@@ -77,6 +77,23 @@ function createBase(object, n) {
 function createLightSource(object) {
 	var group = new THREE.Group();
 
+	// logo
+	let loader = new THREE.TextureLoader();
+	var logo_texture = loader.load('img/logo-texture.png');
+	var logo_geometry = new THREE.PlaneGeometry(2.25, 1);
+	var logo_material = new THREE.MeshPhongMaterial({
+		map: logo_texture,
+		color: 0xaaaaaa,
+		emissive: 0x072534,
+		transparent: true
+	});
+	var logo = new THREE.Mesh(logo_geometry, logo_material);
+	logo.rotation.x = -Math.PI / 2;
+	logo.position.y = 0.16;
+	logo.position.x = 0.625;
+	logo.receiveShadow = true;
+	group.add(logo);
+
 	// base
 	var length = 2.25,
 		width = 1;
@@ -105,7 +122,7 @@ function createLightSource(object) {
 	var base_mesh = new THREE.Mesh(base_geometry, base_material);
 	base_mesh.rotation.x = Math.PI / 2;
 	base_mesh.position.x = -0.5;
-	base_mesh.position.y = 0.2;
+	base_mesh.position.y = 0.125;
 	base_mesh.position.z = -0.5;
 	base_mesh.castShadow = true;
 	base_mesh.receiveShadow = true;
