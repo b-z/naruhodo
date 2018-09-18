@@ -65,7 +65,7 @@ function initialize() {
 		cameraParametersUrl: 'data/camera_para-iPhone.dat',
 		detectionMode: 'color_and_matrix',
 		matrixCodeType: '3x3',
-		maxDetectionRate: 10,
+		maxDetectionRate: 30,
 		canvasWidth: W,
 		canvasHeight: H,
 		imageSmoothingEnabled: true
