@@ -16,7 +16,7 @@ This application is designed for students, using AR technology to help them do s
 
 Currently, it provides a simple optical experiment for demonstration. Users are free to use lenses, mirrors, etc. in it.
 
-![25](img-doc/25.png)
+![29](img-doc/29.png)
 
 ### Why do you do this?
 
@@ -181,6 +181,10 @@ My inspiration comes from Nintendo LABO and teamLab:star: 's exhibitions. I thin
 ![27](img-doc/27.png)
 
 :arrow_up_small: Draw a logo under the light source
+
+![29](img-doc/29.png)
+
+:arrow_up_small: The final version:tada:
 
 ***
 
