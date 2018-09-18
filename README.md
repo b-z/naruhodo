@@ -16,7 +16,7 @@ This application is designed for students, using AR technology to help them do s
 
 Currently, it provides a simple optical experiment for demonstration. Users are free to use lenses, mirrors, etc. in it.
 
-![29](img-doc/29.png)
+![29](img-doc/naruhodo.big.jpg)
 
 ### Why do you do this?
 
@@ -70,6 +70,7 @@ Here, Ar.js and three.js are two famous open-source libraries. They provide basi
 ### Disadvantages
 
 *   Simulating the glass material of the lens as realistically as possible will make the display look better, but on a web page, computing resources are not enough to achieve such a function.
+*   ARToolKit is not stable enough. Position of a marker may be ambiguous.
 
 ### Your inspiration?
 
@@ -225,7 +226,7 @@ My inspiration comes from Nintendo LABO and teamLab:star: 's exhibitions. I thin
 * [ ] ~~绘制text，需要始终面向用户~~ 代价可能比较大
 * [x] 光线的颜色与元件颜色统一
 * [x] 在光源底座上绘制logo
-* [ ] 调整页面布局，视频窗口放大点
+* [x] 调整页面布局，视频窗口放大点
 
 ### Development log
 
@@ -355,15 +356,9 @@ $$src+t\cdot dir=c+a\cdot x+b\cdot y$$
 
 ```javascript
 function testIntersectionToPlanePart(src, dir, c, x, y, norm) {
-	var a1 = x.x;
-	var a2 = x.y;
-	var a3 = x.z;
-	var b1 = y.x;
-	var b2 = y.y;
-	var b3 = y.z;
-	var c1 = -dir.x;
-	var c2 = -dir.y;
-	var c3 = -dir.z;
+	var a1 = x.x; var a2 = x.y; var a3 = x.z;
+	var b1 = y.x; var b2 = y.y; var b3 = y.z;
+	var c1 = -dir.x; var c2 = -dir.y; var c3 = -dir.z;
 	var det = a1 * (b2 * c3 - c2 * b3) - a2 * (b1 * c3 - c1 * b3) + a3 * (b1 * c2 - c1 * b2);
 	if (Math.abs(det) < epsilon) return null;
 	var pa = new THREE.Vector3(b2 * c3 - c2 * b3, c1 * b3 - b1 * c3, b1 * c2 - c1 * b2);
