@@ -2,9 +2,11 @@
 
 <img src="img/logo-black-light.png" width="150px">
 
-Mercari hackathon 2018 prototype
+Champion project of Mercari Hackathon 2018
 
 https://b-z.github.io/naruhodo
+
+![](img-doc/hackathon.jpg)
 
 ***
 
@@ -186,6 +188,12 @@ My inspiration comes from Nintendo LABO and teamLab:star: 's exhibitions. I thin
 ![29](img-doc/29.png)
 
 :arrow_up_small: The final version:tada:
+
+![](img-doc/pre.jpg)
+
+:arrow_up_small: The presentation
+
+
 
 ***
 
@@ -372,7 +380,7 @@ function testIntersectionToPlanePart(src, dir, c, x, y, norm) {
 	if (a > 1 || b > 1 || a < -1 || b < -1) return null;
 	var pos = c.clone().add(x.clone().multiplyScalar(a)).add(y.clone().multiplyScalar(b));
 	return {
-		pos: pos, 
+		pos: pos,
 		norm: norm
 	}
 }
@@ -452,4 +460,3 @@ z.applyMatrix4(m[0].matrixWorld).sub(m[0].position);
     *   可以观察到光路
     *   可以自由调整各个器材的光学参数
     *   与现实结合，可体会到对象实际尺度
-
