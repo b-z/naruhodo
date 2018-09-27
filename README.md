@@ -137,9 +137,7 @@ My inspiration comes from Nintendo LABO and teamLab:star: 's exhibitions. I thin
 
 ![13](img-doc/13.png)
 
-![14](img-doc/14.png)
-
-:arrow_up_small: Draw a lemon :lemon:
+:arrow_up_small: Draw a lemon :lemon: (误
 
 ![15](img-doc/15.png)
 
