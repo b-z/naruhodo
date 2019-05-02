@@ -1,0 +1,399 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width initial-scale=1">
+<title>README.md</title></head>
+<body><h1>Naruhodo!</h1>
+<p><zimg src="naruhodo/img/logo-black-light.png" width="150px"></zimg></p>
+<p>Champion project of Mercari Hackathon 2018</p>
+<p><a href="https://b-z.github.io/naruhodo" target="_blank" >https://b-z.github.io/naruhodo</a></p>
+<p><zimg src="naruhodo/img-doc/hackathon.jpg" alt="></zimg></p>
+<hr />
+<h3>What is this?</h3>
+<p><strong>Naruhodo!</strong> means &quot;I see!&quot; or &quot;Aha moment&quot; in Japanese.</p>
+<p>This application is designed for students, using AR technology to help them do some wonderful scientific experiments at home.</p>
+<p>Currently, it provides a simple optical experiment for demonstration. Users are free to use lenses, mirrors, etc. in it.</p>
+<p><zimg src="naruhodo/img-doc/naruhodo.big.jpg" alt="29"></zimg></p>
+<h3>Why do you do this?</h3>
+<p>Education is the foundation of a country. <strong>Equal and quality education</strong> is very important. The imbalance of educational resources is a common problem between China and Japan. In a top school, students receive the best education and can do research in the laboratory, which is not possible for students in other schools.</p>
+<p>I was born in a poor city. In my student days, I enjoyed to do interesting scientific experiments at home. For example, give me a copper wire (Cu), I will heat it on the fire to get copper oxide (CuO), then put the copper oxide into vinegar (CH<sub>3</sub>COOH), I will finally get a beautiful blue copper acetate (Cu(CH<sub>3</sub>COO)<sub>2</sub>) solution. But a serious problem is that my home cannot always provide the right experiment tools. And it is not safe to do some experiments at home.</p>
+<p>AR (<a href="https://en.wikipedia.org/wiki/Augmented_reality">Augmented Reality</a>) is a new technology which can mix the real world and the virtual world. I hope to use this technology to help students who are interested in science, to do interesting experiments at home.</p>
+<h3>How can I play with it?</h3>
+<p>First, you should print some markers (<code>naruhodo/markers-print/print.pdf</code>):</p>
+<p><zimg src="naruhodo/markers-print/print-preview.png" width="400px"></zimg></p>
+<p>The last two together constitute a light source, and the other four markers are convex lens, concave lens, spherical mirror and plane mirror, respectively.</p>
+<p>Place these markers on your desk and play!</p>
+<h3>How does it work?</h3>
+<p>Currently, the core of <strong>Naruhodo!</strong> is designed as a three-layer structure:</p>
+<ul>
+<li>Layer-3 is the basic layer. It captures video through the camera of the user&#39;s device. <code>AR.js</code> analyzes the position and orientation of the markers relative to the camera from the video stream.</li>
+<li>Layer-2 is the logical layer. In this layer, the light source and other optical instruments are generated from the markers, and the result of the interaction of the light with the optical instruments is calculated.</li>
+<li>And Layer-1 is the visualization layer. It uses <code>three.js</code> to render the calculated models on the web page.</li>
+
+</ul>
+<p>Here, Ar.js and three.js are two famous open-source libraries. They provide basic AR and model rendering capabilities, respectively. Since they only provide very basic APIs, I still have a lot of work to do. For example, to make the detection more robust in Layer-3, and to generate 3D models and light sources in Layer-1.</p>
+<h3>How can I deploy?</h3>
+<ul>
+<li><p><strong>Naruhodo!</strong> should be visited through an <code>https</code> website, otherwise it has no permission to open the camera of your iOS device.</p>
+</li>
+<li><p>To set-up a simple https server, you can do this:</p>
+<pre><code class="language-bash" lang="bash">npm install -g http-server
+openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem
+http-server -S -C cert.pem -o -c-1
+</code></pre>
+</li>
+<li><p>Then, open <a href="https://localhost:8080." target="_blank" >https://localhost:8080.</a></p>
+</li>
+
+</ul>
+<h3>Advantages</h3>
+<ul>
+<li>No special experiment tools are required. All you need to prepare is a phone (or tablet) and some markers.</li>
+<li>You can see the light path. Even in laboratory, it is hard to visualize the light path in an optical experiment.</li>
+<li>You can adjust the parameters of every experiment equipment. For example, the focal length of a lens.</li>
+<li>It combines the virtual and reality, so that you can feel the scale of each object in reality.</li>
+
+</ul>
+<h3>Disadvantages</h3>
+<ul>
+<li>Simulating the glass material of the lens as realistically as possible will make the display look better, but on a web page, computing resources are not enough to achieve such a function.</li>
+<li>ARToolKit is not stable enough. Position of a marker may be ambiguous.</li>
+
+</ul>
+<h3>Your inspiration?</h3>
+<p>My inspiration comes from Nintendo LABO and teamLab⭐️ &#39;s exhibitions. I think an educational application should not be limited to virtual, but should be combined with the reality.</p>
+<table>
+<thead>
+<tr><th style="text-align:center;" ><zimg src="naruhodo/img-doc/labo.jpg" alt="labo" ></zimg></th><th style="text-align:center;" ><zimg src="naruhodo/img-doc/teamlab.jpeg" alt="teamlab" ></zimg></th></tr></thead>
+<tbody><tr><td style="text-align:center;" >Nintendo LABO</td><td style="text-align:center;" >teamLab⭐️</td></tr></tbody>
+</table>
+<h3>What will you do next?</h3>
+<ul>
+<li>Make it work better.</li>
+<li>Design a simple game about it.</li>
+
+</ul>
+<h3>Images</h3>
+<p><zimg src="naruhodo/img-doc/1.png" alt="1" ></zimg></p>
+<p>🔼 Test the detection of the markers</p>
+<p><zimg src="naruhodo/img-doc/2.png" alt="2" ></zimg></p>
+<p>🔼 Add a plane according to the average position &amp; rotation of the markers (deprecated now)</p>
+<p><zimg src="naruhodo/img-doc/3.png" alt="3" ></zimg></p>
+<p>🔼 Add a light to the scene</p>
+<p><zimg src="naruhodo/img-doc/4.png" alt="4" ></zimg></p>
+<p><zimg src="naruhodo/img-doc/5.png" alt="5" ></zimg></p>
+<p>🔼 Draw a thick laser between two points</p>
+<p><zimg src="naruhodo/img-doc/6.png" alt="6" ></zimg></p>
+<p>🔼 A point light 🎉</p>
+<p><zimg src="naruhodo/img-doc/7.png" alt="7" ></zimg></p>
+<p>🔼 Add GUI to the prototype. (Mobile &amp; Computer)</p>
+<p><zimg src="naruhodo/img-doc/8.png" alt="8" ></zimg></p>
+<p>🔼 Emmmmm...An invisible concave mirror.</p>
+<p><zimg src="naruhodo/img-doc/9.png" alt="9" ></zimg></p>
+<p>🔼 The concave mirror is shown both on mobile and computer</p>
+<p><zimg src="naruhodo/img-doc/10.png" alt="10" ></zimg></p>
+<p>🔼 A invisible convex lens</p>
+<p><zimg src="naruhodo/img-doc/11.png" alt="11" ></zimg></p>
+<p>🔼 The concave mirror is now visible 🎉</p>
+<p><zimg src="naruhodo/img-doc/12.jpg" alt="12" ></zimg></p>
+<p>🔼 Some notes</p>
+<p><zimg src="naruhodo/img-doc/13.png" alt="13" ></zimg></p>
+<p>🔼 Draw a lemon 🍋 (误</p>
+<p><zimg src="naruhodo/img-doc/15.png" alt="15" ></zimg></p>
+<p>🔼 Test the refraction (deprecated now)</p>
+<p><zimg src="naruhodo/img-doc/16.png" alt="16" ></zimg></p>
+<p><zimg src="naruhodo/img-doc/17.png" alt="17" ></zimg></p>
+<p>🔼 Test complex cases</p>
+<p><zimg src="naruhodo/img-doc/18.png" alt="18" ></zimg></p>
+<p>🔼 Add a texture to the mirror (deprecated now) and support colorful lasers</p>
+<p><zimg src="naruhodo/img-doc/19.png" alt="19" ></zimg></p>
+<p>🔼 Add some textures to the elements</p>
+<p><zimg src="naruhodo/img-doc/20.png" alt="20" ></zimg></p>
+<p>🔼 Use average rotation and height among the markers</p>
+<p><zimg src="naruhodo/img-doc/21.png" alt="21" ></zimg></p>
+<p>🔼 Draw a base under each element</p>
+<p><zimg src="naruhodo/img-doc/26.jpg" alt="26" ></zimg></p>
+<p><zimg src="naruhodo/img-doc/27.jpg" alt="27" ></zimg></p>
+<p><zimg src="naruhodo/img-doc/23.jpg" alt="23" ></zimg></p>
+<p><zimg src="naruhodo/img-doc/24.png" alt="24" ></zimg></p>
+<p>🔼 Turn markers into bricks</p>
+<p><zimg src="naruhodo/img-doc/26.png" alt="26" ></zimg></p>
+<p>🔼 Draw shadows🎉</p>
+<p><zimg src="naruhodo/img-doc/27.png" alt="27" ></zimg></p>
+<p>🔼 Draw a logo under the light source</p>
+<p><zimg src="naruhodo/img-doc/29.png" alt="29" ></zimg></p>
+<p>🔼 The final version🎉</p>
+<p><zimg src="naruhodo/img-doc/pre.jpg" alt=" ></zimg></p>
+<p>🔼 The presentation</p>
+<p></p>
+<hr />
+<h3>Development log</h3>
+<ul>
+<li><p>9.1</p>
+<ul>
+<li>确定使用AR做桌上实验模拟</li>
+<li>调研AR的开源工具，确定可行性</li>
+
+</ul>
+</li>
+<li><p>9.2</p>
+<ul>
+<li>建立github仓库</li>
+<li>打印各种marker</li>
+<li>尝试marker识别的demo</li>
+
+</ul>
+</li>
+<li><p>9.3</p>
+<ul>
+<li>支持使用barcode</li>
+<li>支持使用多个marker</li>
+<li>增加截图功能</li>
+<li>增加grid的绘制</li>
+
+</ul>
+</li>
+<li><p>9.4</p>
+<ul>
+<li>绘制光线、同步光线坐标系与marker坐标系</li>
+<li>加入UI</li>
+
+</ul>
+</li>
+<li><p>9.5</p>
+<ul>
+<li>修复手机浏览器上UI不正常的问题(非常坑)</li>
+<li>画了个icon</li>
+<li>美化UI</li>
+<li>添加球面镜元件，但有bug</li>
+
+</ul>
+</li>
+<li><p>9.6</p>
+<ul>
+<li><p>修复反射光线抖动的bug</p>
+</li>
+<li><p>支持自定义参数</p>
+<ul>
+<li>球面镜的球半径</li>
+<li>点光源/平行光源</li>
+<li>光源光线数量</li>
+<li>点光源发散度</li>
+
+</ul>
+</li>
+<li><p>光源使用双marker，插值增加稳定性，缺失一个也可以工作</p>
+</li>
+<li><p>实现凸透镜</p>
+</li>
+
+</ul>
+</li>
+<li><p>9.7</p>
+<ul>
+<li>修复全反射导致的bug</li>
+<li>显示凸透镜、球面镜的mesh</li>
+<li>支持动态调整mesh的参数</li>
+<li>光源由&quot;球体&quot;修改成&quot;圆周&quot;的</li>
+<li>美化封面</li>
+
+</ul>
+</li>
+<li><p>9.8</p>
+<ul>
+<li>支持透明材质</li>
+
+</ul>
+</li>
+<li><p>9.9</p>
+<ul>
+<li>支持凹透镜</li>
+
+</ul>
+</li>
+<li><p>9.10</p>
+<ul>
+<li>支持平面镜</li>
+<li>支持不同颜色的光</li>
+<li>更换了一种显示的材质</li>
+
+</ul>
+</li>
+<li><p>9.11</p>
+<ul>
+<li>调整半径改为调整焦距，球半径会自动根据焦距计算</li>
+<li>平均各个marker坐标系的位置及朝向</li>
+
+</ul>
+</li>
+<li><p>9.12</p>
+<ul>
+<li>绘制元件底座</li>
+
+</ul>
+</li>
+<li><p>9.15</p>
+<ul>
+<li>做成积木块</li>
+<li>添加阴影</li>
+<li>绘制手电筒🔦</li>
+
+</ul>
+</li>
+<li><p>9.16</p>
+<ul>
+<li>在光源底座上绘制logo</li>
+
+</ul>
+</li>
+
+</ul>
+<h3>光线与光学器件求交</h3>
+<p><strong>和凸透镜、凹透镜、球面镜求交均可以看成和球面镜求交</strong></p>
+<p>分两步:</p>
+<ol start=" >
+<li>和球面镜所在的球求交</li>
+<li>判断交点合法性</li>
+
+</ol>
+<p>假设光线由$(x_0, y_0, z_0)$射出，方向为$(a, b, c)$，那么光线可以表示为</p>
+<p>$$(x_0, y_0, z_0) + t(a, b, c), t>\varepsilon$$，</p>
+<p>假设球是$(x-x_b)^2+(y-y_b)^2+(z-z_b)^2=R^2$，那么相交时有</p>
+<p>$$(x_0+ta-x_b)^2+(y_0+tb-y_b)^2+(z_0+tc-z_b)^2=R^2$$，</p>
+<p>得到关于$t$的二次方程:</p>
+<p>$$(a^2+b^2+c^2)t^2+\\2(a(x_0-x_b)+b(y_0-y_b)+c(z_0-z_b))t+\\((x_0-x_b)^2+(y_0-y_b)^2+(z_0-z_b)^2-R^2)=0$$</p>
+<p>可由此解出$t$，并进一步得到交点。判断交点合法性可以求交点到镜面中心的距离是否在合法范围。</p>
+<pre><code class="language-javascript" lang="javascript">function testIntersectionToSpherePart(src, dir, center, R, r, e_center) {
+	var p = testIntersectionToSphere(src, dir, center, R);
+	for (var q of p) {
+		var d = q.distanceTo(e_center);
+		var t = Math.sqrt(sqr(r) + sqr(R - Math.sqrt(sqr(R) - sqr(r))));
+		if (d &lt;= t) {
+			var norm = center.clone().sub(q).normalize();
+			return {
+				pos: q,
+				norm: norm
+			};
+		}
+	}
+	return null;
+}
+
+function testIntersectionToSphere(src, dir, center, R) {
+	var a = dir.dot(dir);
+	var sub = src.clone().sub(center);
+	var b = 2 * dir.dot(sub);
+	var c = sub.dot(sub) - R * R;
+
+	var delta = b * b - 4 * a * c;
+	var result = [];
+	if (delta &gt;= 0) {
+		delta = Math.sqrt(delta);
+		var t1 = (-b - delta) / a / 2;
+		var t2 = (-b + delta) / a / 2;
+		if (t1 &gt; epsilon) result.push(src.clone().add(dir.clone().multiplyScalar(t1)));
+		if (t2 &gt; epsilon) result.push(src.clone().add(dir.clone().multiplyScalar(t2)));
+	}
+	return result;
+}
+</code></pre>
+<p><strong>和平面镜求交</strong></p>
+<p>平面镜的空间表示是一个中心点c加上x、y方向两个正交向量的线性组合，也就是说，</p>
+<p>$$src+t\cdot dir=c+a\cdot x+b\cdot y$$</p>
+<p>满足$-1\le a\le 1$，$-1\le b\le 1$，$t>\varepsilon$。</p>
+<p>其中$a$、$b$、$t$是标量的未知数，其他向量可以挪到等号一边，变成三元一次方程，对三阶矩阵求逆即可。</p>
+<pre><code class="language-javascript" lang="javascript">function testIntersectionToPlanePart(src, dir, c, x, y, norm) {
+	var a1 = x.x; var a2 = x.y; var a3 = x.z;
+	var b1 = y.x; var b2 = y.y; var b3 = y.z;
+	var c1 = -dir.x; var c2 = -dir.y; var c3 = -dir.z;
+	var det = a1 * (b2 * c3 - c2 * b3) - a2 * (b1 * c3 - c1 * b3) + a3 * (b1 * c2 - c1 * b2);
+	if (Math.abs(det) &lt; epsilon) return null;
+	var pa = new THREE.Vector3(b2 * c3 - c2 * b3, c1 * b3 - b1 * c3, b1 * c2 - c1 * b2);
+	var pb = new THREE.Vector3(c2 * a3 - a2 * c3, a1 * c3 - c1 * a3, c1 * a2 - a1 * c2);
+	var pt = new THREE.Vector3(a2 * b3 - b2 * a3, b1 * a3 - a1 * b3, a1 * b2 - b1 * a2);
+	var s = src.clone().sub(c);
+	var a = pa.dot(s) / det;
+	var b = pb.dot(s) / det;
+	var t = pt.dot(s) / det;
+	if (t &lt; epsilon) return null;
+	if (a &gt; 1 || b &gt; 1 || a &lt; -1 || b &lt; -1) return null;
+	var pos = c.clone().add(x.clone().multiplyScalar(a)).add(y.clone().multiplyScalar(b));
+	return {
+		pos: pos,
+		norm: norm
+	}
+}
+</code></pre>
+<h3>光线投射</h3>
+<p>首先对所有元件求交，在所有交点中取最近的。</p>
+<p>然后针对不同元件做进一步处理:</p>
+<ul>
+<li>镜面: 找到交点、按此处法线反射</li>
+<li>透镜: 找到交点、法线，按折射公式折射，需要处理全反射的情况</li>
+
+</ul>
+<p>如果经过元件变换进一步生成了新的光线，那么继续投射这根新的光线。</p>
+<h3>Marker位置、朝向的均衡</h3>
+<p>看起来简单但实际非常复杂。。</p>
+<p><strong>朝向均衡</strong></p>
+<p><a href="https://zh.wikipedia.org/wiki/%E5%9B%9B%E5%85%83%E6%95%B0%E4%B8%8E%E7%A9%BA%E9%97%B4%E6%97%8B%E8%BD%AC" target="_blank" >https://zh.wikipedia.org/wiki/%E5%9B%9B%E5%85%83%E6%95%B0%E4%B8%8E%E7%A9%BA%E9%97%B4%E6%97%8B%E8%BD%AC</a></p>
+<p>要让所有元件的坐标系的y轴方向统一。</p>
+<p>尝试了多种方案，最后可行的方法是，求出每个元件坐标系下(0, 1, 0)的世界坐标v[i]，求它们的均值dir，归一化。</p>
+<p>对于每个元件，用v[i]叉乘dir得到旋转轴，点乘得到旋转角，再绕着这个轴转即可。</p>
+<p><strong>位置均衡</strong></p>
+<p>朝向均衡之后，各个元件坐标系的y轴变得平行。位置均衡可以确保各个元件的$xOz$平面在同一平面上。</p>
+<p>首先在第一个元件的坐标系下，表示出(1, 0, 0) (0, 1, 0) (0, 0, 1)三个正交单位向量:</p>
+<pre><code class="language-javascript" lang="javascript">var x = new THREE.Vector3(1, 0, 0);
+var y = new THREE.Vector3(0, 1, 0);
+var z = new THREE.Vector3(0, 0, 1);
+x.applyMatrix4(m[0].matrixWorld).sub(m[0].position);
+y.applyMatrix4(m[0].matrixWorld).sub(m[0].position);
+z.applyMatrix4(m[0].matrixWorld).sub(m[0].position);
+</code></pre>
+<p>然后这三个向量写成列向量再并起来所构成的方阵，右边乘上列向量$(a, b, c)^T$能得到在一号元件坐标系下，坐标(a, b, c)在世界坐标系中的表示。假设这个世界坐标系的坐标是(p, q, r)，那么可以在这个坐标左边乘上上面那个方阵的逆矩阵，就得到了在一号元件坐标系下的坐标。</p>
+<p>现在，我们用这种方法，把所有元件的坐标系原点放在一号元件坐标系下表示。然后求它们的y坐标的均值，用y的均值更新原有的y，就得到了均衡之后的坐标。</p>
+<h3>阴影效果</h3>
+<p>需要加一个能cast出阴影的光源，可以是点光源或者平行光源。对性能要求较高。</p>
+<p>每个阴影光源相当于一个相机，需要设置各种相机参数，以及shadowmap的分辨率。分辨率、相机可视范围、软件性能需要做一个权衡。</p>
+<p>这里使用的设计是阴影光源固定在场景中，使用平行光源，投射方向也是固定的。根据marker所在平面位置，生成一个接收影子的透明材质，可以比较真实地模拟桌面。</p>
+<h3>关卡设计</h3>
+<ul>
+<li>用平面镜等，将平行光源反射到旁边某个指定的圈里</li>
+
+</ul>
+<ul>
+<li>平行光-&gt;凸透镜-&gt;凹透镜-&gt;变成很细的一束平行光，经过平面镜反射到目标，目标check这束光是否足够细且平行</li>
+
+</ul>
+<h3>Note</h3>
+<ul>
+<li><p>模型在Three.js的scene里是这样组织的: 每个marker是scene的子节点，是一个group对象，可以给这个group添加子节点。当现实世界的marker移动之后，这个marker group的坐标会发生变化，从而子节点也会发生变化。</p>
+</li>
+<li><p>几何光学实验:</p>
+<ul>
+<li>平行光源、点光源、凸透镜、凹透镜、凸面镜、凹面镜</li>
+<li>光源由两个marker确定方向，可以射出很多光线</li>
+
+</ul>
+</li>
+<li><p>单缝衍射、双缝干涉实验:</p>
+<ul>
+<li>线光源、可调的双缝。不需要接收屏，因为接收屏的位置不影响观察结果，可由双缝位置确定。</li>
+<li>只有一个缝的时候，实验变成单缝实验。</li>
+<li>需要在接收屏上方增加亮度曲线。</li>
+
+</ul>
+</li>
+<li><p>优势:</p>
+<ul>
+<li>无需专门的实验器材</li>
+<li>可以观察到光路</li>
+<li>可以自由调整各个器材的光学参数</li>
+<li>与现实结合，可体会到对象实际尺度</li>
+
+</ul>
+</li>
+
+</ul>
+</body>
+</html>
